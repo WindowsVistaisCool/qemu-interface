@@ -1,6 +1,6 @@
 ﻿namespace QEMUInterface
 {
-    partial class WinMain
+    partial class WIN_MAIN
     {
         /// <summary>
         ///  Required designer variable.
@@ -30,10 +30,8 @@
         {
             components = new System.ComponentModel.Container();
             ImageList il_vmList;
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WinMain));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WIN_MAIN));
             Label ls_machineName;
-            ListViewItem listViewItem1 = new ListViewItem(new string[] { "Windows 10 Pro" }, 3, Color.Empty, SystemColors.Window, null);
-            ListViewItem listViewItem2 = new ListViewItem("Windows Vista Ultimate", 2);
             ms_ts_file = new ToolStripMenuItem();
             ts_file_prefs = new ToolStripMenuItem();
             toolStripSeparator1 = new ToolStripSeparator();
@@ -56,7 +54,9 @@
             b_machineSettings = new Button();
             b_startMachine = new Button();
             gb_machineDetails = new GroupBox();
-            l_machineName = new Label();
+            t_machineOS = new TextBox();
+            t_machineName = new TextBox();
+            ls_machineOS = new Label();
             p_backPadding = new Panel();
             il_vmList = new ImageList(components);
             ls_machineName = new Label();
@@ -73,7 +73,6 @@
             gb_machineState.SuspendLayout();
             gb_machineDetails.SuspendLayout();
             p_backPadding.SuspendLayout();
-            SuspendLayout();
             // 
             // il_vmList
             // 
@@ -177,7 +176,7 @@
             ms.Items.AddRange(new ToolStripItem[] { ms_ts_file, ms_ts_machine, ms_ts_about });
             ms.Location = new Point(0, 0);
             ms.Name = "ms";
-            ms.Size = new Size(765, 25);
+            ms.Size = new Size(724, 25);
             ms.TabIndex = 0;
             ms.Text = "menuStrip1";
             // 
@@ -198,8 +197,8 @@
             // sc_maincont.Panel2
             // 
             sc_maincont.Panel2.Controls.Add(sc_subcont);
-            sc_maincont.Size = new Size(755, 578);
-            sc_maincont.SplitterDistance = 259;
+            sc_maincont.Size = new Size(714, 524);
+            sc_maincont.SplitterDistance = 244;
             sc_maincont.TabIndex = 1;
             // 
             // p_vmList
@@ -211,28 +210,26 @@
             p_vmList.Location = new Point(5, 5);
             p_vmList.Name = "p_vmList";
             p_vmList.Padding = new Padding(10, 5, 10, 5);
-            p_vmList.Size = new Size(245, 564);
+            p_vmList.Size = new Size(230, 510);
             p_vmList.TabIndex = 0;
             // 
             // lv_vmList
             // 
             lv_vmList.Activation = ItemActivation.OneClick;
             lv_vmList.BackColor = SystemColors.Window;
+            lv_vmList.BackgroundImageTiled = true;
             lv_vmList.BorderStyle = BorderStyle.None;
             lv_vmList.Dock = DockStyle.Fill;
             lv_vmList.Font = new Font("Segoe UI", 12.2264156F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lv_vmList.FullRowSelect = true;
             lv_vmList.GridLines = true;
             lv_vmList.HeaderStyle = ColumnHeaderStyle.Nonclickable;
-            listViewItem1.StateImageIndex = 0;
-            listViewItem2.StateImageIndex = 0;
-            lv_vmList.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2 });
             lv_vmList.LargeImageList = il_vmList;
             lv_vmList.Location = new Point(10, 5);
             lv_vmList.Margin = new Padding(8);
             lv_vmList.MultiSelect = false;
             lv_vmList.Name = "lv_vmList";
-            lv_vmList.Size = new Size(221, 550);
+            lv_vmList.Size = new Size(206, 496);
             lv_vmList.TabIndex = 0;
             lv_vmList.TileSize = new Size(221, 50);
             lv_vmList.UseCompatibleStateImageBehavior = false;
@@ -263,7 +260,7 @@
             sc_subcont.Panel2.Controls.Add(gb_machineDetails);
             sc_subcont.Panel2.Margin = new Padding(5);
             sc_subcont.Panel2.Padding = new Padding(10);
-            sc_subcont.Size = new Size(492, 578);
+            sc_subcont.Size = new Size(466, 524);
             sc_subcont.SplitterDistance = 87;
             sc_subcont.TabIndex = 0;
             // 
@@ -271,7 +268,7 @@
             // 
             gb_machineState.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             gb_machineState.Controls.Add(l_machineState);
-            gb_machineState.Location = new Point(170, 1);
+            gb_machineState.Location = new Point(144, 1);
             gb_machineState.Name = "gb_machineState";
             gb_machineState.Padding = new Padding(5);
             gb_machineState.Size = new Size(108, 75);
@@ -293,7 +290,7 @@
             // 
             // b_newMachine
             // 
-            b_newMachine.Location = new Point(20, 8);
+            b_newMachine.Location = new Point(14, 8);
             b_newMachine.Margin = new Padding(10, 0, 10, 0);
             b_newMachine.Name = "b_newMachine";
             b_newMachine.Size = new Size(86, 68);
@@ -305,49 +302,83 @@
             // b_machineSettings
             // 
             b_machineSettings.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            b_machineSettings.Enabled = false;
-            b_machineSettings.Location = new Point(385, 8);
+            b_machineSettings.Location = new Point(363, 8);
             b_machineSettings.Margin = new Padding(10);
             b_machineSettings.Name = "b_machineSettings";
-            b_machineSettings.Size = new Size(86, 68);
+            b_machineSettings.Size = new Size(82, 68);
             b_machineSettings.TabIndex = 1;
-            b_machineSettings.Text = "Machine Settings";
+            b_machineSettings.Text = "Settings";
             b_machineSettings.UseVisualStyleBackColor = true;
+            b_machineSettings.Click += b_machineSettings_Click;
             // 
             // b_startMachine
             // 
             b_startMachine.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            b_startMachine.BackColor = Color.FromArgb(128, 255, 128);
             b_startMachine.Font = new Font("Segoe UI", 8.830189F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            b_startMachine.Location = new Point(291, 8);
+            b_startMachine.Location = new Point(265, 8);
             b_startMachine.Margin = new Padding(10);
             b_startMachine.Name = "b_startMachine";
-            b_startMachine.Size = new Size(86, 68);
+            b_startMachine.Size = new Size(82, 68);
             b_startMachine.TabIndex = 0;
-            b_startMachine.Text = "Start Machine";
-            b_startMachine.UseVisualStyleBackColor = true;
+            b_startMachine.Text = "Launch";
+            b_startMachine.UseVisualStyleBackColor = false;
             b_startMachine.Click += b_startMachine_Click;
             // 
             // gb_machineDetails
             // 
-            gb_machineDetails.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            gb_machineDetails.Controls.Add(l_machineName);
+            gb_machineDetails.BackgroundImageLayout = ImageLayout.Stretch;
+            gb_machineDetails.Controls.Add(t_machineOS);
+            gb_machineDetails.Controls.Add(t_machineName);
+            gb_machineDetails.Controls.Add(ls_machineOS);
             gb_machineDetails.Controls.Add(ls_machineName);
+            gb_machineDetails.Dock = DockStyle.Fill;
             gb_machineDetails.Location = new Point(10, 10);
             gb_machineDetails.Name = "gb_machineDetails";
             gb_machineDetails.Padding = new Padding(10);
-            gb_machineDetails.Size = new Size(468, 460);
+            gb_machineDetails.Size = new Size(442, 409);
             gb_machineDetails.TabIndex = 0;
             gb_machineDetails.TabStop = false;
             gb_machineDetails.Text = "Machine Information";
             // 
-            // l_machineName
+            // t_machineOS
             // 
-            l_machineName.AutoSize = true;
-            l_machineName.Location = new Point(97, 28);
-            l_machineName.Name = "l_machineName";
-            l_machineName.Size = new Size(48, 17);
-            l_machineName.TabIndex = 2;
-            l_machineName.Text = "EMPTY";
+            t_machineOS.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            t_machineOS.BackColor = SystemColors.HighlightText;
+            t_machineOS.BorderStyle = BorderStyle.FixedSingle;
+            t_machineOS.Enabled = false;
+            t_machineOS.Font = new Font("Segoe UI Semibold", 8.830189F, FontStyle.Bold);
+            t_machineOS.Location = new Point(139, 59);
+            t_machineOS.Name = "t_machineOS";
+            t_machineOS.ReadOnly = true;
+            t_machineOS.ShortcutsEnabled = false;
+            t_machineOS.Size = new Size(290, 25);
+            t_machineOS.TabIndex = 5;
+            // 
+            // t_machineName
+            // 
+            t_machineName.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            t_machineName.BackColor = SystemColors.HighlightText;
+            t_machineName.BorderStyle = BorderStyle.FixedSingle;
+            t_machineName.CausesValidation = false;
+            t_machineName.Enabled = false;
+            t_machineName.Font = new Font("Segoe UI Semibold", 8.830189F, FontStyle.Bold);
+            t_machineName.HideSelection = false;
+            t_machineName.Location = new Point(139, 25);
+            t_machineName.Name = "t_machineName";
+            t_machineName.ReadOnly = true;
+            t_machineName.ShortcutsEnabled = false;
+            t_machineName.Size = new Size(290, 25);
+            t_machineName.TabIndex = 4;
+            // 
+            // ls_machineOS
+            // 
+            ls_machineOS.AutoSize = true;
+            ls_machineOS.Location = new Point(10, 62);
+            ls_machineOS.Name = "ls_machineOS";
+            ls_machineOS.Size = new Size(115, 17);
+            ls_machineOS.TabIndex = 3;
+            ls_machineOS.Text = "Operating System:";
             // 
             // p_backPadding
             // 
@@ -356,17 +387,19 @@
             p_backPadding.Location = new Point(0, 25);
             p_backPadding.Name = "p_backPadding";
             p_backPadding.Padding = new Padding(5);
-            p_backPadding.Size = new Size(765, 588);
+            p_backPadding.Size = new Size(724, 534);
             p_backPadding.TabIndex = 2;
             // 
             // WinMain
             // 
+            AcceptButton = b_startMachine;
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(765, 613);
+            ClientSize = new Size(724, 559);
             Controls.Add(p_backPadding);
             Controls.Add(ms);
             MainMenuStrip = ms;
+            MinimumSize = new Size(740, 600);
             Name = "WinMain";
             Text = "QEMU Interface";
             ms.ResumeLayout(false);
@@ -414,6 +447,8 @@
         private ListView lv_vmList;
         private ImageList il_vmList;
         private Panel p_vmList;
-        private Label l_machineName;
+        private Label ls_machineOS;
+        private TextBox t_machineName;
+        private TextBox t_machineOS;
     }
 }

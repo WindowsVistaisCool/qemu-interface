@@ -1,37 +1,47 @@
-﻿using System.Security.AccessControl;
-
-namespace QEMUInterface
+﻿namespace QEMUInterface
 {
 
-    internal class VirtualMachine
+    public class VirtualMachine
     {
         private static int defaultID = 0;
 
         public string Name { get; set; }
         public int ID { get; private set; }
+        public string OSFriendlyName { get; set; } = "Unknown";
 
         public bool VerboseRunning { get; set; } = false;
 
-        public Func<bool> ModifyCondition { get; set; } = () => true; // condition to apply Control modifications (used mainly to ensure we only modify the window if the VM is selected)
+        public Func<int, bool> ControlModifyCondition { get; set; } = (id) => true;
 
-        private string qemuPcName = "cmd.exe";//"qemu-system-ppc.exe";
-        private string arguments = "/k echo yoink";//"-L pc-bios -boot c -M mac99 -m 512 -drive file=C:\\Users\\windo\\macstuff\\Puma.img,format=raw,media=disk";
+        private string qemuPcName = "cmd.exe";
+        private string arguments = "/k echo WE NEED TO COOK!!";
 
         private System.Diagnostics.Process? process;
 
         private EventHandler? exitEvent;
 
-        public VirtualMachine(string name)
+        public VirtualMachine(string name, int id)
         {
             Name = name;
-            ID = defaultID++;
+            ID = id;
         }
-        public VirtualMachine() : this("Default") { }
+        public VirtualMachine() : this("Default", defaultID++) { }
+        public VirtualMachine(string name) : this(name, defaultID++) { }
 
         public void Run()
         {
             DisposeProcess();
             CreateProcess();
+        }
+
+        public void SetPCType(string pcType)
+        {
+            qemuPcName = pcType;
+        }
+
+        public void SetRunArguments(string args)
+        {
+            arguments = args;
         }
 
         public void AddExitEvent(EventHandler e)
@@ -43,7 +53,7 @@ namespace QEMUInterface
         {
             AddExitEvent((_, _) =>
             {
-                if (!ModifyCondition())
+                if (!ControlModifyCondition(ID))
                 {
                     return;
                 }

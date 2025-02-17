@@ -65,7 +65,7 @@ namespace QEMUInterface
             b_startMachine.Enabled = !isRunning;
             b_machineSettings.Enabled = !isRunning;
             b_startMachine.BackColor = isRunning ? Color.FromKnownColor(KnownColor.Control) : Color.FromArgb(128, 255, 128);
-            l_machineState.Text = isRunning ? "cooking\nmeth" : "STOPPED";
+            l_machineState.Text = isRunning ? "RUNNING" : "STOPPED";
             l_machineState.ForeColor = isRunning ? Color.FromArgb(0, 192, 0) : Color.FromArgb(192, 0, 0);
 
             t_machineName.Text = " " + vm.Name;

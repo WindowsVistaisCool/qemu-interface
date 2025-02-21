@@ -1,4 +1,6 @@
-﻿namespace QEMUInterface
+﻿using System.Diagnostics;
+
+namespace QEMUInterface
 {
 
     public class VirtualMachine
@@ -14,11 +16,12 @@
         public Func<int, bool> ControlModifyCondition { get; set; } = (id) => true;
 
         private string qemuPcName = "cmd.exe";
-        private string arguments = "/k echo WE NEED TO COOK!!";
+        private string arguments = "/k echo running";
 
         private System.Diagnostics.Process? process;
 
         private EventHandler? exitEvent;
+        private Action? abortEvent;
 
         public VirtualMachine(string name, int id)
         {
@@ -59,7 +62,12 @@
                 }
                 SafeModifyControl(c, rawModification);
             });
-        } 
+        }
+
+        public void EditControlOnAbort(Action modification)
+        {
+            abortEvent = modification;
+        }
 
         public bool IsRunning()
         {
@@ -87,7 +95,17 @@
             process.EnableRaisingEvents = true;
             process.Exited += exitEvent;
 
-            process.Start();
+            try
+            {
+                process.Start();
+            } catch (Exception e)
+            {
+                if (abortEvent != null)
+                {
+                    abortEvent();
+                }
+                MessageBox.Show("Failed to start process: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void DisposeProcess()
@@ -100,7 +118,7 @@
             }
         }
 
-        private static void SafeModifyControl(Control c, Action<Control> rawModification)
+        private void SafeModifyControl(Control c, Action<Control> rawModification)
         {
             if (c.InvokeRequired)
             {

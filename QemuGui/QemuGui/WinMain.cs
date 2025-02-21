@@ -44,6 +44,12 @@ namespace QEMUInterface
                     c.BackColor = Color.FromArgb(128, 255, 128);
                     c.Enabled = true;
                 });
+                machines[i].EditControlOnAbort(() => {
+                    l_machineState.Text = "FAILED";
+                    l_machineState.ForeColor = Color.FromArgb(96, 0, 0);
+                    b_startMachine.Enabled = true;
+                    b_startMachine.BackColor = Color.FromArgb(128, 255, 128);
+                });
             }
 
             LoadVMList();

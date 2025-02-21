@@ -25,7 +25,7 @@ namespace QEMUInterface
 
         private PC_TYPE selectedMachineType = PC_TYPE.X86_64;
         private OS_FAMILY selectedFamily = OS_FAMILY.WINDOWS;
-        private OperatingSystem selectedOS = OperatingSystems.WINDOWS_11;
+        private OperatingSystem selectedOS = OperatingSystems.get("Windows 11");
 
         public WIN_NewMachine(Action<VirtualMachine> newVMCallback)
         {
@@ -64,7 +64,19 @@ namespace QEMUInterface
                         }
                     }
                     break;
+                case 2:
+                    lv_p2_type.Items.Clear();
+                    ListViewItem lvi = new("meee and my monkeyyyyy");
+                    lvi.SubItems.Add("A standard PC");
+                    lv_p2_type.Items.Add(lvi);
+
+                    lv_p2_type_machine.Width = -2;
+                    lv_p2_type_desc.Width = -2;
+                    break;
+                default:
+                    break;
             }
+            checkNextButtonEnabled(null, null);
         }
 
         private void loadOSVersions(object? sender, EventArgs? e)
@@ -81,8 +93,11 @@ namespace QEMUInterface
             }
 
             cb_p1_version.Items.Clear();
-            cb_p1_version.Items.AddRange(OperatingSystems.getFriendlyNamesFromFamily(selectedFamily));
-            cb_p1_version.Text = selectedOS.Name;
+            cb_p1_version.Items.AddRange(OperatingSystems.getFriendlyNamesFromFamilyWithCompatability(selectedFamily, selectedMachineType));
+            if (cb_p1_version.Items.Count > 0)
+            {
+                cb_p1_version.Text = cb_p1_version.Items[0].ToString();
+            }
         }
 
         private void loadOSMinorVersions(object? sender, EventArgs? e)
@@ -117,7 +132,7 @@ namespace QEMUInterface
             p_finishPage.Visible = currentTabPage == maxTabPage;
         }
 
-        private void checkNextButtonEnabled(object sender, EventArgs e)
+        private void checkNextButtonEnabled(object? sender, EventArgs? e)
         {
             bool isEnabled = false;
             switch (currentTabPage)
@@ -135,7 +150,8 @@ namespace QEMUInterface
                     isEnabled = true;
                     break;
                 case 2:
-                    isEnabled = true;
+                    isEnabled = lv_p2_type.SelectedItems.Count == 1;
+
                     break;
             }
             b_next.Enabled = isEnabled;
@@ -198,6 +214,8 @@ namespace QEMUInterface
                 isOnFinishTab = true;
                 b_next.Text = "Finish";
             }
+
+            b_next.Enabled = false;
 
             onLoadPageEvents();
         }

@@ -29,9 +29,12 @@
         private void InitializeComponent()
         {
             Panel p_main;
+            GroupBox gb_meme;
             TableLayoutPanel tlp_fileFolder;
             Label ls_vmFolder;
             Label ls_qemuFiles;
+            radioButton2 = new RadioButton();
+            radioButton1 = new RadioButton();
             gb_configFiles = new GroupBox();
             t_vmFolder = new TextBox();
             b_selvmFolder = new Button();
@@ -42,10 +45,12 @@
             b_save = new Button();
             flp_bottom = new FlowLayoutPanel();
             p_main = new Panel();
+            gb_meme = new GroupBox();
             tlp_fileFolder = new TableLayoutPanel();
             ls_vmFolder = new Label();
             ls_qemuFiles = new Label();
             p_main.SuspendLayout();
+            gb_meme.SuspendLayout();
             gb_configFiles.SuspendLayout();
             tlp_fileFolder.SuspendLayout();
             flp_bottom.SuspendLayout();
@@ -53,6 +58,7 @@
             // 
             // p_main
             // 
+            p_main.Controls.Add(gb_meme);
             p_main.Controls.Add(gb_configFiles);
             p_main.Dock = DockStyle.Fill;
             p_main.Location = new Point(0, 0);
@@ -61,6 +67,42 @@
             p_main.Padding = new Padding(10);
             p_main.Size = new Size(600, 251);
             p_main.TabIndex = 3;
+            // 
+            // gb_meme
+            // 
+            gb_meme.AutoSize = true;
+            gb_meme.Controls.Add(radioButton2);
+            gb_meme.Controls.Add(radioButton1);
+            gb_meme.Dock = DockStyle.Top;
+            gb_meme.Enabled = false;
+            gb_meme.Location = new Point(10, 121);
+            gb_meme.Name = "gb_meme";
+            gb_meme.Size = new Size(580, 76);
+            gb_meme.TabIndex = 1;
+            gb_meme.TabStop = false;
+            gb_meme.Text = "Shits and Giggles";
+            // 
+            // radioButton2
+            // 
+            radioButton2.AutoSize = true;
+            radioButton2.Checked = true;
+            radioButton2.Location = new Point(208, 31);
+            radioButton2.Name = "radioButton2";
+            radioButton2.Size = new Size(76, 21);
+            radioButton2.TabIndex = 1;
+            radioButton2.TabStop = true;
+            radioButton2.Text = "no funny";
+            radioButton2.UseVisualStyleBackColor = true;
+            // 
+            // radioButton1
+            // 
+            radioButton1.AutoSize = true;
+            radioButton1.Location = new Point(32, 31);
+            radioButton1.Name = "radioButton1";
+            radioButton1.Size = new Size(80, 21);
+            radioButton1.TabIndex = 0;
+            radioButton1.Text = "yes funny";
+            radioButton1.UseVisualStyleBackColor = true;
             // 
             // gb_configFiles
             // 
@@ -226,6 +268,9 @@
             FormClosing += Preferences_FormClosing;
             Load += Preferences_Load;
             p_main.ResumeLayout(false);
+            p_main.PerformLayout();
+            gb_meme.ResumeLayout(false);
+            gb_meme.PerformLayout();
             gb_configFiles.ResumeLayout(false);
             gb_configFiles.PerformLayout();
             tlp_fileFolder.ResumeLayout(false);
@@ -248,5 +293,7 @@
         private TableLayoutPanel tlp_fileFolder;
         private TextBox t_qemuPath;
         private Button button1;
+        private RadioButton radioButton2;
+        private RadioButton radioButton1;
     }
 }

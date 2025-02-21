@@ -32,6 +32,10 @@
             ImageList il_vmList;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WIN_MAIN));
             Label ls_machineName;
+            SplitContainer sc_sublist;
+            Label ls_machinesText;
+            p_vmList = new Panel();
+            lv_vmList = new ListView();
             ms_ts_file = new ToolStripMenuItem();
             ts_file_prefs = new ToolStripMenuItem();
             toolStripSeparator1 = new ToolStripSeparator();
@@ -45,9 +49,7 @@
             ts_help_about = new ToolStripMenuItem();
             ms = new MenuStrip();
             sc_maincont = new SplitContainer();
-            p_vmList = new Panel();
-            lv_vmList = new ListView();
-            sc_subcont = new SplitContainer();
+            sc_machine = new SplitContainer();
             gb_machineState = new GroupBox();
             l_machineState = new Label();
             b_newMachine = new Button();
@@ -57,22 +59,29 @@
             t_machineOS = new TextBox();
             t_machineName = new TextBox();
             ls_machineOS = new Label();
-            p_backPadding = new Panel();
+            p_main = new Panel();
             il_vmList = new ImageList(components);
             ls_machineName = new Label();
+            sc_sublist = new SplitContainer();
+            ls_machinesText = new Label();
+            ((System.ComponentModel.ISupportInitialize)sc_sublist).BeginInit();
+            sc_sublist.Panel1.SuspendLayout();
+            sc_sublist.Panel2.SuspendLayout();
+            sc_sublist.SuspendLayout();
+            p_vmList.SuspendLayout();
             ms.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)sc_maincont).BeginInit();
             sc_maincont.Panel1.SuspendLayout();
             sc_maincont.Panel2.SuspendLayout();
             sc_maincont.SuspendLayout();
-            p_vmList.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)sc_subcont).BeginInit();
-            sc_subcont.Panel1.SuspendLayout();
-            sc_subcont.Panel2.SuspendLayout();
-            sc_subcont.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)sc_machine).BeginInit();
+            sc_machine.Panel1.SuspendLayout();
+            sc_machine.Panel2.SuspendLayout();
+            sc_machine.SuspendLayout();
             gb_machineState.SuspendLayout();
             gb_machineDetails.SuspendLayout();
-            p_backPadding.SuspendLayout();
+            p_main.SuspendLayout();
+            SuspendLayout();
             // 
             // il_vmList
             // 
@@ -93,6 +102,73 @@
             ls_machineName.Size = new Size(46, 17);
             ls_machineName.TabIndex = 1;
             ls_machineName.Text = "Name:";
+            // 
+            // sc_sublist
+            // 
+            sc_sublist.BorderStyle = BorderStyle.FixedSingle;
+            sc_sublist.Dock = DockStyle.Fill;
+            sc_sublist.IsSplitterFixed = true;
+            sc_sublist.Location = new Point(0, 0);
+            sc_sublist.Name = "sc_sublist";
+            sc_sublist.Orientation = Orientation.Horizontal;
+            // 
+            // sc_sublist.Panel1
+            // 
+            sc_sublist.Panel1.Controls.Add(ls_machinesText);
+            sc_sublist.Panel1.Padding = new Padding(5, 25, 5, 5);
+            // 
+            // sc_sublist.Panel2
+            // 
+            sc_sublist.Panel2.Controls.Add(p_vmList);
+            sc_sublist.Size = new Size(244, 514);
+            sc_sublist.SplitterDistance = 83;
+            sc_sublist.TabIndex = 1;
+            // 
+            // ls_machinesText
+            // 
+            ls_machinesText.Dock = DockStyle.Fill;
+            ls_machinesText.Font = new Font("MS Gothic", 22F);
+            ls_machinesText.Location = new Point(5, 25);
+            ls_machinesText.Margin = new Padding(0);
+            ls_machinesText.Name = "ls_machinesText";
+            ls_machinesText.Size = new Size(232, 51);
+            ls_machinesText.TabIndex = 0;
+            ls_machinesText.Text = "Machines";
+            ls_machinesText.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // p_vmList
+            // 
+            p_vmList.BackColor = SystemColors.Window;
+            p_vmList.Controls.Add(lv_vmList);
+            p_vmList.Dock = DockStyle.Fill;
+            p_vmList.Location = new Point(0, 0);
+            p_vmList.Name = "p_vmList";
+            p_vmList.Padding = new Padding(10, 5, 10, 5);
+            p_vmList.Size = new Size(242, 425);
+            p_vmList.TabIndex = 0;
+            // 
+            // lv_vmList
+            // 
+            lv_vmList.Activation = ItemActivation.OneClick;
+            lv_vmList.BackColor = SystemColors.Window;
+            lv_vmList.BackgroundImageTiled = true;
+            lv_vmList.BorderStyle = BorderStyle.None;
+            lv_vmList.Dock = DockStyle.Fill;
+            lv_vmList.Font = new Font("Segoe UI", 12.2264156F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lv_vmList.FullRowSelect = true;
+            lv_vmList.GridLines = true;
+            lv_vmList.HeaderStyle = ColumnHeaderStyle.Nonclickable;
+            lv_vmList.LargeImageList = il_vmList;
+            lv_vmList.Location = new Point(10, 5);
+            lv_vmList.Margin = new Padding(8);
+            lv_vmList.MultiSelect = false;
+            lv_vmList.Name = "lv_vmList";
+            lv_vmList.Size = new Size(222, 415);
+            lv_vmList.TabIndex = 0;
+            lv_vmList.TileSize = new Size(221, 50);
+            lv_vmList.UseCompatibleStateImageBehavior = false;
+            lv_vmList.View = View.Tile;
+            lv_vmList.SelectedIndexChanged += lv_vmList_SelectedIndexChanged;
             // 
             // ms_ts_file
             // 
@@ -182,93 +258,57 @@
             // 
             // sc_maincont
             // 
-            sc_maincont.BorderStyle = BorderStyle.Fixed3D;
+            sc_maincont.BorderStyle = BorderStyle.FixedSingle;
             sc_maincont.Dock = DockStyle.Fill;
             sc_maincont.IsSplitterFixed = true;
-            sc_maincont.Location = new Point(5, 5);
+            sc_maincont.Location = new Point(5, 10);
             sc_maincont.Name = "sc_maincont";
             // 
             // sc_maincont.Panel1
             // 
-            sc_maincont.Panel1.Controls.Add(p_vmList);
+            sc_maincont.Panel1.Controls.Add(sc_sublist);
             sc_maincont.Panel1.Margin = new Padding(5);
-            sc_maincont.Panel1.Padding = new Padding(5);
             // 
             // sc_maincont.Panel2
             // 
-            sc_maincont.Panel2.Controls.Add(sc_subcont);
-            sc_maincont.Size = new Size(714, 524);
+            sc_maincont.Panel2.Controls.Add(sc_machine);
+            sc_maincont.Size = new Size(714, 514);
             sc_maincont.SplitterDistance = 244;
             sc_maincont.TabIndex = 1;
             // 
-            // p_vmList
+            // sc_machine
             // 
-            p_vmList.BackColor = SystemColors.Window;
-            p_vmList.BorderStyle = BorderStyle.Fixed3D;
-            p_vmList.Controls.Add(lv_vmList);
-            p_vmList.Dock = DockStyle.Fill;
-            p_vmList.Location = new Point(5, 5);
-            p_vmList.Name = "p_vmList";
-            p_vmList.Padding = new Padding(10, 5, 10, 5);
-            p_vmList.Size = new Size(230, 510);
-            p_vmList.TabIndex = 0;
+            sc_machine.BorderStyle = BorderStyle.FixedSingle;
+            sc_machine.Dock = DockStyle.Fill;
+            sc_machine.FixedPanel = FixedPanel.Panel1;
+            sc_machine.IsSplitterFixed = true;
+            sc_machine.Location = new Point(0, 0);
+            sc_machine.Name = "sc_machine";
+            sc_machine.Orientation = Orientation.Horizontal;
             // 
-            // lv_vmList
+            // sc_machine.Panel1
             // 
-            lv_vmList.Activation = ItemActivation.OneClick;
-            lv_vmList.BackColor = SystemColors.Window;
-            lv_vmList.BackgroundImageTiled = true;
-            lv_vmList.BorderStyle = BorderStyle.None;
-            lv_vmList.Dock = DockStyle.Fill;
-            lv_vmList.Font = new Font("Segoe UI", 12.2264156F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lv_vmList.FullRowSelect = true;
-            lv_vmList.GridLines = true;
-            lv_vmList.HeaderStyle = ColumnHeaderStyle.Nonclickable;
-            lv_vmList.LargeImageList = il_vmList;
-            lv_vmList.Location = new Point(10, 5);
-            lv_vmList.Margin = new Padding(8);
-            lv_vmList.MultiSelect = false;
-            lv_vmList.Name = "lv_vmList";
-            lv_vmList.Size = new Size(206, 496);
-            lv_vmList.TabIndex = 0;
-            lv_vmList.TileSize = new Size(221, 50);
-            lv_vmList.UseCompatibleStateImageBehavior = false;
-            lv_vmList.View = View.Tile;
-            lv_vmList.SelectedIndexChanged += lv_vmList_SelectedIndexChanged;
+            sc_machine.Panel1.Controls.Add(gb_machineState);
+            sc_machine.Panel1.Controls.Add(b_newMachine);
+            sc_machine.Panel1.Controls.Add(b_machineSettings);
+            sc_machine.Panel1.Controls.Add(b_startMachine);
+            sc_machine.Panel1.Margin = new Padding(5);
+            sc_machine.Panel1.Padding = new Padding(10);
             // 
-            // sc_subcont
+            // sc_machine.Panel2
             // 
-            sc_subcont.BorderStyle = BorderStyle.Fixed3D;
-            sc_subcont.Dock = DockStyle.Fill;
-            sc_subcont.FixedPanel = FixedPanel.Panel1;
-            sc_subcont.IsSplitterFixed = true;
-            sc_subcont.Location = new Point(0, 0);
-            sc_subcont.Name = "sc_subcont";
-            sc_subcont.Orientation = Orientation.Horizontal;
-            // 
-            // sc_subcont.Panel1
-            // 
-            sc_subcont.Panel1.Controls.Add(gb_machineState);
-            sc_subcont.Panel1.Controls.Add(b_newMachine);
-            sc_subcont.Panel1.Controls.Add(b_machineSettings);
-            sc_subcont.Panel1.Controls.Add(b_startMachine);
-            sc_subcont.Panel1.Margin = new Padding(5);
-            sc_subcont.Panel1.Padding = new Padding(10);
-            // 
-            // sc_subcont.Panel2
-            // 
-            sc_subcont.Panel2.Controls.Add(gb_machineDetails);
-            sc_subcont.Panel2.Margin = new Padding(5);
-            sc_subcont.Panel2.Padding = new Padding(10);
-            sc_subcont.Size = new Size(466, 524);
-            sc_subcont.SplitterDistance = 87;
-            sc_subcont.TabIndex = 0;
+            sc_machine.Panel2.Controls.Add(gb_machineDetails);
+            sc_machine.Panel2.Margin = new Padding(5);
+            sc_machine.Panel2.Padding = new Padding(10);
+            sc_machine.Size = new Size(466, 514);
+            sc_machine.SplitterDistance = 84;
+            sc_machine.TabIndex = 0;
             // 
             // gb_machineState
             // 
             gb_machineState.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             gb_machineState.Controls.Add(l_machineState);
-            gb_machineState.Location = new Point(144, 1);
+            gb_machineState.Location = new Point(146, 1);
             gb_machineState.Name = "gb_machineState";
             gb_machineState.Padding = new Padding(5);
             gb_machineState.Size = new Size(108, 75);
@@ -278,7 +318,7 @@
             // 
             // l_machineState
             // 
-            l_machineState.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            l_machineState.Font = new Font("Lucida Console", 12.2264156F, FontStyle.Bold, GraphicsUnit.Point, 0);
             l_machineState.ForeColor = Color.FromArgb(192, 0, 0);
             l_machineState.Location = new Point(5, 17);
             l_machineState.Margin = new Padding(0);
@@ -302,7 +342,7 @@
             // b_machineSettings
             // 
             b_machineSettings.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            b_machineSettings.Location = new Point(363, 8);
+            b_machineSettings.Location = new Point(365, 8);
             b_machineSettings.Margin = new Padding(10);
             b_machineSettings.Name = "b_machineSettings";
             b_machineSettings.Size = new Size(82, 68);
@@ -316,7 +356,7 @@
             b_startMachine.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             b_startMachine.BackColor = Color.FromArgb(128, 255, 128);
             b_startMachine.Font = new Font("Segoe UI", 8.830189F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            b_startMachine.Location = new Point(265, 8);
+            b_startMachine.Location = new Point(267, 8);
             b_startMachine.Margin = new Padding(10);
             b_startMachine.Name = "b_startMachine";
             b_startMachine.Size = new Size(82, 68);
@@ -327,16 +367,17 @@
             // 
             // gb_machineDetails
             // 
+            gb_machineDetails.AutoSize = true;
             gb_machineDetails.BackgroundImageLayout = ImageLayout.Stretch;
             gb_machineDetails.Controls.Add(t_machineOS);
             gb_machineDetails.Controls.Add(t_machineName);
             gb_machineDetails.Controls.Add(ls_machineOS);
             gb_machineDetails.Controls.Add(ls_machineName);
-            gb_machineDetails.Dock = DockStyle.Fill;
+            gb_machineDetails.Dock = DockStyle.Top;
             gb_machineDetails.Location = new Point(10, 10);
             gb_machineDetails.Name = "gb_machineDetails";
             gb_machineDetails.Padding = new Padding(10);
-            gb_machineDetails.Size = new Size(442, 409);
+            gb_machineDetails.Size = new Size(444, 115);
             gb_machineDetails.TabIndex = 0;
             gb_machineDetails.TabStop = false;
             gb_machineDetails.Text = "Machine Information";
@@ -352,7 +393,7 @@
             t_machineOS.Name = "t_machineOS";
             t_machineOS.ReadOnly = true;
             t_machineOS.ShortcutsEnabled = false;
-            t_machineOS.Size = new Size(290, 25);
+            t_machineOS.Size = new Size(292, 25);
             t_machineOS.TabIndex = 5;
             // 
             // t_machineName
@@ -368,7 +409,7 @@
             t_machineName.Name = "t_machineName";
             t_machineName.ReadOnly = true;
             t_machineName.ShortcutsEnabled = false;
-            t_machineName.Size = new Size(290, 25);
+            t_machineName.Size = new Size(292, 25);
             t_machineName.TabIndex = 4;
             // 
             // ls_machineOS
@@ -380,43 +421,48 @@
             ls_machineOS.TabIndex = 3;
             ls_machineOS.Text = "Operating System:";
             // 
-            // p_backPadding
+            // p_main
             // 
-            p_backPadding.Controls.Add(sc_maincont);
-            p_backPadding.Dock = DockStyle.Fill;
-            p_backPadding.Location = new Point(0, 25);
-            p_backPadding.Name = "p_backPadding";
-            p_backPadding.Padding = new Padding(5);
-            p_backPadding.Size = new Size(724, 534);
-            p_backPadding.TabIndex = 2;
+            p_main.Controls.Add(sc_maincont);
+            p_main.Dock = DockStyle.Fill;
+            p_main.Location = new Point(0, 25);
+            p_main.Name = "p_main";
+            p_main.Padding = new Padding(5, 10, 5, 10);
+            p_main.Size = new Size(724, 534);
+            p_main.TabIndex = 2;
             // 
-            // WinMain
+            // WIN_MAIN
             // 
             AcceptButton = b_startMachine;
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(724, 559);
-            Controls.Add(p_backPadding);
+            Controls.Add(p_main);
             Controls.Add(ms);
             MainMenuStrip = ms;
             MinimumSize = new Size(740, 600);
-            Name = "WinMain";
+            Name = "WIN_MAIN";
             Text = "QEMU Interface";
+            sc_sublist.Panel1.ResumeLayout(false);
+            sc_sublist.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)sc_sublist).EndInit();
+            sc_sublist.ResumeLayout(false);
+            p_vmList.ResumeLayout(false);
             ms.ResumeLayout(false);
             ms.PerformLayout();
             sc_maincont.Panel1.ResumeLayout(false);
             sc_maincont.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)sc_maincont).EndInit();
             sc_maincont.ResumeLayout(false);
-            p_vmList.ResumeLayout(false);
-            sc_subcont.Panel1.ResumeLayout(false);
-            sc_subcont.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)sc_subcont).EndInit();
-            sc_subcont.ResumeLayout(false);
+            sc_machine.Panel1.ResumeLayout(false);
+            sc_machine.Panel2.ResumeLayout(false);
+            sc_machine.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)sc_machine).EndInit();
+            sc_machine.ResumeLayout(false);
             gb_machineState.ResumeLayout(false);
             gb_machineDetails.ResumeLayout(false);
             gb_machineDetails.PerformLayout();
-            p_backPadding.ResumeLayout(false);
+            p_main.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -430,7 +476,7 @@
         private ToolStripMenuItem ts_help_about;
         private MenuStrip ms;
         private SplitContainer sc_maincont;
-        private SplitContainer sc_subcont;
+        private SplitContainer sc_machine;
         private Button b_startMachine;
         private Button b_machineSettings;
         private ToolStripMenuItem ts_machine_start;
@@ -443,7 +489,7 @@
         private GroupBox gb_machineDetails;
         private GroupBox gb_machineState;
         private Label l_machineState;
-        private Panel p_backPadding;
+        private Panel p_main;
         private ListView lv_vmList;
         private ImageList il_vmList;
         private Panel p_vmList;

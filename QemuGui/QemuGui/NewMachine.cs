@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Design;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,7 +17,7 @@ namespace QEMUInterface
         private readonly Action<VirtualMachine> actionCallback;
 
         private int currentTabPage = 0;
-        private readonly int maxTabPage = 3;
+        private readonly int maxTabPage = 4;
         private bool isOnFinishTab = false;
         private bool closeInvokedByFinishButton = false;
 
@@ -93,7 +94,8 @@ namespace QEMUInterface
             try
             {
                 selectedOS = OperatingSystems.get(cb_p1_version.Text);
-            } catch (InvalidOperationException)
+            }
+            catch (InvalidOperationException)
             {
                 return;
             }
@@ -110,8 +112,9 @@ namespace QEMUInterface
         {
             p0.Visible = currentTabPage == 0;
             p1.Visible = currentTabPage == 1;
-            p_diskPage.Visible = currentTabPage == 2;
-            p_finishPage.Visible = currentTabPage == 3;
+            p2_pcType.Visible = currentTabPage == 2;
+            p3_hardware.Visible = currentTabPage == 3;
+            p_finishPage.Visible = currentTabPage == maxTabPage;
         }
 
         private void checkNextButtonEnabled(object sender, EventArgs e)
@@ -225,6 +228,16 @@ namespace QEMUInterface
         private void rb_p0_emType_PPC_CheckedChanged(object sender, EventArgs e)
         {
             selectedMachineType = PC_TYPE.PPC;
+        }
+
+        private void tb_p3_cores_Scroll(object sender, EventArgs e)
+        {
+            num_p3_cores.Value = slider_p3_cores.Value;
+        }
+
+        private void num_p3_cores_ValueChanged(object sender, EventArgs e)
+        {
+            slider_p3_cores.Value = (int)num_p3_cores.Value;
         }
     }
 }

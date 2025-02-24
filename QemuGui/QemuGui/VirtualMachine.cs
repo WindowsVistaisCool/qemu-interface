@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Reflection.Metadata.Ecma335;
 
 namespace QEMUInterface
 {
@@ -76,7 +77,14 @@ namespace QEMUInterface
                 return false;
             }
 
-            return !process.HasExited;
+            try
+            {
+                return !process.HasExited;
+            } catch (Exception e)
+            {
+                MessageBox.Show("Failed to check run state:\n" + e.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
         }
 
         private void CreateProcess()
@@ -104,7 +112,7 @@ namespace QEMUInterface
                 {
                     abortEvent();
                 }
-                MessageBox.Show("Failed to start process: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Failed to start process:\n" + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -112,7 +120,13 @@ namespace QEMUInterface
         {
             if (process != null)
             {
-                process.Kill();
+                try
+                {
+                    process.Kill();
+                } catch (Exception e)
+                {
+                    MessageBox.Show("Failed to kill process <X>:\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
                 process.Dispose();
                 process = null;
             }

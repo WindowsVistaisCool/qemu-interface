@@ -35,16 +35,16 @@ namespace QEMUInterface
         public readonly OS_FAMILY Family;
         public readonly string Name;
         public readonly string FriendlyName;
-        public readonly bool[] bitness; // [32, 64]
+        public readonly bool[] Bitness; // [32, 64]
         public readonly PC_TYPE[] Compatability;
-        public readonly string[] MinorVers;
+        public readonly string[] MinorVers; // TODO: convert this to operating system array of minor versions
 
         public OperatingSystem(OS_FAMILY family, string name, string friendlyName, bool[] bitness, PC_TYPE[] compatability, string[] minorVers)
         {
             Family = family;
             Name = name;
             FriendlyName = friendlyName;
-            this.bitness = bitness;
+            Bitness = bitness;
             Compatability = compatability;
             MinorVers = minorVers;
         }
@@ -54,7 +54,7 @@ namespace QEMUInterface
             Family = family;
             Name = name;
             FriendlyName = name;
-            this.bitness = bitness;
+            Bitness = bitness;
             Compatability = [compatability];
             MinorVers = minorVers;
         }
@@ -88,20 +88,20 @@ namespace QEMUInterface
                 new(OS_FAMILY.MACOS, "MacOS 10.4",          "Mac OSX 10.4 Tiger", [true, true], [PC_TYPE.PPC, PC_TYPE.X86_64], []),
                 new(OS_FAMILY.MACOS, "MacOS 10.5",          "Mac OSX 10.5 Leopard", [true, true], [PC_TYPE.PPC, PC_TYPE.X86_64], []),
                 new(OS_FAMILY.MACOS, "MacOS 10.6",          "Mac OSX 10.6 Snow Leopard", [true, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "MacOS 10.7",          "Mac OSX 10.7 Lion", [true, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "MacOS 10.8",          "Mac OSX 10.8 Mountain Lion", [true, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "MacOS 10.9",          "Mac OSX 10.9 Mavericks", [true, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "MacOS 10.10",         "Mac OSX 10.10 Yosemite", [true, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "MacOS 10.11",         "Mac OSX 10.11 El Capitan", [true, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "macOS 10.12",         "macOS 10.12 Sierra", [true, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "macOS 10.13",         "macOS 10.13 High Sierra", [true, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "macOS 10.14",         "macOS 10.14 Mojave", [true, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "macOS 10.15",         "macOS 10.15 Catalina", [true, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "macOS 11",            "macOS 11 Big Sur", [true, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "macOS 12",            "macOS 12 Monterey", [true, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "macOS 13",            "macOS 13 Ventura", [true, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "macOS 14",            "macOS 14 Sonoma", [true, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "macOS 15",            "macOS 15 Sequoia", [true, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "MacOS 10.7",          "Mac OSX 10.7 Lion", [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "MacOS 10.8",          "Mac OSX 10.8 Mountain Lion", [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "MacOS 10.9",          "Mac OSX 10.9 Mavericks", [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "MacOS 10.10",         "Mac OSX 10.10 Yosemite", [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "MacOS 10.11",         "Mac OSX 10.11 El Capitan", [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "macOS 10.12",         "macOS 10.12 Sierra", [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "macOS 10.13",         "macOS 10.13 High Sierra", [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "macOS 10.14",         "macOS 10.14 Mojave", [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "macOS 10.15",         "macOS 10.15 Catalina", [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "macOS 11",            "macOS 11 Big Sur", [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "macOS 12",            "macOS 12 Monterey", [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "macOS 13",            "macOS 13 Ventura", [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "macOS 14",            "macOS 14 Sonoma", [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "macOS 15",            "macOS 15 Sequoia", [false, true], [PC_TYPE.X86_64], []),
 
                 new(OS_FAMILY.LINUX, "Generic Linux",       "Generic Linux", [true, true], [PC_TYPE.IA_32, PC_TYPE.X86_64], []),
             };
@@ -111,18 +111,18 @@ namespace QEMUInterface
         public static List<OperatingSystem> getFamily(OS_FAMILY family)
         {
             loadSystems();
-            return allSystems.Where(os => os.Family == family).ToList();
+            return [.. allSystems.Where(os => os.Family == family)];
         }
 
         public static bool getCompatability(OperatingSystem system, PC_TYPE type) => system.Compatability.Contains(type);
 
         public static bool anyInFamilyCompatability(OS_FAMILY family, PC_TYPE type) => getFamily(family).Any(os => getCompatability(os, type));
 
-        public static string[] getNamesFromFamily(OS_FAMILY family) => getFamily(family).Select(os => os.Name).ToArray();
+        public static string[] getNamesFromFamily(OS_FAMILY family) => [.. getFamily(family).Select(os => os.Name)];
 
-        public static string[] getFriendlyNamesFromFamily(OS_FAMILY family) => getFamily(family).Select(os => os.FriendlyName).ToArray();
+        public static string[] getFriendlyNamesFromFamily(OS_FAMILY family) => [.. getFamily(family).Select(os => os.FriendlyName)];
 
-        public static string[] getFriendlyNamesFromFamilyWithCompatability(OS_FAMILY family, PC_TYPE type) => getFamily(family).Where(os => getCompatability(os, type)).Select(os => os.FriendlyName).ToArray();
+        public static string[] getFriendlyNamesFromFamilyWithCompatability(OS_FAMILY family, PC_TYPE type) => [.. getFamily(family).Where(os => getCompatability(os, type)).Select(os => os.FriendlyName)];
 
         public static OperatingSystem get(string name)
         {
@@ -130,9 +130,15 @@ namespace QEMUInterface
             return allSystems.First(os => os.Name == name);
         }
 
-        public static void dumpMem()
+        public static OperatingSystem getByFriendlyName(string friendlyName)
         {
-            allSystems.Clear();
+            loadSystems();
+            return allSystems.First(os => os.FriendlyName == friendlyName);
         }
+
+        //public static void dumpMem()
+        //{
+        //    allSystems.Clear();
+        //}
     }
 }

@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Design;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -43,7 +44,7 @@ namespace QEMUInterface
             updatePanel();
             loadOSVersions(null, null);
             onLoadPageEvents();
-            checkNextButtonEnabled(null, null);
+            //checkNextButtonEnabled(null, null);
         }
 
         private void onLoadPageEvents()
@@ -63,15 +64,32 @@ namespace QEMUInterface
                             selectedFirstRadio = true;
                         }
                     }
+                    flp_p1_bitness.Enabled = selectedMachineType == PC_TYPE.X86_64;
+                    l_p1_bitness.Enabled = selectedMachineType == PC_TYPE.X86_64;
+                    rb_p1_bitness_64.Checked = selectedMachineType == PC_TYPE.X86_64;
+                    if (selectedMachineType != PC_TYPE.X86_64)
+                    {
+                        rb_p1_bitness_32.Checked = false;
+                        rb_p1_bitness_64.Checked = false;
+                    }
+                    loadOSMinorVersions(null, null);
                     break;
                 case 2:
                     lv_p2_type.Items.Clear();
                     ListViewItem lvi = new("meee and my monkeyyyyy");
                     lvi.SubItems.Add("A standard PC");
                     lv_p2_type.Items.Add(lvi);
+                    ListViewItem lvi2 = new("meee and my monkeyyyyy but twice");
+                    lvi2.SubItems.Add("A standard PC but twice smirk hey he hey waht the heck man");
+                    lvi2.Selected = true;
+                    lv_p2_type.Items.Add(lvi2);
 
                     lv_p2_type_machine.Width = -2;
+                    lv_p2_type_machine.Width += 2;
                     lv_p2_type_desc.Width = -2;
+                    break;
+                case 3:
+                    cb_p3_cpuType.Text = "CPU TYPE 1";
                     break;
                 default:
                     break;
@@ -96,7 +114,7 @@ namespace QEMUInterface
             cb_p1_version.Items.AddRange(OperatingSystems.getFriendlyNamesFromFamilyWithCompatability(selectedFamily, selectedMachineType));
             if (cb_p1_version.Items.Count > 0)
             {
-                cb_p1_version.Text = cb_p1_version.Items[0].ToString();
+                cb_p1_version.Text = cb_p1_version.Items[0]!.ToString();
             }
         }
 
@@ -105,14 +123,31 @@ namespace QEMUInterface
             cb_p1_subversion.Text = "";
             cb_p1_subversion.Items.Clear();
             cb_p1_subversion.Enabled = false;
+            l_p1_subversion.Enabled = false;
 
             try
             {
-                selectedOS = OperatingSystems.get(cb_p1_version.Text);
+                selectedOS = OperatingSystems.getByFriendlyName(cb_p1_version.Text);
             }
             catch (InvalidOperationException)
             {
                 return;
+            }
+
+            if (selectedMachineType == PC_TYPE.X86_64)
+            {
+                rb_p1_bitness_32.Enabled = selectedOS.Bitness[0];
+                rb_p1_bitness_64.Enabled = selectedOS.Bitness[1];
+                if (selectedOS.Bitness[1])
+                {
+                    rb_p1_bitness_32.Checked = false;
+                    rb_p1_bitness_64.Checked = selectedOS.Bitness[1]; // Should always be true
+                }
+                else
+                {
+                    rb_p1_bitness_32.Checked = selectedOS.Bitness[0]; // Should always be true
+                    rb_p1_bitness_64.Checked = false;
+                }
             }
 
             if (selectedOS.MinorVers.Length > 0)
@@ -120,6 +155,7 @@ namespace QEMUInterface
                 cb_p1_subversion.Items.AddRange(selectedOS.MinorVers);
                 cb_p1_subversion.Text = selectedOS.MinorVers[0];
                 cb_p1_subversion.Enabled = true;
+                l_p1_subversion.Enabled = true;
             }
         }
 
@@ -144,14 +180,27 @@ namespace QEMUInterface
                     {
                         isEnabled = cb_p0_otherEm.Text.Length > 0;
                     }
-
                     break;
                 case 1:
                     isEnabled = true;
+
+                    //if (selectedMachineType == PC_TYPE.X86_64)
+                    //{
+                    //    // radiobutton validation events
+                    //    if ((!rb_p1_bitness_32.Checked && !rb_p1_bitness_64.Checked) || (rb_p1_bitness_32.Checked && !selectedOS.Bitness[0]) || (rb_p1_bitness_64.Checked && !selectedOS.Bitness[1]))
+                    //    {
+                    //        isEnabled = false;
+                    //    }
+                    //}
+
+                    //if (cb_p1_version.Text.Length == 0)
+                    //{
+                    //    isEnabled = false;
+                    //}
+
                     break;
                 case 2:
                     isEnabled = lv_p2_type.SelectedItems.Count == 1;
-
                     break;
             }
             b_next.Enabled = isEnabled;
@@ -195,6 +244,10 @@ namespace QEMUInterface
             {
                 b_back.Enabled = false;
             }
+
+            b_next.Enabled = false;
+
+            onLoadPageEvents();
         }
 
         private void b_next_Click(object sender, EventArgs e)
@@ -227,6 +280,7 @@ namespace QEMUInterface
             {
                 rb_p0_emType_PPC.Checked = false;
                 rb_p0_emType_x86.Checked = false;
+                rb_p0_emType_m68k.Checked = false;
                 selectedMachineType = PC_TYPE.OTHER;
             }
         }
@@ -256,6 +310,21 @@ namespace QEMUInterface
         private void num_p3_cores_ValueChanged(object sender, EventArgs e)
         {
             slider_p3_cores.Value = (int)num_p3_cores.Value;
+        }
+
+        private void rb_p0_emType_m68k_CheckedChanged(object sender, EventArgs e)
+        {
+            selectedMachineType = PC_TYPE.M68K;
+        }
+
+        private void num_p3_ram_ValueChanged(object sender, EventArgs e)
+        {
+            slider_p3_ram.Value = (int)num_p3_ram.Value;
+        }
+
+        private void slider_p3_ram_Scroll(object sender, EventArgs e)
+        {
+            num_p3_ram.Value = slider_p3_ram.Value;
         }
     }
 }

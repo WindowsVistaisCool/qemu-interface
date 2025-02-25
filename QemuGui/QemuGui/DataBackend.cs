@@ -136,6 +136,25 @@ namespace QEMUInterface
             return allSystems.First(os => os.FriendlyName == friendlyName);
         }
 
+        public static string getQemuCmd(PC_TYPE type)
+        {
+            switch (type)
+            {
+                case PC_TYPE.X86_64:
+                    return "qemu-system-x86_64.exe";
+                case PC_TYPE.PPC:
+                    return "qemu-system-ppc.exe";
+                case PC_TYPE.AARCH64:
+                    return "qemu-system-aarch64.exe";
+                case PC_TYPE.MIPS:
+                    return "qemu-system-mips.exe";
+                case PC_TYPE.M68K:
+                    return "qemu-system-m68k.exe";
+                default:
+                    return "qemu-system-x86_64.exe";
+            }
+        }
+
         //public static void dumpMem()
         //{
         //    allSystems.Clear();

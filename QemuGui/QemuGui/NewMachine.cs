@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Design;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace QEMUInterface
         private readonly Dictionary<RadioButton, OS_FAMILY> osRadioButtons;
 
         private PC_TYPE selectedMachineType = PC_TYPE.X86_64;
+        private PC_TYPE? machineListPopulated = null;
         private OS_FAMILY selectedFamily = OS_FAMILY.WINDOWS;
         private OperatingSystem selectedOS = OperatingSystems.get("Windows 11");
 
@@ -75,14 +77,51 @@ namespace QEMUInterface
                     loadOSMinorVersions(null, null);
                     break;
                 case 2:
+                    if (machineListPopulated == selectedMachineType)
+                    {
+                        break;
+                    }
                     lv_p2_type.Items.Clear();
-                    ListViewItem lvi = new("meee and my monkeyyyyy");
-                    lvi.SubItems.Add("A standard PC");
-                    lv_p2_type.Items.Add(lvi);
-                    ListViewItem lvi2 = new("meee and my monkeyyyyy but twice");
-                    lvi2.SubItems.Add("A standard PC but twice smirk hey he hey waht the heck man");
-                    lvi2.Selected = true;
-                    lv_p2_type.Items.Add(lvi2);
+                    machineListPopulated = null;
+
+                    string param = "$ex = '" + OperatingSystems.getQemuCmd(selectedMachineType) + " -machine help';";
+                    string script = param + @"
+                        $f = $false;
+                        $(Invoke-Expression $ex) -split '\r?\n' | Select-Object -Skip 1 | ForEach-Object {
+                            if ($_ -match 'Recognized CPUID flags:') {
+                                $f = $true;
+                            }
+                            if ($f -eq $false -and $_ -match '^\s*(?<Name>[^\s]+)\s+(?<Desc>.+)$') {
+                                Write-Host $Matches['Name']','$Matches['Desc'];
+                            }
+                        }
+                    ";
+                    ProcessStartInfo psi = new ProcessStartInfo
+                    {
+                        FileName = "powershell.exe",
+                        Arguments = $"-NoProfile -ExecutionPolicy Bypass -Command \"{script}\"",
+                        RedirectStandardOutput = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true
+                    };
+
+                    Process process = new Process { StartInfo = psi };
+
+                    process.Start();
+                    //string output = process.StandardOutput.ReadToEnd();
+                    process.EnableRaisingEvents = true;
+                    while (!process.StandardOutput.EndOfStream)
+                    {
+                        string[] line = process.StandardOutput.ReadLine().Split(" , ");
+                        ListViewItem lvi = new(line[0]);
+                        lvi.SubItems.Add(line[1]);
+                        lv_p2_type.Items.Add(lvi);
+
+                    }
+                    if (lv_p2_type.Items.Count > 0)
+                    {
+                        machineListPopulated = selectedMachineType;
+                    }
 
                     lv_p2_type_machine.Width = -2;
                     lv_p2_type_machine.Width += 2;

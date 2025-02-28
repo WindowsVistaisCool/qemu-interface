@@ -56,6 +56,18 @@ namespace QEMUInterface
                 case 0:
                     break;
                 case 1:
+                    // store from page 0 if needed
+                    if (l_pfin_name.Text != t_p0_name.Text)
+                    {
+                        l_pfin_name.Text = t_p0_name.Text;
+                    }
+                    if (l_pfin_emType.Text != selectedMachineType.ToString())
+                    {
+                        l_pfin_emType.Text = selectedMachineType.ToString();
+                    }
+
+
+                    // load page events
                     bool selectedFirstRadio = false;
                     foreach (KeyValuePair<RadioButton, OS_FAMILY> entry in osRadioButtons)
                     {
@@ -77,6 +89,13 @@ namespace QEMUInterface
                     loadOSMinorVersions(null, null);
                     break;
                 case 2:
+                    // store from page 1 if needed
+                    if (l_pfin_os.Text != selectedOS.FriendlyName)
+                    {
+                        l_pfin_os.Text = selectedOS.FriendlyName;
+                    }
+
+                    // load page events
                     if (machineListPopulated == selectedMachineType)
                     {
                         break;
@@ -85,17 +104,18 @@ namespace QEMUInterface
                     machineListPopulated = null;
 
                     string param = "$ex = '" + OperatingSystems.getQemuCmd(selectedMachineType) + " -machine help';";
+                    string regex = @"^\s*(?<Name>[^\s]+)\s+(?<Desc>.+)$";
                     string script = param + @"
                         $f = $false;
                         $(Invoke-Expression $ex) -split '\r?\n' | Select-Object -Skip 1 | ForEach-Object {
                             if ($_ -match 'Recognized CPUID flags:') {
                                 $f = $true;
                             }
-                            if ($f -eq $false -and $_ -match '^\s*(?<Name>[^\s]+)\s+(?<Desc>.+)$') {
+                            if ($f -eq $false -and $_ -match 'REGEX_GOES_HERE') {
                                 Write-Host $Matches['Name']','$Matches['Desc'];
                             }
                         }
-                    ";
+                    ".Replace("REGEX_GOES_HERE", regex);
                     ProcessStartInfo psi = new ProcessStartInfo
                     {
                         FileName = "powershell.exe",
@@ -108,16 +128,21 @@ namespace QEMUInterface
                     Process process = new Process { StartInfo = psi };
 
                     process.Start();
-                    //string output = process.StandardOutput.ReadToEnd();
                     process.EnableRaisingEvents = true;
                     while (!process.StandardOutput.EndOfStream)
                     {
-                        string[] line = process.StandardOutput.ReadLine().Split(" , ");
-                        ListViewItem lvi = new(line[0]);
-                        lvi.SubItems.Add(line[1]);
-                        lv_p2_type.Items.Add(lvi);
-
+                        try
+                        {
+                            string[] line = process.StandardOutput.ReadLine().Split(" , ");
+                            ListViewItem lvi = new(line[0]);
+                            lvi.SubItems.Add(line[1]);
+                            lv_p2_type.Items.Add(lvi);
+                        } catch (Exception e)
+                        {
+                            MessageBox.Show("ERR: " + e);
+                        }
                     }
+
                     if (lv_p2_type.Items.Count > 0)
                     {
                         machineListPopulated = selectedMachineType;
@@ -128,6 +153,12 @@ namespace QEMUInterface
                     lv_p2_type_desc.Width = -2;
                     break;
                 case 3:
+                    // store from page 2 if needed
+                    if (l_pfin_machine.Text != lv_p2_type.SelectedItems[0].Text)
+                    {
+                        l_pfin_machine.Text = lv_p2_type.SelectedItems[0].Text;
+                    }
+
                     cb_p3_cpuType.Text = "CPU TYPE 1";
                     break;
                 default:
@@ -204,7 +235,7 @@ namespace QEMUInterface
             p1.Visible = currentTabPage == 1;
             p2_pcType.Visible = currentTabPage == 2;
             p3_hardware.Visible = currentTabPage == 3;
-            p_finishPage.Visible = currentTabPage == maxTabPage;
+            pfin.Visible = currentTabPage == maxTabPage;
         }
 
         private void checkNextButtonEnabled(object? sender, EventArgs? e)
@@ -240,6 +271,11 @@ namespace QEMUInterface
                     break;
                 case 2:
                     isEnabled = lv_p2_type.SelectedItems.Count == 1;
+                    break;
+                case 3:
+                    isEnabled = true;
+                    break;
+                default:
                     break;
             }
             b_next.Enabled = isEnabled;

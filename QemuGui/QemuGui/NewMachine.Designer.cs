@@ -30,12 +30,9 @@
         {
             FlowLayoutPanel fpl_bottom;
             Panel p_main;
-            SplitContainer sc_pfin_main;
-            Label ls_pfin_info;
-            Label ls_pfin_name;
-            Label ls_pfin_emtype;
-            Label ls_pfin_os;
-            Label ls_pfin_machine;
+            SplitContainer sc_p2_main;
+            Label ls_p2_info;
+            Label label1;
             SplitContainer sc_p3_main;
             Label ls_p3_info;
             Label ls_p3_cpu_type;
@@ -45,6 +42,12 @@
             TableLayoutPanel tlp_p3_ram;
             Label ls_p3_ramBoundaryLeft;
             Label ls_p3_cpu_ram;
+            SplitContainer sc_pfin_main;
+            Label ls_pfin_info;
+            Label ls_pfin_name;
+            Label ls_pfin_emtype;
+            Label ls_pfin_os;
+            Label ls_pfin_machine;
             SplitContainer sc_p0_main;
             Label ls_p0_info;
             Label ls_p0_placeholder;
@@ -58,18 +61,15 @@
             Label ls_p1_version;
             FlowLayoutPanel flp_p1_osType;
             Label ls_p0_osName;
-            SplitContainer sc_p2_main;
-            Label ls_p2_info;
-            Label label1;
             b_cancel = new Button();
             b_next = new Button();
             b_back = new Button();
-            pfin = new Panel();
-            tlp_pfin_main = new TableLayoutPanel();
-            l_pfin_name = new Label();
-            l_pfin_emType = new Label();
-            l_pfin_os = new Label();
-            l_pfin_machine = new Label();
+            p2_pcType = new Panel();
+            gb_p1_hardware = new GroupBox();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            lv_p2_type = new ListView();
+            lv_p2_type_machine = new ColumnHeader();
+            lv_p2_type_desc = new ColumnHeader();
             p3_hardware = new Panel();
             tc_p3_main = new TabControl();
             tp_p3_main_cpu = new TabPage();
@@ -84,6 +84,12 @@
             tp_p3_main_graphics = new TabPage();
             tlp_p3_graphics = new TableLayoutPanel();
             tp_p3_main_accel = new TabPage();
+            pfin = new Panel();
+            tlp_pfin_main = new TableLayoutPanel();
+            l_pfin_name = new Label();
+            l_pfin_emType = new Label();
+            l_pfin_os = new Label();
+            l_pfin_machine = new Label();
             p0 = new Panel();
             tlp_p0_basic = new TableLayoutPanel();
             t_p0_name = new TextBox();
@@ -108,20 +114,11 @@
             flp_p1_bitness = new FlowLayoutPanel();
             rb_p1_bitness_32 = new RadioButton();
             rb_p1_bitness_64 = new RadioButton();
-            p2_pcType = new Panel();
-            gb_p1_hardware = new GroupBox();
-            tableLayoutPanel1 = new TableLayoutPanel();
-            lv_p2_type = new ListView();
-            lv_p2_type_machine = new ColumnHeader();
-            lv_p2_type_desc = new ColumnHeader();
             fpl_bottom = new FlowLayoutPanel();
             p_main = new Panel();
-            sc_pfin_main = new SplitContainer();
-            ls_pfin_info = new Label();
-            ls_pfin_name = new Label();
-            ls_pfin_emtype = new Label();
-            ls_pfin_os = new Label();
-            ls_pfin_machine = new Label();
+            sc_p2_main = new SplitContainer();
+            ls_p2_info = new Label();
+            label1 = new Label();
             sc_p3_main = new SplitContainer();
             ls_p3_info = new Label();
             ls_p3_cpu_type = new Label();
@@ -131,6 +128,12 @@
             tlp_p3_ram = new TableLayoutPanel();
             ls_p3_ramBoundaryLeft = new Label();
             ls_p3_cpu_ram = new Label();
+            sc_pfin_main = new SplitContainer();
+            ls_pfin_info = new Label();
+            ls_pfin_name = new Label();
+            ls_pfin_emtype = new Label();
+            ls_pfin_os = new Label();
+            ls_pfin_machine = new Label();
             sc_p0_main = new SplitContainer();
             ls_p0_info = new Label();
             ls_p0_placeholder = new Label();
@@ -144,17 +147,15 @@
             ls_p1_version = new Label();
             flp_p1_osType = new FlowLayoutPanel();
             ls_p0_osName = new Label();
-            sc_p2_main = new SplitContainer();
-            ls_p2_info = new Label();
-            label1 = new Label();
             fpl_bottom.SuspendLayout();
             p_main.SuspendLayout();
-            pfin.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)sc_pfin_main).BeginInit();
-            sc_pfin_main.Panel1.SuspendLayout();
-            sc_pfin_main.Panel2.SuspendLayout();
-            sc_pfin_main.SuspendLayout();
-            tlp_pfin_main.SuspendLayout();
+            p2_pcType.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)sc_p2_main).BeginInit();
+            sc_p2_main.Panel1.SuspendLayout();
+            sc_p2_main.Panel2.SuspendLayout();
+            sc_p2_main.SuspendLayout();
+            gb_p1_hardware.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
             p3_hardware.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)sc_p3_main).BeginInit();
             sc_p3_main.Panel1.SuspendLayout();
@@ -170,6 +171,12 @@
             ((System.ComponentModel.ISupportInitialize)slider_p3_ram).BeginInit();
             ((System.ComponentModel.ISupportInitialize)num_p3_ram).BeginInit();
             tp_p3_main_graphics.SuspendLayout();
+            pfin.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)sc_pfin_main).BeginInit();
+            sc_pfin_main.Panel1.SuspendLayout();
+            sc_pfin_main.Panel2.SuspendLayout();
+            sc_pfin_main.SuspendLayout();
+            tlp_pfin_main.SuspendLayout();
             p0.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)sc_p0_main).BeginInit();
             sc_p0_main.Panel1.SuspendLayout();
@@ -189,13 +196,6 @@
             flp_p1_osType.SuspendLayout();
             flp_p1_otherOS.SuspendLayout();
             flp_p1_bitness.SuspendLayout();
-            p2_pcType.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)sc_p2_main).BeginInit();
-            sc_p2_main.Panel1.SuspendLayout();
-            sc_p2_main.Panel2.SuspendLayout();
-            sc_p2_main.SuspendLayout();
-            gb_p1_hardware.SuspendLayout();
-            tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // fpl_bottom
@@ -250,11 +250,11 @@
             // p_main
             // 
             p_main.BackColor = SystemColors.Control;
-            p_main.Controls.Add(pfin);
+            p_main.Controls.Add(p2_pcType);
             p_main.Controls.Add(p3_hardware);
+            p_main.Controls.Add(pfin);
             p_main.Controls.Add(p0);
             p_main.Controls.Add(p1);
-            p_main.Controls.Add(p2_pcType);
             p_main.Dock = DockStyle.Fill;
             p_main.Location = new Point(0, 0);
             p_main.Margin = new Padding(0);
@@ -263,169 +263,113 @@
             p_main.Size = new Size(579, 434);
             p_main.TabIndex = 3;
             // 
-            // pfin
+            // p2_pcType
             // 
-            pfin.Controls.Add(sc_pfin_main);
-            pfin.Dock = DockStyle.Fill;
-            pfin.Location = new Point(10, 10);
-            pfin.Name = "pfin";
-            pfin.Size = new Size(559, 414);
-            pfin.TabIndex = 1;
-            pfin.Visible = false;
+            p2_pcType.Controls.Add(sc_p2_main);
+            p2_pcType.Dock = DockStyle.Fill;
+            p2_pcType.Location = new Point(10, 10);
+            p2_pcType.Margin = new Padding(0);
+            p2_pcType.Name = "p2_pcType";
+            p2_pcType.Size = new Size(559, 414);
+            p2_pcType.TabIndex = 1;
             // 
-            // sc_pfin_main
+            // sc_p2_main
             // 
-            sc_pfin_main.Dock = DockStyle.Fill;
-            sc_pfin_main.IsSplitterFixed = true;
-            sc_pfin_main.Location = new Point(0, 0);
-            sc_pfin_main.Name = "sc_pfin_main";
-            sc_pfin_main.Orientation = Orientation.Horizontal;
+            sc_p2_main.Dock = DockStyle.Fill;
+            sc_p2_main.IsSplitterFixed = true;
+            sc_p2_main.Location = new Point(0, 0);
+            sc_p2_main.Name = "sc_p2_main";
+            sc_p2_main.Orientation = Orientation.Horizontal;
             // 
-            // sc_pfin_main.Panel1
+            // sc_p2_main.Panel1
             // 
-            sc_pfin_main.Panel1.Controls.Add(ls_pfin_info);
+            sc_p2_main.Panel1.Controls.Add(ls_p2_info);
             // 
-            // sc_pfin_main.Panel2
+            // sc_p2_main.Panel2
             // 
-            sc_pfin_main.Panel2.Controls.Add(tlp_pfin_main);
-            sc_pfin_main.Panel2.Padding = new Padding(5);
-            sc_pfin_main.Size = new Size(559, 414);
-            sc_pfin_main.SplitterDistance = 65;
-            sc_pfin_main.SplitterWidth = 5;
-            sc_pfin_main.TabIndex = 1;
+            sc_p2_main.Panel2.Controls.Add(gb_p1_hardware);
+            sc_p2_main.Panel2.Padding = new Padding(5);
+            sc_p2_main.Size = new Size(559, 414);
+            sc_p2_main.SplitterDistance = 65;
+            sc_p2_main.SplitterWidth = 5;
+            sc_p2_main.TabIndex = 0;
             // 
-            // ls_pfin_info
+            // ls_p2_info
             // 
-            ls_pfin_info.Dock = DockStyle.Fill;
-            ls_pfin_info.Location = new Point(0, 0);
-            ls_pfin_info.Margin = new Padding(0);
-            ls_pfin_info.Name = "ls_pfin_info";
-            ls_pfin_info.Padding = new Padding(5);
-            ls_pfin_info.Size = new Size(559, 65);
-            ls_pfin_info.TabIndex = 1;
-            ls_pfin_info.Text = "Confirm your VM settings.";
-            ls_pfin_info.TextAlign = ContentAlignment.MiddleLeft;
+            ls_p2_info.Dock = DockStyle.Fill;
+            ls_p2_info.Location = new Point(0, 0);
+            ls_p2_info.Margin = new Padding(0);
+            ls_p2_info.Name = "ls_p2_info";
+            ls_p2_info.Padding = new Padding(5);
+            ls_p2_info.Size = new Size(559, 65);
+            ls_p2_info.TabIndex = 1;
+            ls_p2_info.Text = "Here is where you will choose the hardware for your VM.";
+            ls_p2_info.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // tlp_pfin_main
+            // gb_p1_hardware
             // 
-            tlp_pfin_main.ColumnCount = 2;
-            tlp_pfin_main.ColumnStyles.Add(new ColumnStyle());
-            tlp_pfin_main.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tlp_pfin_main.Controls.Add(ls_pfin_name, 0, 0);
-            tlp_pfin_main.Controls.Add(ls_pfin_emtype, 0, 1);
-            tlp_pfin_main.Controls.Add(ls_pfin_os, 0, 2);
-            tlp_pfin_main.Controls.Add(l_pfin_name, 1, 0);
-            tlp_pfin_main.Controls.Add(l_pfin_emType, 1, 1);
-            tlp_pfin_main.Controls.Add(l_pfin_os, 1, 2);
-            tlp_pfin_main.Controls.Add(ls_pfin_machine, 0, 3);
-            tlp_pfin_main.Controls.Add(l_pfin_machine, 1, 3);
-            tlp_pfin_main.Dock = DockStyle.Fill;
-            tlp_pfin_main.Location = new Point(5, 5);
-            tlp_pfin_main.Name = "tlp_pfin_main";
-            tlp_pfin_main.RowCount = 5;
-            tlp_pfin_main.RowStyles.Add(new RowStyle());
-            tlp_pfin_main.RowStyles.Add(new RowStyle());
-            tlp_pfin_main.RowStyles.Add(new RowStyle());
-            tlp_pfin_main.RowStyles.Add(new RowStyle());
-            tlp_pfin_main.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tlp_pfin_main.Size = new Size(549, 334);
-            tlp_pfin_main.TabIndex = 0;
+            gb_p1_hardware.Controls.Add(tableLayoutPanel1);
+            gb_p1_hardware.Dock = DockStyle.Fill;
+            gb_p1_hardware.Location = new Point(5, 5);
+            gb_p1_hardware.Name = "gb_p1_hardware";
+            gb_p1_hardware.Size = new Size(549, 334);
+            gb_p1_hardware.TabIndex = 0;
+            gb_p1_hardware.TabStop = false;
+            gb_p1_hardware.Text = "Hardware";
             // 
-            // ls_pfin_name
+            // tableLayoutPanel1
             // 
-            ls_pfin_name.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            ls_pfin_name.AutoSize = true;
-            ls_pfin_name.Location = new Point(79, 10);
-            ls_pfin_name.Margin = new Padding(10, 10, 2, 10);
-            ls_pfin_name.Name = "ls_pfin_name";
-            ls_pfin_name.Size = new Size(46, 17);
-            ls_pfin_name.TabIndex = 0;
-            ls_pfin_name.Text = "Name:";
-            ls_pfin_name.TextAlign = ContentAlignment.MiddleRight;
+            tableLayoutPanel1.ColumnCount = 1;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25.84546F));
+            tableLayoutPanel1.Controls.Add(label1, 0, 0);
+            tableLayoutPanel1.Controls.Add(lv_p2_type, 0, 1);
+            tableLayoutPanel1.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Location = new Point(3, 21);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 2;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 15.8054714F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 84.19453F));
+            tableLayoutPanel1.Size = new Size(543, 310);
+            tableLayoutPanel1.TabIndex = 0;
             // 
-            // ls_pfin_emtype
+            // label1
             // 
-            ls_pfin_emtype.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            ls_pfin_emtype.AutoSize = true;
-            ls_pfin_emtype.Location = new Point(31, 47);
-            ls_pfin_emtype.Margin = new Padding(10, 10, 2, 10);
-            ls_pfin_emtype.Name = "ls_pfin_emtype";
-            ls_pfin_emtype.Size = new Size(94, 17);
-            ls_pfin_emtype.TabIndex = 4;
-            ls_pfin_emtype.Text = "Emulator Type:";
-            ls_pfin_emtype.TextAlign = ContentAlignment.MiddleRight;
+            label1.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            label1.AutoSize = true;
+            label1.Location = new Point(5, 15);
+            label1.Margin = new Padding(5);
+            label1.Name = "label1";
+            label1.Size = new Size(533, 17);
+            label1.TabIndex = 3;
+            label1.Text = "Choose a PC type:";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // ls_pfin_os
+            // lv_p2_type
             // 
-            ls_pfin_os.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            ls_pfin_os.AutoSize = true;
-            ls_pfin_os.Location = new Point(10, 84);
-            ls_pfin_os.Margin = new Padding(10, 10, 2, 10);
-            ls_pfin_os.Name = "ls_pfin_os";
-            ls_pfin_os.Size = new Size(115, 17);
-            ls_pfin_os.TabIndex = 6;
-            ls_pfin_os.Text = "Operating System:";
-            ls_pfin_os.TextAlign = ContentAlignment.MiddleRight;
+            lv_p2_type.Columns.AddRange(new ColumnHeader[] { lv_p2_type_machine, lv_p2_type_desc });
+            lv_p2_type.FullRowSelect = true;
+            lv_p2_type.GridLines = true;
+            lv_p2_type.Location = new Point(5, 53);
+            lv_p2_type.Margin = new Padding(5);
+            lv_p2_type.MultiSelect = false;
+            lv_p2_type.Name = "lv_p2_type";
+            lv_p2_type.ShowGroups = false;
+            lv_p2_type.Size = new Size(533, 249);
+            lv_p2_type.TabIndex = 4;
+            lv_p2_type.TileSize = new Size(30, 30);
+            lv_p2_type.UseCompatibleStateImageBehavior = false;
+            lv_p2_type.View = View.Details;
+            lv_p2_type.SelectedIndexChanged += checkNextButtonEnabled;
             // 
-            // l_pfin_name
+            // lv_p2_type_machine
             // 
-            l_pfin_name.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            l_pfin_name.AutoSize = true;
-            l_pfin_name.BackColor = SystemColors.ButtonHighlight;
-            l_pfin_name.Location = new Point(130, 10);
-            l_pfin_name.Margin = new Padding(3, 10, 10, 10);
-            l_pfin_name.Name = "l_pfin_name";
-            l_pfin_name.Size = new Size(409, 17);
-            l_pfin_name.TabIndex = 8;
-            l_pfin_name.TextAlign = ContentAlignment.MiddleLeft;
+            lv_p2_type_machine.Text = "Machine";
+            lv_p2_type_machine.Width = 100;
             // 
-            // l_pfin_emType
+            // lv_p2_type_desc
             // 
-            l_pfin_emType.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            l_pfin_emType.AutoSize = true;
-            l_pfin_emType.BackColor = SystemColors.ButtonHighlight;
-            l_pfin_emType.Location = new Point(130, 47);
-            l_pfin_emType.Margin = new Padding(3, 10, 10, 10);
-            l_pfin_emType.Name = "l_pfin_emType";
-            l_pfin_emType.Size = new Size(409, 17);
-            l_pfin_emType.TabIndex = 9;
-            l_pfin_emType.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // l_pfin_os
-            // 
-            l_pfin_os.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            l_pfin_os.AutoSize = true;
-            l_pfin_os.BackColor = SystemColors.ButtonHighlight;
-            l_pfin_os.Location = new Point(130, 84);
-            l_pfin_os.Margin = new Padding(3, 10, 10, 10);
-            l_pfin_os.Name = "l_pfin_os";
-            l_pfin_os.Size = new Size(409, 17);
-            l_pfin_os.TabIndex = 10;
-            l_pfin_os.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // ls_pfin_machine
-            // 
-            ls_pfin_machine.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            ls_pfin_machine.AutoSize = true;
-            ls_pfin_machine.Location = new Point(34, 121);
-            ls_pfin_machine.Margin = new Padding(10, 10, 2, 10);
-            ls_pfin_machine.Name = "ls_pfin_machine";
-            ls_pfin_machine.Size = new Size(91, 17);
-            ls_pfin_machine.TabIndex = 11;
-            ls_pfin_machine.Text = "Machine Type:";
-            ls_pfin_machine.TextAlign = ContentAlignment.MiddleRight;
-            // 
-            // l_pfin_machine
-            // 
-            l_pfin_machine.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            l_pfin_machine.AutoSize = true;
-            l_pfin_machine.BackColor = SystemColors.ButtonHighlight;
-            l_pfin_machine.Location = new Point(130, 121);
-            l_pfin_machine.Margin = new Padding(3, 10, 10, 10);
-            l_pfin_machine.Name = "l_pfin_machine";
-            l_pfin_machine.Size = new Size(409, 17);
-            l_pfin_machine.TabIndex = 12;
-            l_pfin_machine.TextAlign = ContentAlignment.MiddleLeft;
+            lv_p2_type_desc.Text = "Description";
+            lv_p2_type_desc.Width = 429;
             // 
             // p3_hardware
             // 
@@ -754,6 +698,170 @@
             tp_p3_main_accel.TabIndex = 4;
             tp_p3_main_accel.Text = "Acceleration";
             tp_p3_main_accel.UseVisualStyleBackColor = true;
+            // 
+            // pfin
+            // 
+            pfin.Controls.Add(sc_pfin_main);
+            pfin.Dock = DockStyle.Fill;
+            pfin.Location = new Point(10, 10);
+            pfin.Name = "pfin";
+            pfin.Size = new Size(559, 414);
+            pfin.TabIndex = 1;
+            pfin.Visible = false;
+            // 
+            // sc_pfin_main
+            // 
+            sc_pfin_main.Dock = DockStyle.Fill;
+            sc_pfin_main.IsSplitterFixed = true;
+            sc_pfin_main.Location = new Point(0, 0);
+            sc_pfin_main.Name = "sc_pfin_main";
+            sc_pfin_main.Orientation = Orientation.Horizontal;
+            // 
+            // sc_pfin_main.Panel1
+            // 
+            sc_pfin_main.Panel1.Controls.Add(ls_pfin_info);
+            // 
+            // sc_pfin_main.Panel2
+            // 
+            sc_pfin_main.Panel2.Controls.Add(tlp_pfin_main);
+            sc_pfin_main.Panel2.Padding = new Padding(5);
+            sc_pfin_main.Size = new Size(559, 414);
+            sc_pfin_main.SplitterDistance = 65;
+            sc_pfin_main.SplitterWidth = 5;
+            sc_pfin_main.TabIndex = 1;
+            // 
+            // ls_pfin_info
+            // 
+            ls_pfin_info.Dock = DockStyle.Fill;
+            ls_pfin_info.Location = new Point(0, 0);
+            ls_pfin_info.Margin = new Padding(0);
+            ls_pfin_info.Name = "ls_pfin_info";
+            ls_pfin_info.Padding = new Padding(5);
+            ls_pfin_info.Size = new Size(559, 65);
+            ls_pfin_info.TabIndex = 1;
+            ls_pfin_info.Text = "Confirm your VM settings.";
+            ls_pfin_info.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // tlp_pfin_main
+            // 
+            tlp_pfin_main.ColumnCount = 2;
+            tlp_pfin_main.ColumnStyles.Add(new ColumnStyle());
+            tlp_pfin_main.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tlp_pfin_main.Controls.Add(ls_pfin_name, 0, 0);
+            tlp_pfin_main.Controls.Add(ls_pfin_emtype, 0, 1);
+            tlp_pfin_main.Controls.Add(ls_pfin_os, 0, 2);
+            tlp_pfin_main.Controls.Add(l_pfin_name, 1, 0);
+            tlp_pfin_main.Controls.Add(l_pfin_emType, 1, 1);
+            tlp_pfin_main.Controls.Add(l_pfin_os, 1, 2);
+            tlp_pfin_main.Controls.Add(ls_pfin_machine, 0, 3);
+            tlp_pfin_main.Controls.Add(l_pfin_machine, 1, 3);
+            tlp_pfin_main.Dock = DockStyle.Fill;
+            tlp_pfin_main.Location = new Point(5, 5);
+            tlp_pfin_main.Name = "tlp_pfin_main";
+            tlp_pfin_main.RowCount = 5;
+            tlp_pfin_main.RowStyles.Add(new RowStyle());
+            tlp_pfin_main.RowStyles.Add(new RowStyle());
+            tlp_pfin_main.RowStyles.Add(new RowStyle());
+            tlp_pfin_main.RowStyles.Add(new RowStyle());
+            tlp_pfin_main.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tlp_pfin_main.Size = new Size(549, 334);
+            tlp_pfin_main.TabIndex = 0;
+            // 
+            // ls_pfin_name
+            // 
+            ls_pfin_name.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            ls_pfin_name.AutoSize = true;
+            ls_pfin_name.Location = new Point(79, 10);
+            ls_pfin_name.Margin = new Padding(10, 10, 2, 10);
+            ls_pfin_name.Name = "ls_pfin_name";
+            ls_pfin_name.Size = new Size(46, 17);
+            ls_pfin_name.TabIndex = 0;
+            ls_pfin_name.Text = "Name:";
+            ls_pfin_name.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // ls_pfin_emtype
+            // 
+            ls_pfin_emtype.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            ls_pfin_emtype.AutoSize = true;
+            ls_pfin_emtype.Location = new Point(31, 47);
+            ls_pfin_emtype.Margin = new Padding(10, 10, 2, 10);
+            ls_pfin_emtype.Name = "ls_pfin_emtype";
+            ls_pfin_emtype.Size = new Size(94, 17);
+            ls_pfin_emtype.TabIndex = 4;
+            ls_pfin_emtype.Text = "Emulator Type:";
+            ls_pfin_emtype.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // ls_pfin_os
+            // 
+            ls_pfin_os.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            ls_pfin_os.AutoSize = true;
+            ls_pfin_os.Location = new Point(10, 84);
+            ls_pfin_os.Margin = new Padding(10, 10, 2, 10);
+            ls_pfin_os.Name = "ls_pfin_os";
+            ls_pfin_os.Size = new Size(115, 17);
+            ls_pfin_os.TabIndex = 6;
+            ls_pfin_os.Text = "Operating System:";
+            ls_pfin_os.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // l_pfin_name
+            // 
+            l_pfin_name.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            l_pfin_name.AutoSize = true;
+            l_pfin_name.BackColor = SystemColors.ButtonHighlight;
+            l_pfin_name.Location = new Point(130, 10);
+            l_pfin_name.Margin = new Padding(3, 10, 10, 10);
+            l_pfin_name.Name = "l_pfin_name";
+            l_pfin_name.Size = new Size(409, 17);
+            l_pfin_name.TabIndex = 8;
+            l_pfin_name.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // l_pfin_emType
+            // 
+            l_pfin_emType.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            l_pfin_emType.AutoSize = true;
+            l_pfin_emType.BackColor = SystemColors.ButtonHighlight;
+            l_pfin_emType.Location = new Point(130, 47);
+            l_pfin_emType.Margin = new Padding(3, 10, 10, 10);
+            l_pfin_emType.Name = "l_pfin_emType";
+            l_pfin_emType.Size = new Size(409, 17);
+            l_pfin_emType.TabIndex = 9;
+            l_pfin_emType.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // l_pfin_os
+            // 
+            l_pfin_os.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            l_pfin_os.AutoSize = true;
+            l_pfin_os.BackColor = SystemColors.ButtonHighlight;
+            l_pfin_os.Location = new Point(130, 84);
+            l_pfin_os.Margin = new Padding(3, 10, 10, 10);
+            l_pfin_os.Name = "l_pfin_os";
+            l_pfin_os.Size = new Size(409, 17);
+            l_pfin_os.TabIndex = 10;
+            l_pfin_os.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // ls_pfin_machine
+            // 
+            ls_pfin_machine.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            ls_pfin_machine.AutoSize = true;
+            ls_pfin_machine.Location = new Point(34, 121);
+            ls_pfin_machine.Margin = new Padding(10, 10, 2, 10);
+            ls_pfin_machine.Name = "ls_pfin_machine";
+            ls_pfin_machine.Size = new Size(91, 17);
+            ls_pfin_machine.TabIndex = 11;
+            ls_pfin_machine.Text = "Machine Type:";
+            ls_pfin_machine.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // l_pfin_machine
+            // 
+            l_pfin_machine.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            l_pfin_machine.AutoSize = true;
+            l_pfin_machine.BackColor = SystemColors.ButtonHighlight;
+            l_pfin_machine.Location = new Point(130, 121);
+            l_pfin_machine.Margin = new Padding(3, 10, 10, 10);
+            l_pfin_machine.Name = "l_pfin_machine";
+            l_pfin_machine.Size = new Size(409, 17);
+            l_pfin_machine.TabIndex = 12;
+            l_pfin_machine.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // p0
             // 
@@ -1247,114 +1355,6 @@
             rb_p1_bitness_64.Text = "64 Bit (x64)";
             rb_p1_bitness_64.UseVisualStyleBackColor = true;
             // 
-            // p2_pcType
-            // 
-            p2_pcType.Controls.Add(sc_p2_main);
-            p2_pcType.Dock = DockStyle.Fill;
-            p2_pcType.Location = new Point(10, 10);
-            p2_pcType.Margin = new Padding(0);
-            p2_pcType.Name = "p2_pcType";
-            p2_pcType.Size = new Size(559, 414);
-            p2_pcType.TabIndex = 1;
-            // 
-            // sc_p2_main
-            // 
-            sc_p2_main.Dock = DockStyle.Fill;
-            sc_p2_main.IsSplitterFixed = true;
-            sc_p2_main.Location = new Point(0, 0);
-            sc_p2_main.Name = "sc_p2_main";
-            sc_p2_main.Orientation = Orientation.Horizontal;
-            // 
-            // sc_p2_main.Panel1
-            // 
-            sc_p2_main.Panel1.Controls.Add(ls_p2_info);
-            // 
-            // sc_p2_main.Panel2
-            // 
-            sc_p2_main.Panel2.Controls.Add(gb_p1_hardware);
-            sc_p2_main.Panel2.Padding = new Padding(5);
-            sc_p2_main.Size = new Size(559, 414);
-            sc_p2_main.SplitterDistance = 65;
-            sc_p2_main.SplitterWidth = 5;
-            sc_p2_main.TabIndex = 0;
-            // 
-            // ls_p2_info
-            // 
-            ls_p2_info.Dock = DockStyle.Fill;
-            ls_p2_info.Location = new Point(0, 0);
-            ls_p2_info.Margin = new Padding(0);
-            ls_p2_info.Name = "ls_p2_info";
-            ls_p2_info.Padding = new Padding(5);
-            ls_p2_info.Size = new Size(559, 65);
-            ls_p2_info.TabIndex = 1;
-            ls_p2_info.Text = "Here is where you will choose the hardware for your VM.";
-            ls_p2_info.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // gb_p1_hardware
-            // 
-            gb_p1_hardware.Controls.Add(tableLayoutPanel1);
-            gb_p1_hardware.Dock = DockStyle.Fill;
-            gb_p1_hardware.Location = new Point(5, 5);
-            gb_p1_hardware.Name = "gb_p1_hardware";
-            gb_p1_hardware.Size = new Size(549, 334);
-            gb_p1_hardware.TabIndex = 0;
-            gb_p1_hardware.TabStop = false;
-            gb_p1_hardware.Text = "Hardware";
-            // 
-            // tableLayoutPanel1
-            // 
-            tableLayoutPanel1.ColumnCount = 1;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25.84546F));
-            tableLayoutPanel1.Controls.Add(label1, 0, 0);
-            tableLayoutPanel1.Controls.Add(lv_p2_type, 0, 1);
-            tableLayoutPanel1.Dock = DockStyle.Fill;
-            tableLayoutPanel1.Location = new Point(3, 21);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 2;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 15.8054714F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 84.19453F));
-            tableLayoutPanel1.Size = new Size(543, 310);
-            tableLayoutPanel1.TabIndex = 0;
-            // 
-            // label1
-            // 
-            label1.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            label1.AutoSize = true;
-            label1.Location = new Point(5, 15);
-            label1.Margin = new Padding(5);
-            label1.Name = "label1";
-            label1.Size = new Size(533, 17);
-            label1.TabIndex = 3;
-            label1.Text = "Choose a PC type:";
-            label1.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // lv_p2_type
-            // 
-            lv_p2_type.Columns.AddRange(new ColumnHeader[] { lv_p2_type_machine, lv_p2_type_desc });
-            lv_p2_type.FullRowSelect = true;
-            lv_p2_type.GridLines = true;
-            lv_p2_type.Location = new Point(5, 53);
-            lv_p2_type.Margin = new Padding(5);
-            lv_p2_type.MultiSelect = false;
-            lv_p2_type.Name = "lv_p2_type";
-            lv_p2_type.ShowGroups = false;
-            lv_p2_type.Size = new Size(533, 249);
-            lv_p2_type.TabIndex = 4;
-            lv_p2_type.TileSize = new Size(30, 30);
-            lv_p2_type.UseCompatibleStateImageBehavior = false;
-            lv_p2_type.View = View.Details;
-            lv_p2_type.SelectedIndexChanged += checkNextButtonEnabled;
-            // 
-            // lv_p2_type_machine
-            // 
-            lv_p2_type_machine.Text = "Machine";
-            lv_p2_type_machine.Width = 100;
-            // 
-            // lv_p2_type_desc
-            // 
-            lv_p2_type_desc.Text = "Description";
-            lv_p2_type_desc.Width = 429;
-            // 
             // WIN_NewMachine
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
@@ -1368,13 +1368,14 @@
             FormClosing += WIN_NewMachine_FormClosing;
             fpl_bottom.ResumeLayout(false);
             p_main.ResumeLayout(false);
-            pfin.ResumeLayout(false);
-            sc_pfin_main.Panel1.ResumeLayout(false);
-            sc_pfin_main.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)sc_pfin_main).EndInit();
-            sc_pfin_main.ResumeLayout(false);
-            tlp_pfin_main.ResumeLayout(false);
-            tlp_pfin_main.PerformLayout();
+            p2_pcType.ResumeLayout(false);
+            sc_p2_main.Panel1.ResumeLayout(false);
+            sc_p2_main.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)sc_p2_main).EndInit();
+            sc_p2_main.ResumeLayout(false);
+            gb_p1_hardware.ResumeLayout(false);
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
             p3_hardware.ResumeLayout(false);
             sc_p3_main.Panel1.ResumeLayout(false);
             sc_p3_main.Panel2.ResumeLayout(false);
@@ -1393,6 +1394,13 @@
             ((System.ComponentModel.ISupportInitialize)slider_p3_ram).EndInit();
             ((System.ComponentModel.ISupportInitialize)num_p3_ram).EndInit();
             tp_p3_main_graphics.ResumeLayout(false);
+            pfin.ResumeLayout(false);
+            sc_pfin_main.Panel1.ResumeLayout(false);
+            sc_pfin_main.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)sc_pfin_main).EndInit();
+            sc_pfin_main.ResumeLayout(false);
+            tlp_pfin_main.ResumeLayout(false);
+            tlp_pfin_main.PerformLayout();
             p0.ResumeLayout(false);
             sc_p0_main.Panel1.ResumeLayout(false);
             sc_p0_main.Panel2.ResumeLayout(false);
@@ -1423,14 +1431,6 @@
             flp_p1_otherOS.PerformLayout();
             flp_p1_bitness.ResumeLayout(false);
             flp_p1_bitness.PerformLayout();
-            p2_pcType.ResumeLayout(false);
-            sc_p2_main.Panel1.ResumeLayout(false);
-            sc_p2_main.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)sc_p2_main).EndInit();
-            sc_p2_main.ResumeLayout(false);
-            gb_p1_hardware.ResumeLayout(false);
-            tableLayoutPanel1.ResumeLayout(false);
-            tableLayoutPanel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }

@@ -46,20 +46,33 @@ namespace QEMUInterface
                 t_vmFolder.Text = Properties.Settings.Default.vmFolder;
             }
 
+            if (Properties.Settings.Default.qemuFolder != null)
+            {
+                t_qemuPath.Text = Properties.Settings.Default.qemuFolder;
+            }
+
             finishedInit = true;
         }
 
         private void b_save_Click(object sender, EventArgs e)
         {
             // Validate path
-            if (!System.IO.Directory.Exists(t_vmFolder.Text))
+            if (!Directory.Exists(t_vmFolder.Text))
             {
                 MessageBox.Show("The VM path does not exist!.", "Invalid Path", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 cancelFormClosing = true;
                 return;
             }
 
+            if (!Directory.Exists(t_qemuPath.Text))
+            {
+                MessageBox.Show("The QEMU path does not exist!.", "Invalid Path", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                cancelFormClosing = true;
+                return;
+            }
+
             Properties.Settings.Default.vmFolder = t_vmFolder.Text;
+            Properties.Settings.Default.qemuFolder = t_qemuPath.Text;
             Properties.Settings.Default.Save();
 
             this.Close();
@@ -81,7 +94,7 @@ namespace QEMUInterface
             this.Close();
         }
 
-        private void t_vmFolder_TextChanged(object sender, EventArgs e)
+        private void setUnsavedChanges(object sender, EventArgs e)
         {
             if (finishedInit)
             {
@@ -95,6 +108,15 @@ namespace QEMUInterface
             {
                 e.Cancel = true;
                 cancelFormClosing = false;
+            }
+        }
+
+        private void b_selqemuFolder_Click(object sender, EventArgs e)
+        {
+            DialogResult result = fbd_qemuFolder.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                t_qemuPath.Text = fbd_qemuFolder.SelectedPath;
             }
         }
     }

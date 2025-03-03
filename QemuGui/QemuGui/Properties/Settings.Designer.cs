@@ -34,5 +34,17 @@ namespace QEMUInterface.Properties {
                 this["vmFolder"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string qemuFolder {
+            get {
+                return ((string)(this["qemuFolder"]));
+            }
+            set {
+                this["qemuFolder"] = value;
+            }
+        }
     }
 }

@@ -8,44 +8,38 @@ namespace QEMUInterface
     {
         private static int defaultID = 0;
 
+        private string filePath;
+
         public string Name { get; set; }
         public int ID { get; private set; }
-        public string OSFriendlyName { get; set; } = "Unknown";
+        internal PC_TYPE pcType { get; set; }
+        internal OperatingSystem operatingSystem { get; set; }
 
         public bool VerboseRunning { get; set; } = false;
 
         public Func<int, bool> ControlModifyCondition { get; set; } = (id) => true;
 
-        private string qemuPcName = "cmd.exe";
-        private string arguments = "/k echo running";
+        public string processName { get; set; }  = "cmd.exe";
+        public string processArgs { get; set; } = "/k echo running";
 
         private System.Diagnostics.Process? process;
 
         private EventHandler? exitEvent;
         private Action? abortEvent;
 
-        public VirtualMachine(string name, int id)
+        public VirtualMachine(string path, string name, int id)
         {
+            filePath = path;
             Name = name;
             ID = id;
         }
-        public VirtualMachine() : this("Default", defaultID++) { }
-        public VirtualMachine(string name) : this(name, defaultID++) { }
+        public VirtualMachine() : this("", "Default", defaultID++) { }
+        public VirtualMachine(string path, string name) : this(path, name, defaultID++) { }
 
         public void Run()
         {
             DisposeProcess();
             CreateProcess();
-        }
-
-        public void SetPCType(string pcType)
-        {
-            qemuPcName = pcType;
-        }
-
-        public void SetRunArguments(string args)
-        {
-            arguments = args;
         }
 
         public void AddExitEvent(EventHandler e)
@@ -90,8 +84,8 @@ namespace QEMUInterface
         private void CreateProcess()
         {
             process = new System.Diagnostics.Process();
-            process.StartInfo.FileName = qemuPcName;
-            process.StartInfo.Arguments = arguments;
+            process.StartInfo.FileName = processName;
+            process.StartInfo.Arguments = processArgs;
 
             if (!VerboseRunning)
             {

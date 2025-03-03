@@ -5,6 +5,8 @@ namespace QEMUInterface
 {
     public partial class WIN_MAIN : Form
     {
+        private Loader loader;
+
         private int currentlySelectedMachine = -1;
         private int currentlySelectedMachineID = -9999;
 
@@ -14,48 +16,17 @@ namespace QEMUInterface
         {
             InitializeComponent();
 
-            VirtualMachine vm1 = new VirtualMachine("Windows 10 Pro", 20);
-            VirtualMachine vm2 = new VirtualMachine("Windows Vista Ultimate", 21);
-            VirtualMachine ppc = new VirtualMachine("PUMA!!!", 22);
+            loader = new Loader();
 
-            vm1.OSFriendlyName = "Windows 10";
-            vm2.OSFriendlyName = "Windows Vista";
-            ppc.OSFriendlyName = "Mac OS X 10.1";
+            machines = loader.populate();
 
-            vm1.VerboseRunning = true;
-            vm2.VerboseRunning = true;
-
-            ppc.SetPCType("qemu-system-ppc.exe");
-            ppc.SetRunArguments("-L pc-bios -boot c -M mac99 -m 512 -drive file=C:\\Users\\windo\\macstuff\\Puma.img,format=raw,media=disk");
-
-            machines.Add(vm1);
-            machines.Add(vm2);
-            machines.Add(ppc);
-
-            for (int i = 0; i < machines.Count; i++)
-            {
-                machines[i].ControlModifyCondition = (id) => currentlySelectedMachineID == id;
-                machines[i].EditControlOnExit(l_machineState, (c) =>
-                {
-                    c.Text = "STOPPED";
-                    c.ForeColor = Color.FromArgb(192, 0, 0);
-                });
-                machines[i].EditControlOnExit(b_startMachine, (c) =>
-                {
-                    c.BackColor = Color.FromArgb(128, 255, 128);
-                    c.Enabled = true;
-                });
-                machines[i].EditControlOnAbort(() => {
-                    l_machineState.Text = "FAILED";
-                    l_machineState.ForeColor = Color.FromArgb(96, 0, 0);
-                    b_startMachine.Enabled = true;
-                    b_startMachine.BackColor = Color.FromArgb(128, 255, 128);
-                });
-            }
-
-            LoadVMList();
-            currentlySelectedMachine = 0;
-            DisplayVM(machines[currentlySelectedMachine]);
+            UpdateVMList();   
+        }
+        private void ParseLoader(object sender, EventArgs e)
+        {
+            lv_vmList.Items.Clear();
+            machines = loader.populate();
+            UpdateVMList();
         }
 
         private void DisplayVM(VirtualMachine? vm)
@@ -76,19 +47,53 @@ namespace QEMUInterface
             l_machineState.ForeColor = isRunning ? Color.FromArgb(0, 192, 0) : Color.FromArgb(192, 0, 0);
 
             t_machineName.Text = " " + vm.Name;
-            t_machineOS.Text = " " + vm.OSFriendlyName;
+            t_machineOS.Text = " " + vm.operatingSystem.FriendlyName;
+            t_machineType.Text = " " + vm.pcType.ToString();
         }
 
         private void LoadVMList()
         {
             for (int i = 0; i < machines.Count; i++)
             {
-                ListViewItem lvi = new ListViewItem(machines[i].Name);
-                lvi.ImageIndex = 0;
-                lvi.SubItems.Add(machines[i].OSFriendlyName);
+                ListViewItem lvi = new(machines[i].Name)
+                {
+                    ImageIndex = machines[i].operatingSystem.ImageIndex
+                };
+                lvi.SubItems.Add(machines[i].operatingSystem.FriendlyName);
                 lvi.SubItems.Add(machines[i].ID.ToString());
                 lv_vmList.Items.Add(lvi);
             }
+        }
+
+        private void UpdateVMList()
+        {
+            lv_vmList.Items.Clear();
+            for (int i = 0; i < machines.Count; i++)
+            {
+                machines[i].ControlModifyCondition = (id) => currentlySelectedMachineID == id;
+                machines[i].EditControlOnExit(l_machineState, (c) =>
+                {
+                    c.Text = "STOPPED";
+                    c.ForeColor = Color.FromArgb(192, 0, 0);
+                });
+                machines[i].EditControlOnExit(b_startMachine, (c) =>
+                {
+                    c.BackColor = Color.FromArgb(128, 255, 128);
+                    c.Enabled = true;
+                });
+                machines[i].EditControlOnAbort(() =>
+                {
+                    l_machineState.Text = "FAILED";
+                    l_machineState.ForeColor = Color.FromArgb(96, 0, 0);
+                    b_startMachine.Enabled = true;
+                    b_startMachine.BackColor = Color.FromArgb(128, 255, 128);
+                });
+            }
+
+            LoadVMList();
+            currentlySelectedMachine = 0;
+            currentlySelectedMachineID = machines[0].ID;
+            DisplayVM(machines[currentlySelectedMachine]);
         }
 
         private void ts_help_about_Click(object sender, EventArgs e)
@@ -108,7 +113,11 @@ namespace QEMUInterface
 
         private void b_newMachine_Click(object sender, EventArgs e)
         {
-            new WIN_NewMachine((vm) => { }).ShowDialog();
+            new WIN_NewMachine((vm) => {
+                loader.storeVM(vm);
+                machines.Add(vm);
+                UpdateVMList();
+            }).ShowDialog();
         }
 
         private void b_startMachine_Click(object sender, EventArgs e)

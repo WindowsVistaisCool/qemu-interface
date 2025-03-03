@@ -129,6 +129,7 @@ namespace QEMUInterface
 
                     process.Start();
                     process.EnableRaisingEvents = true;
+                    // todo: make this control non bocking
                     while (!process.StandardOutput.EndOfStream)
                     {
                         try
@@ -146,6 +147,9 @@ namespace QEMUInterface
                     if (lv_p2_type.Items.Count > 0)
                     {
                         machineListPopulated = selectedMachineType;
+                    } else
+                    {
+                        machineListPopulated = null;
                     }
 
                     lv_p2_type_machine.Width = -2;
@@ -275,6 +279,9 @@ namespace QEMUInterface
                 case 3:
                     isEnabled = true;
                     break;
+                case 4:
+                    isEnabled = true;
+                    break;
                 default:
                     break;
             }
@@ -290,7 +297,14 @@ namespace QEMUInterface
                 return;
             }
 
-            actionCallback(null);
+            VirtualMachine vm = new()
+            {
+                Name = t_p0_name.Text,
+                pcType = selectedMachineType,
+                operatingSystem = selectedOS
+            };
+
+            actionCallback(vm);
         }
 
         private void b_cancel_Click(object sender, EventArgs e)

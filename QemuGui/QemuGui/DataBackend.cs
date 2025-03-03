@@ -38,8 +38,9 @@ namespace QEMUInterface
         public readonly bool[] Bitness; // [32, 64]
         public readonly PC_TYPE[] Compatability;
         public readonly string[] MinorVers; // TODO: convert this to operating system array of minor versions
+        public readonly int ImageIndex;
 
-        public OperatingSystem(OS_FAMILY family, string name, string friendlyName, bool[] bitness, PC_TYPE[] compatability, string[] minorVers)
+        public OperatingSystem(OS_FAMILY family, string name, string friendlyName, int imageIndex, bool[] bitness, PC_TYPE[] compatability, string[] minorVers)
         {
             Family = family;
             Name = name;
@@ -47,9 +48,10 @@ namespace QEMUInterface
             Bitness = bitness;
             Compatability = compatability;
             MinorVers = minorVers;
+            ImageIndex = imageIndex;
         }
 
-        public OperatingSystem(OS_FAMILY family, string name, bool[] bitness, PC_TYPE compatability, string[] minorVers)
+        public OperatingSystem(OS_FAMILY family, string name, int imageIndex, bool[] bitness, PC_TYPE compatability, string[] minorVers)
         {
             Family = family;
             Name = name;
@@ -57,56 +59,55 @@ namespace QEMUInterface
             Bitness = bitness;
             Compatability = [compatability];
             MinorVers = minorVers;
+            ImageIndex = imageIndex;
         }
 
     }
 
-    // this code sucks because why does it just waste so much memory
     internal static class OperatingSystems
     {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         private static List<OperatingSystem> allSystems;
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
-        private static void loadSystems() => allSystems ??= new List<OperatingSystem>
-            {
-                new(OS_FAMILY.WINDOWS, "Windows XP",        "Windows XP", [true, false], [PC_TYPE.IA_32, PC_TYPE.X86_64], []),
-                new(OS_FAMILY.WINDOWS, "Windows Vista",     "Windows Vista", [true, false], [PC_TYPE.IA_32, PC_TYPE.X86_64], []),
-                new(OS_FAMILY.WINDOWS, "Windows 7",         "Windows 7", [true, true], [PC_TYPE.IA_32, PC_TYPE.X86_64], []),
-                new(OS_FAMILY.WINDOWS, "Windows 8",         "Windows 8", [true, true], [PC_TYPE.IA_32, PC_TYPE.X86_64], []),
-                new(OS_FAMILY.WINDOWS, "Windows 8.1",       "Windows 8.1", [true, true], [PC_TYPE.IA_32, PC_TYPE.X86_64], []),
-                new(OS_FAMILY.WINDOWS, "Windows 10",        "Windows 10", [true, true], [PC_TYPE.IA_32, PC_TYPE.X86_64], []),
-                new(OS_FAMILY.WINDOWS, "Windows 11",        "Windows 11", [true, true], [PC_TYPE.X86_64, PC_TYPE.AARCH64], []),
-                new(OS_FAMILY.WINDOWS, "Generic Windows",   "Generic Windows", [true, true], [PC_TYPE.IA_32, PC_TYPE.X86_64], []),
+        private static void loadSystems() => allSystems ??= [
+                new(OS_FAMILY.WINDOWS, "Windows XP",        "Windows XP", 1, [true, false], [PC_TYPE.IA_32, PC_TYPE.X86_64], []),
+                new(OS_FAMILY.WINDOWS, "Windows Vista",     "Windows Vista", 2, [true, false], [PC_TYPE.IA_32, PC_TYPE.X86_64], []),
+                new(OS_FAMILY.WINDOWS, "Windows 7",         "Windows 7", 3, [true, true], [PC_TYPE.IA_32, PC_TYPE.X86_64], []),
+                new(OS_FAMILY.WINDOWS, "Windows 8",         "Windows 8", 4, [true, true], [PC_TYPE.IA_32, PC_TYPE.X86_64], []),
+                new(OS_FAMILY.WINDOWS, "Windows 8.1",       "Windows 8.1", 4, [true, true], [PC_TYPE.IA_32, PC_TYPE.X86_64], []),
+                new(OS_FAMILY.WINDOWS, "Windows 10",        "Windows 10", 4, [true, true], [PC_TYPE.IA_32, PC_TYPE.X86_64], []),
+                new(OS_FAMILY.WINDOWS, "Windows 11",        "Windows 11", 5, [true, true], [PC_TYPE.X86_64, PC_TYPE.AARCH64], []),
+                new(OS_FAMILY.WINDOWS, "Generic Windows",   "Generic Windows", 5, [true, true], [PC_TYPE.IA_32, PC_TYPE.X86_64], []),
 
-                new(OS_FAMILY.MACOS, "System Software 0-6", [true, false], PC_TYPE.M68K, ["Mac System Software 1.X", "Mac System Software 2.X", "Mac System Software 3.X", "Mac System Software 4.X", "Mac System Software 5.X", "Mac System Software 6.X"]),
-                new(OS_FAMILY.MACOS, "MacOS 7", [true, false], PC_TYPE.PPC, []),
-                new(OS_FAMILY.MACOS, "MacOS 10.0",          "Mac OSX 10.0 Cheetah", [true, false], [PC_TYPE.PPC], []),
-                new(OS_FAMILY.MACOS, "MacOS 10.1",          "Mac OSX 10.1 Puma", [true, false], [PC_TYPE.PPC], []),
-                new(OS_FAMILY.MACOS, "MacOS 10.2",          "Mac OSX 10.2 Jaguar", [true, true], [PC_TYPE.PPC], []),
-                new(OS_FAMILY.MACOS, "MacOS 10.3",          "Mac OSX 10.3 Panther", [true, true], [PC_TYPE.PPC], []),
-                new(OS_FAMILY.MACOS, "MacOS 10.4",          "Mac OSX 10.4 Tiger", [true, true], [PC_TYPE.PPC, PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "MacOS 10.5",          "Mac OSX 10.5 Leopard", [true, true], [PC_TYPE.PPC, PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "MacOS 10.6",          "Mac OSX 10.6 Snow Leopard", [true, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "MacOS 10.7",          "Mac OSX 10.7 Lion", [false, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "MacOS 10.8",          "Mac OSX 10.8 Mountain Lion", [false, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "MacOS 10.9",          "Mac OSX 10.9 Mavericks", [false, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "MacOS 10.10",         "Mac OSX 10.10 Yosemite", [false, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "MacOS 10.11",         "Mac OSX 10.11 El Capitan", [false, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "macOS 10.12",         "macOS 10.12 Sierra", [false, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "macOS 10.13",         "macOS 10.13 High Sierra", [false, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "macOS 10.14",         "macOS 10.14 Mojave", [false, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "macOS 10.15",         "macOS 10.15 Catalina", [false, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "macOS 11",            "macOS 11 Big Sur", [false, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "macOS 12",            "macOS 12 Monterey", [false, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "macOS 13",            "macOS 13 Ventura", [false, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "macOS 14",            "macOS 14 Sonoma", [false, true], [PC_TYPE.X86_64], []),
-                new(OS_FAMILY.MACOS, "macOS 15",            "macOS 15 Sequoia", [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "System Software 1-6", 6, [true, false], PC_TYPE.M68K, ["Mac System Software 1.X", "Mac System Software 2.X", "Mac System Software 3.X", "Mac System Software 4.X", "Mac System Software 5.X", "Mac System Software 6.X"]),
+                new(OS_FAMILY.MACOS, "MacOS 7", 6, [true, false], PC_TYPE.PPC, []),
+                new(OS_FAMILY.MACOS, "MacOS 8", 6, [true, false], PC_TYPE.PPC, []),
+                new(OS_FAMILY.MACOS, "MacOS 10.0",          "Mac OS X 10.0 Cheetah", 7, [true, false], [PC_TYPE.PPC], []),
+                new(OS_FAMILY.MACOS, "MacOS 10.1",          "Mac OS X 10.1 Puma", 7, [true, false], [PC_TYPE.PPC], []),
+                new(OS_FAMILY.MACOS, "MacOS 10.2",          "Mac OS X 10.2 Jaguar", 7, [true, true], [PC_TYPE.PPC], []),
+                new(OS_FAMILY.MACOS, "MacOS 10.3",          "Mac OS X 10.3 Panther", 7, [true, true], [PC_TYPE.PPC], []),
+                new(OS_FAMILY.MACOS, "MacOS 10.4",          "Mac OS X 10.4 Tiger", 7, [true, true], [PC_TYPE.PPC, PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "MacOS 10.5",          "Mac OS X 10.5 Leopard", 7, [true, true], [PC_TYPE.PPC, PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "MacOS 10.6",          "Mac OS X 10.6 Snow Leopard", 7, [true, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "MacOS 10.7",          "Mac OS X 10.7 Lion", 7, [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "MacOS 10.8",          "OSX 10.8 Mountain Lion", 7, [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "MacOS 10.9",          "OSX 10.9 Mavericks", 7, [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "MacOS 10.10",         "OSX 10.10 Yosemite", 7, [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "MacOS 10.11",         "OSX 10.11 El Capitan", 7, [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "macOS 10.12",         "macOS 10.12 Sierra", 8, [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "macOS 10.13",         "macOS 10.13 High Sierra", 8, [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "macOS 10.14",         "macOS 10.14 Mojave", 8, [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "macOS 10.15",         "macOS 10.15 Catalina", 8, [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "macOS 11",            "macOS 11 Big Sur", 8, [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "macOS 12",            "macOS 12 Monterey", 8, [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "macOS 13",            "macOS 13 Ventura", 8, [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "macOS 14",            "macOS 14 Sonoma", 8, [false, true], [PC_TYPE.X86_64], []),
+                new(OS_FAMILY.MACOS, "macOS 15",            "macOS 15 Sequoia", 8, [false, true], [PC_TYPE.X86_64], []),
 
-                new(OS_FAMILY.LINUX, "Generic Linux",       "Generic Linux", [true, true], [PC_TYPE.IA_32, PC_TYPE.X86_64], []),
-            };
-
-        public static string[] getFamilies() => Enum.GetNames(typeof(OS_FAMILY));
+                new(OS_FAMILY.LINUX, "Generic Linux",       "Generic Linux", 9, [true, true], [PC_TYPE.IA_32, PC_TYPE.X86_64], []),
+                new(OS_FAMILY.LINUX, "Walter White",        "Walter White & Jessie Pinkman", 10, [true, true], [PC_TYPE.IA_32, PC_TYPE.X86_64], []),
+            ];
 
         public static List<OperatingSystem> getFamily(OS_FAMILY family)
         {

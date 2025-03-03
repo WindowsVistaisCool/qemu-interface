@@ -16,7 +16,7 @@ namespace QEMUInterface
 {
     public partial class WIN_NewMachine : Form
     {
-        private readonly Action<VirtualMachine> actionCallback;
+        private readonly Action<VirtualMachine> vmReturner;
 
         private int currentTabPage = 0;
         private readonly int maxTabPage = 4;
@@ -32,7 +32,7 @@ namespace QEMUInterface
 
         public WIN_NewMachine(Action<VirtualMachine> newVMCallback)
         {
-            actionCallback = newVMCallback;
+            vmReturner = newVMCallback;
 
             InitializeComponent();
 
@@ -297,14 +297,19 @@ namespace QEMUInterface
                 return;
             }
 
-            VirtualMachine vm = new()
+            if (isOnFinishTab)
             {
-                Name = t_p0_name.Text,
-                pcType = selectedMachineType,
-                operatingSystem = selectedOS
-            };
+                VirtualMachine vm = new()
+                {
+                    Name = t_p0_name.Text,
+                    PCType = selectedMachineType,
+                    OperatingSystem = selectedOS,
+                    Machine = lv_p2_type.SelectedItems[0].Text,
+                    OSSubversion = cb_p1_subversion.Text
+                };
+                vmReturner(vm);
+            }
 
-            actionCallback(vm);
         }
 
         private void b_cancel_Click(object sender, EventArgs e)

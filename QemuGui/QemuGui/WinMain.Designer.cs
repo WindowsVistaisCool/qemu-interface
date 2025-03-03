@@ -39,9 +39,11 @@
             p_vmList = new Panel();
             lv_vmList = new ListView();
             il_vmList = new ImageList(components);
+            t_machineType = new TextBox();
             t_machineOS = new TextBox();
             t_machineName = new TextBox();
-            t_machineType = new TextBox();
+            l_machineSubversion = new Label();
+            t_machineSubversion = new TextBox();
             ms_ts_file = new ToolStripMenuItem();
             ts_file_prefs = new ToolStripMenuItem();
             toolStripSeparator1 = new ToolStripSeparator();
@@ -93,7 +95,7 @@
             // 
             ls_machineName.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             ls_machineName.AutoSize = true;
-            ls_machineName.Location = new Point(37, 5);
+            ls_machineName.Location = new Point(43, 5);
             ls_machineName.Margin = new Padding(10, 5, 5, 5);
             ls_machineName.Name = "ls_machineName";
             ls_machineName.Size = new Size(46, 25);
@@ -189,7 +191,7 @@
             // 
             ls_machineOS.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             ls_machineOS.AutoSize = true;
-            ls_machineOS.Location = new Point(16, 84);
+            ls_machineOS.Location = new Point(22, 84);
             ls_machineOS.Margin = new Padding(10, 5, 5, 5);
             ls_machineOS.Name = "ls_machineOS";
             ls_machineOS.Size = new Size(67, 34);
@@ -200,14 +202,16 @@
             // tlp_machineInfo
             // 
             tlp_machineInfo.ColumnCount = 2;
-            tlp_machineInfo.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20.75472F));
-            tlp_machineInfo.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 79.24528F));
+            tlp_machineInfo.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22.1698112F));
+            tlp_machineInfo.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 77.83019F));
             tlp_machineInfo.Controls.Add(ls_machineName, 0, 0);
             tlp_machineInfo.Controls.Add(ls_pcType, 0, 1);
             tlp_machineInfo.Controls.Add(ls_machineOS, 0, 2);
             tlp_machineInfo.Controls.Add(t_machineType, 1, 1);
             tlp_machineInfo.Controls.Add(t_machineOS, 1, 2);
             tlp_machineInfo.Controls.Add(t_machineName, 1, 0);
+            tlp_machineInfo.Controls.Add(l_machineSubversion, 0, 3);
+            tlp_machineInfo.Controls.Add(t_machineSubversion, 1, 3);
             tlp_machineInfo.Dock = DockStyle.Fill;
             tlp_machineInfo.Location = new Point(10, 28);
             tlp_machineInfo.Name = "tlp_machineInfo";
@@ -215,54 +219,22 @@
             tlp_machineInfo.RowStyles.Add(new RowStyle());
             tlp_machineInfo.RowStyles.Add(new RowStyle());
             tlp_machineInfo.RowStyles.Add(new RowStyle());
-            tlp_machineInfo.RowStyles.Add(new RowStyle(SizeType.Percent, 59.6330261F));
-            tlp_machineInfo.RowStyles.Add(new RowStyle(SizeType.Percent, 40.3669739F));
-            tlp_machineInfo.Size = new Size(424, 223);
+            tlp_machineInfo.RowStyles.Add(new RowStyle());
+            tlp_machineInfo.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tlp_machineInfo.Size = new Size(424, 170);
             tlp_machineInfo.TabIndex = 6;
-            // 
-            // t_machineOS
-            // 
-            t_machineOS.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            t_machineOS.BackColor = SystemColors.HighlightText;
-            t_machineOS.BorderStyle = BorderStyle.FixedSingle;
-            t_machineOS.Enabled = false;
-            t_machineOS.Font = new Font("Segoe UI Semibold", 8.830189F, FontStyle.Bold);
-            t_machineOS.Location = new Point(93, 88);
-            t_machineOS.Margin = new Padding(5);
-            t_machineOS.Name = "t_machineOS";
-            t_machineOS.ReadOnly = true;
-            t_machineOS.ShortcutsEnabled = false;
-            t_machineOS.Size = new Size(326, 25);
-            t_machineOS.TabIndex = 5;
             // 
             // ls_pcType
             // 
             ls_pcType.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             ls_pcType.AutoSize = true;
-            ls_pcType.Location = new Point(26, 40);
+            ls_pcType.Location = new Point(32, 40);
             ls_pcType.Margin = new Padding(10, 5, 5, 5);
             ls_pcType.Name = "ls_pcType";
             ls_pcType.Size = new Size(57, 34);
             ls_pcType.TabIndex = 6;
             ls_pcType.Text = "Machine Type:";
             ls_pcType.TextAlign = ContentAlignment.MiddleRight;
-            // 
-            // t_machineName
-            // 
-            t_machineName.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            t_machineName.BackColor = SystemColors.HighlightText;
-            t_machineName.BorderStyle = BorderStyle.FixedSingle;
-            t_machineName.CausesValidation = false;
-            t_machineName.Enabled = false;
-            t_machineName.Font = new Font("Segoe UI Semibold", 8.830189F, FontStyle.Bold);
-            t_machineName.HideSelection = false;
-            t_machineName.Location = new Point(93, 5);
-            t_machineName.Margin = new Padding(5);
-            t_machineName.Name = "t_machineName";
-            t_machineName.ReadOnly = true;
-            t_machineName.ShortcutsEnabled = false;
-            t_machineName.Size = new Size(326, 25);
-            t_machineName.TabIndex = 4;
             // 
             // t_machineType
             // 
@@ -273,13 +245,72 @@
             t_machineType.Enabled = false;
             t_machineType.Font = new Font("Segoe UI Semibold", 8.830189F, FontStyle.Bold);
             t_machineType.HideSelection = false;
-            t_machineType.Location = new Point(93, 44);
+            t_machineType.Location = new Point(99, 44);
             t_machineType.Margin = new Padding(5);
             t_machineType.Name = "t_machineType";
             t_machineType.ReadOnly = true;
             t_machineType.ShortcutsEnabled = false;
-            t_machineType.Size = new Size(326, 25);
+            t_machineType.Size = new Size(320, 25);
             t_machineType.TabIndex = 7;
+            // 
+            // t_machineOS
+            // 
+            t_machineOS.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            t_machineOS.BackColor = SystemColors.HighlightText;
+            t_machineOS.BorderStyle = BorderStyle.FixedSingle;
+            t_machineOS.Enabled = false;
+            t_machineOS.Font = new Font("Segoe UI Semibold", 8.830189F, FontStyle.Bold);
+            t_machineOS.Location = new Point(99, 88);
+            t_machineOS.Margin = new Padding(5);
+            t_machineOS.Name = "t_machineOS";
+            t_machineOS.ReadOnly = true;
+            t_machineOS.ShortcutsEnabled = false;
+            t_machineOS.Size = new Size(320, 25);
+            t_machineOS.TabIndex = 5;
+            // 
+            // t_machineName
+            // 
+            t_machineName.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            t_machineName.BackColor = SystemColors.HighlightText;
+            t_machineName.BorderStyle = BorderStyle.FixedSingle;
+            t_machineName.CausesValidation = false;
+            t_machineName.Enabled = false;
+            t_machineName.Font = new Font("Segoe UI Semibold", 8.830189F, FontStyle.Bold);
+            t_machineName.HideSelection = false;
+            t_machineName.Location = new Point(99, 5);
+            t_machineName.Margin = new Padding(5);
+            t_machineName.Name = "t_machineName";
+            t_machineName.ReadOnly = true;
+            t_machineName.ShortcutsEnabled = false;
+            t_machineName.Size = new Size(320, 25);
+            t_machineName.TabIndex = 4;
+            // 
+            // l_machineSubversion
+            // 
+            l_machineSubversion.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            l_machineSubversion.AutoSize = true;
+            l_machineSubversion.Location = new Point(14, 128);
+            l_machineSubversion.Margin = new Padding(10, 5, 5, 5);
+            l_machineSubversion.Name = "l_machineSubversion";
+            l_machineSubversion.Size = new Size(75, 25);
+            l_machineSubversion.TabIndex = 8;
+            l_machineSubversion.Text = "Subversion:";
+            l_machineSubversion.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // t_machineSubversion
+            // 
+            t_machineSubversion.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            t_machineSubversion.BackColor = SystemColors.HighlightText;
+            t_machineSubversion.BorderStyle = BorderStyle.FixedSingle;
+            t_machineSubversion.Enabled = false;
+            t_machineSubversion.Font = new Font("Segoe UI Semibold", 8.830189F, FontStyle.Bold);
+            t_machineSubversion.Location = new Point(99, 128);
+            t_machineSubversion.Margin = new Padding(5);
+            t_machineSubversion.Name = "t_machineSubversion";
+            t_machineSubversion.ReadOnly = true;
+            t_machineSubversion.ShortcutsEnabled = false;
+            t_machineSubversion.Size = new Size(320, 25);
+            t_machineSubversion.TabIndex = 9;
             // 
             // ms_ts_file
             // 
@@ -484,7 +515,7 @@
             gb_machineDetails.Location = new Point(10, 10);
             gb_machineDetails.Name = "gb_machineDetails";
             gb_machineDetails.Padding = new Padding(10);
-            gb_machineDetails.Size = new Size(444, 261);
+            gb_machineDetails.Size = new Size(444, 208);
             gb_machineDetails.TabIndex = 0;
             gb_machineDetails.TabStop = false;
             gb_machineDetails.Text = "Machine Information";
@@ -566,5 +597,7 @@
         private TextBox t_machineOS;
         private TableLayoutPanel tlp_machineInfo;
         private TextBox t_machineType;
+        private TextBox t_machineSubversion;
+        private Label l_machineSubversion;
     }
 }

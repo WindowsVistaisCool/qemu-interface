@@ -47,8 +47,11 @@ namespace QEMUInterface
             l_machineState.ForeColor = isRunning ? Color.FromArgb(0, 192, 0) : Color.FromArgb(192, 0, 0);
 
             t_machineName.Text = " " + vm.Name;
-            t_machineOS.Text = " " + vm.operatingSystem.FriendlyName;
-            t_machineType.Text = " " + vm.pcType.ToString();
+            t_machineOS.Text = " " + vm.OperatingSystem.FriendlyName;
+            t_machineType.Text = " " + vm.PCType.ToString();
+            l_machineSubversion.Visible = vm.OSSubversion != "";
+            t_machineSubversion.Visible = vm.OSSubversion != "";
+            t_machineSubversion.Text = " " + vm.OSSubversion;
         }
 
         private void LoadVMList()
@@ -57,9 +60,9 @@ namespace QEMUInterface
             {
                 ListViewItem lvi = new(machines[i].Name)
                 {
-                    ImageIndex = machines[i].operatingSystem.ImageIndex
+                    ImageIndex = machines[i].OperatingSystem.ImageIndex
                 };
-                lvi.SubItems.Add(machines[i].operatingSystem.FriendlyName);
+                lvi.SubItems.Add(machines[i].OperatingSystem.FriendlyName);
                 lvi.SubItems.Add(machines[i].ID.ToString());
                 lv_vmList.Items.Add(lvi);
             }
@@ -91,9 +94,17 @@ namespace QEMUInterface
             }
 
             LoadVMList();
-            currentlySelectedMachine = 0;
-            currentlySelectedMachineID = machines[0].ID;
-            DisplayVM(machines[currentlySelectedMachine]);
+            if (machines.Count > 0)
+            {
+                currentlySelectedMachine = 0;
+                currentlySelectedMachineID = machines[0].ID;
+                DisplayVM(machines[currentlySelectedMachine]);
+            } else
+            {
+                currentlySelectedMachine = -1;
+                currentlySelectedMachineID = -9999;
+                DisplayVM(new VirtualMachine());
+            }
         }
 
         private void ts_help_about_Click(object sender, EventArgs e)
@@ -114,7 +125,7 @@ namespace QEMUInterface
         private void b_newMachine_Click(object sender, EventArgs e)
         {
             new WIN_NewMachine((vm) => {
-                loader.storeVM(vm);
+                //loader.storeVM(vm);
                 machines.Add(vm);
                 UpdateVMList();
             }).ShowDialog();

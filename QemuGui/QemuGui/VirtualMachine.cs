@@ -12,17 +12,19 @@ namespace QEMUInterface
 
         public string Name { get; set; }
         public int ID { get; private set; }
-        internal PC_TYPE pcType { get; set; }
-        internal OperatingSystem operatingSystem { get; set; }
+        internal PC_TYPE PCType { get; set; }
+        internal OperatingSystem OperatingSystem { get; set; }
+        internal string OSSubversion { get; set; } = "";
+        internal string Machine { get; set; }
 
         public bool VerboseRunning { get; set; } = false;
 
         public Func<int, bool> ControlModifyCondition { get; set; } = (id) => true;
 
-        public string processName { get; set; }  = "cmd.exe";
-        public string processArgs { get; set; } = "/k echo running";
+        public string ProcessName { get; set; }  = "cmd.exe";
+        public string ProcessArgs { get; set; } = "/k echo running";
 
-        private System.Diagnostics.Process? process;
+        private Process? process;
 
         private EventHandler? exitEvent;
         private Action? abortEvent;
@@ -33,7 +35,7 @@ namespace QEMUInterface
             Name = name;
             ID = id;
         }
-        public VirtualMachine() : this("", "Default", defaultID++) { }
+        public VirtualMachine() : this("", "", defaultID++) { }
         public VirtualMachine(string path, string name) : this(path, name, defaultID++) { }
 
         public void Run()
@@ -84,8 +86,8 @@ namespace QEMUInterface
         private void CreateProcess()
         {
             process = new System.Diagnostics.Process();
-            process.StartInfo.FileName = processName;
-            process.StartInfo.Arguments = processArgs;
+            process.StartInfo.FileName = ProcessName;
+            process.StartInfo.Arguments = ProcessArgs;
 
             if (!VerboseRunning)
             {

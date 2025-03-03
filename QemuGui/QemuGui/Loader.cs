@@ -11,7 +11,7 @@ namespace QEMUInterface
     public class Loader
     {
         private static readonly string FILE_EXT = ".qint";
-        private static readonly string[] requiredKeys = ["name", "os"];
+        private static readonly string[] requiredKeys = ["name", "os", "type", "pc"];
         private static readonly string[] acceptableFlags = ["verbose"];
 
         private string? path;
@@ -47,15 +47,18 @@ namespace QEMUInterface
 
                 if (validateJson(parsed))
                 {
+                    _ = Enum.TryParse(parsed["type"]!.ToString().ToUpper(), out PC_TYPE type);
                     VirtualMachine vm = new(file, parsed["name"]!.ToString())
                     {
-                        operatingSystem = OperatingSystems.get(parsed["os"]!.ToString())
+                        OperatingSystem = OperatingSystems.get(parsed["os"]!.ToString()),
+                        PCType = type,
+                        Machine = parsed["pc"]!.ToString()
                     };
 
                     if (parsed["processName"] != null && parsed["processArgs"] != null)
                     {
-                        vm.processName = parsed["processName"]!.ToString();
-                        vm.processArgs = parsed["processArgs"]!.ToString();
+                        vm.ProcessName = parsed["processName"]!.ToString();
+                        vm.ProcessArgs = parsed["processArgs"]!.ToString();
                     }
 
                     machines.Add(vm);
@@ -67,15 +70,11 @@ namespace QEMUInterface
 
         public bool validateJson(JsonNode inp)
         {
-            try
-            {
-                foreach (string k in requiredKeys)
+            foreach (string k in requiredKeys) {
+                if (inp[k] == null)
                 {
-                    _ = inp[k];
+                    return false;
                 }
-            } catch (NullReferenceException)
-            {
-                return false;
             }
             return true;
         }
@@ -89,9 +88,9 @@ namespace QEMUInterface
 
             string content = "{\n";
             content += $"\"name\": \"{vm.Name}\",\n";
-            content += $"\"os\": \"{vm.operatingSystem.Name}\",\n";
-            content += $"\"processName\": \"{vm.processName}\",\n";
-            content += $"\"processArgs\": \"{vm.processArgs}\"\n";
+            content += $"\"os\": \"{vm.OperatingSystem.Name}\",\n";
+            content += $"\"processName\": \"{vm.ProcessName}\",\n";
+            content += $"\"processArgs\": \"{vm.ProcessArgs}\"\n";
             content += "}";
 
             File.WriteAllText(Path.Combine(path, vm.Name + FILE_EXT), content);

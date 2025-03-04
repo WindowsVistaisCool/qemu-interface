@@ -30,39 +30,45 @@ namespace QEMUInterface
                 return machines;
             }
 
-            var files = Directory.EnumerateFiles(path, "*.*", SearchOption.TopDirectoryOnly).Where(s => Path.GetExtension(s) == FILE_EXT);
-
-            foreach (var file in files)
+            try
             {
-                string content = File.ReadAllText(file);
-                if (content == null)
-                {
-                    continue;
-                }
-                JsonNode? parsed = JsonNode.Parse(content);
-                if (parsed == null)
-                {
-                    continue;
-                }
+                var files = Directory.EnumerateFiles(path, "*.*", SearchOption.TopDirectoryOnly).Where(s => Path.GetExtension(s) == FILE_EXT);
 
-                if (validateJson(parsed))
+                foreach (var file in files)
                 {
-                    _ = Enum.TryParse(parsed["type"]!.ToString().ToUpper(), out PC_TYPE type);
-                    VirtualMachine vm = new(file, parsed["name"]!.ToString())
+                    string content = File.ReadAllText(file);
+                    if (content == null)
                     {
-                        OperatingSystem = OperatingSystems.get(parsed["os"]!.ToString()),
-                        PCType = type,
-                        Machine = parsed["pc"]!.ToString()
-                    };
-
-                    if (parsed["processName"] != null && parsed["processArgs"] != null)
+                        continue;
+                    }
+                    JsonNode? parsed = JsonNode.Parse(content);
+                    if (parsed == null)
                     {
-                        vm.ProcessName = parsed["processName"]!.ToString();
-                        vm.ProcessArgs = parsed["processArgs"]!.ToString();
+                        continue;
                     }
 
-                    machines.Add(vm);
+                    if (validateJson(parsed))
+                    {
+                        _ = Enum.TryParse(parsed["type"]!.ToString().ToUpper(), out PC_TYPE type);
+                        VirtualMachine vm = new(file, parsed["name"]!.ToString())
+                        {
+                            OperatingSystem = OperatingSystems.get(parsed["os"]!.ToString()),
+                            PCType = type,
+                            Machine = parsed["pc"]!.ToString()
+                        };
+
+                        if (parsed["processName"] != null && parsed["processArgs"] != null)
+                        {
+                            vm.ProcessName = parsed["processName"]!.ToString();
+                            vm.ProcessArgs = parsed["processArgs"]!.ToString();
+                        }
+
+                        machines.Add(vm);
+                    }
                 }
+            } catch (Exception)
+            {
+                return machines;
             }
 
             return machines;

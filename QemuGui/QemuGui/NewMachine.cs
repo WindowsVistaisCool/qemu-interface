@@ -86,6 +86,7 @@ namespace QEMUInterface
                         rb_p1_bitness_32.Checked = false;
                         rb_p1_bitness_64.Checked = false;
                     }
+                    loadOSVersions(null, null);
                     loadOSMinorVersions(null, null);
                     break;
                 case 2:
@@ -138,7 +139,8 @@ namespace QEMUInterface
                             ListViewItem lvi = new(line[0]);
                             lvi.SubItems.Add(line[1]);
                             lv_p2_type.Items.Add(lvi);
-                        } catch (Exception e)
+                        }
+                        catch (Exception e)
                         {
                             MessageBox.Show("ERR: " + e);
                         }
@@ -147,7 +149,8 @@ namespace QEMUInterface
                     if (lv_p2_type.Items.Count > 0)
                     {
                         machineListPopulated = selectedMachineType;
-                    } else
+                    }
+                    else
                     {
                         machineListPopulated = null;
                     }
@@ -222,6 +225,11 @@ namespace QEMUInterface
                     rb_p1_bitness_32.Checked = selectedOS.Bitness[0]; // Should always be true
                     rb_p1_bitness_64.Checked = false;
                 }
+            }
+            else if (selectedMachineType == PC_TYPE.IA_32)
+            {
+                rb_p1_bitness_32.Checked = true;
+                rb_p1_bitness_64.Checked = false;
             }
 
             if (selectedOS.MinorVers.Length > 0)
@@ -314,6 +322,15 @@ namespace QEMUInterface
 
         private void b_cancel_Click(object sender, EventArgs e)
         {
+            if (currentTabPage > 0)
+            {
+                DialogResult r = MessageBox.Show("Are you sure you want to cancel?", "Cancel", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (r == DialogResult.No)
+                {
+                    closeInvokedByFinishButton = true;
+                    return;
+                }
+            }
             Close();
         }
 
@@ -372,8 +389,9 @@ namespace QEMUInterface
         {
             if (rb_p0_emType_other.Checked)
             {
-                rb_p0_emType_PPC.Checked = false;
                 rb_p0_emType_x86.Checked = false;
+                rb_p0_emType_i386.Checked = false;
+                rb_p0_emType_PPC.Checked = false;
                 rb_p0_emType_m68k.Checked = false;
                 selectedMachineType = PC_TYPE.OTHER;
             }
@@ -395,6 +413,14 @@ namespace QEMUInterface
         {
             selectedMachineType = PC_TYPE.PPC;
         }
+        private void rb_p0_emType_m68k_CheckedChanged(object sender, EventArgs e)
+        {
+            selectedMachineType = PC_TYPE.M68K;
+        }
+        private void rb_p0_emType_i386_CheckedChanged(object sender, EventArgs e)
+        {
+            selectedMachineType = PC_TYPE.IA_32;
+        }
 
         private void tb_p3_cores_Scroll(object sender, EventArgs e)
         {
@@ -406,11 +432,6 @@ namespace QEMUInterface
             slider_p3_cores.Value = (int)num_p3_cores.Value;
         }
 
-        private void rb_p0_emType_m68k_CheckedChanged(object sender, EventArgs e)
-        {
-            selectedMachineType = PC_TYPE.M68K;
-        }
-
         private void num_p3_ram_ValueChanged(object sender, EventArgs e)
         {
             slider_p3_ram.Value = (int)num_p3_ram.Value;
@@ -420,5 +441,6 @@ namespace QEMUInterface
         {
             num_p3_ram.Value = slider_p3_ram.Value;
         }
+
     }
 }

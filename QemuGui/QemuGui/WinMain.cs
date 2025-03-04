@@ -20,12 +20,6 @@ namespace QEMUInterface
 
             machines = loader.populate();
 
-            UpdateVMList();   
-        }
-        private void ParseLoader(object sender, EventArgs e)
-        {
-            lv_vmList.Items.Clear();
-            machines = loader.populate();
             UpdateVMList();
         }
 
@@ -99,7 +93,8 @@ namespace QEMUInterface
                 currentlySelectedMachine = 0;
                 currentlySelectedMachineID = machines[0].ID;
                 DisplayVM(machines[currentlySelectedMachine]);
-            } else
+            }
+            else
             {
                 currentlySelectedMachine = -1;
                 currentlySelectedMachineID = -9999;
@@ -124,7 +119,8 @@ namespace QEMUInterface
 
         private void b_newMachine_Click(object sender, EventArgs e)
         {
-            new WIN_NewMachine((vm) => {
+            new WIN_NewMachine((vm) =>
+            {
                 //loader.storeVM(vm);
                 machines.Add(vm);
                 UpdateVMList();
@@ -150,6 +146,12 @@ namespace QEMUInterface
             currentlySelectedMachine = lv_vmList.SelectedIndices[0];
             DisplayVM(machines[currentlySelectedMachine]);
 
+        }
+
+        private void ts_file_refresh_Click(object sender, EventArgs e)
+        {
+            machines = loader.populate();
+            UpdateVMList();
         }
     }
 }

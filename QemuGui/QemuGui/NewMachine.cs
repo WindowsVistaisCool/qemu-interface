@@ -46,6 +46,12 @@ namespace QEMUInterface
             updatePanel();
             loadOSVersions(null, null);
             onLoadPageEvents();
+
+            ulong ramMB = new Microsoft.VisualBasic.Devices.ComputerInfo().TotalPhysicalMemory / (1024 * 1024);
+            l_p3_ramBoundaryRight.Text = (ramMB / 1024).ToString() + " GB";
+            slider_p3_ram.Maximum = (int)ramMB;
+            num_p3_ram.Maximum = (int)ramMB;
+
             //checkNextButtonEnabled(null, null);
         }
 
@@ -167,6 +173,17 @@ namespace QEMUInterface
                     }
 
                     cb_p3_cpuType.Text = "CPU TYPE 1";
+                    break;
+                case 4:
+                    // store from page 3 if needed
+                    if (l_pfin_cpu.Text != num_p3_cores.Value.ToString())
+                    {
+                        l_pfin_cpu.Text = num_p3_cores.Value.ToString();
+                    }
+                    if (l_pfin_ram.Text != num_p3_ram.Value.ToString() + " MB")
+                    {
+                        l_pfin_ram.Text = num_p3_ram.Value.ToString() + " MB";
+                    }
                     break;
                 default:
                     break;

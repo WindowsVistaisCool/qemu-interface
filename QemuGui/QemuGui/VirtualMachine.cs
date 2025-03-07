@@ -17,6 +17,9 @@ namespace QEMUInterface
         internal string OSSubversion { get; set; } = "";
         internal string Machine { get; set; }
 
+        internal int CPUCoreCount { get; set; } = 1;
+        internal int MemorySize { get; set; } = 1024;
+
         public bool VerboseRunning { get; set; } = false;
 
         public Func<int, bool> ControlModifyCondition { get; set; } = (id) => true;

@@ -330,7 +330,9 @@ namespace QEMUInterface
                     PCType = selectedMachineType,
                     OperatingSystem = selectedOS,
                     Machine = lv_p2_type.SelectedItems[0].Text,
-                    OSSubversion = cb_p1_subversion.Text
+                    OSSubversion = cb_p1_subversion.Text,
+                    CPUCoreCount = (int)num_p3_cores.Value,
+                    MemorySize = (int)num_p3_ram.Value
                 };
                 vmReturner(vm);
             }

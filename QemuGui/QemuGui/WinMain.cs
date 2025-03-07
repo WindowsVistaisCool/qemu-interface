@@ -46,6 +46,10 @@ namespace QEMUInterface
             l_machineSubversion.Visible = vm.OSSubversion != "";
             t_machineSubversion.Visible = vm.OSSubversion != "";
             t_machineSubversion.Text = " " + vm.OSSubversion;
+
+            t_cpuCores.Text = " " + vm.CPUCoreCount.ToString();
+            t_ram.Text = " " + vm.MemorySize.ToString() + "MB";
+
         }
 
         private void LoadVMList()
@@ -152,6 +156,11 @@ namespace QEMUInterface
         {
             machines = loader.populate();
             UpdateVMList();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            new WIN_MEDIA(machines[currentlySelectedMachine]).ShowDialog();
         }
     }
 }

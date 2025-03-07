@@ -1215,6 +1215,7 @@
             t_p0_name.Name = "t_p0_name";
             t_p0_name.Size = new Size(422, 23);
             t_p0_name.TabIndex = 1;
+            t_p0_name.Text = "Meee and my debug";
             t_p0_name.TextChanged += checkNextButtonEnabled;
             // 
             // flp_p0_emType

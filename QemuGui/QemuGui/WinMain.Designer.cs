@@ -42,8 +42,9 @@
             Label ls_soundController;
             ToolStripSeparator sep1;
             ToolStripSeparator sep2;
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WIN_MAIN));
             Label deburgggg;
+            TableLayoutPanel tlp_mediaTab;
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WIN_MAIN));
             t_machineType = new TextBox();
             t_machineOS = new TextBox();
             t_machineName = new TextBox();
@@ -53,12 +54,12 @@
             t_cpuCores = new TextBox();
             t_soundController = new TextBox();
             t_graphicsController = new TextBox();
+            omgbuttonilovebutton = new Button();
             lv_vmList = new ListView();
             il_vmList = new ImageList(components);
             gb_machineDetails = new GroupBox();
             tc_vmInfo = new TabControl();
             tc_vmInfo_media = new TabPage();
-            omgbuttonilovebutton = new Button();
             tc_vmInfo_cpu = new TabPage();
             tc_vmInfo_gpu = new TabPage();
             ms_ts_file = new ToolStripMenuItem();
@@ -80,7 +81,6 @@
             p_main = new Panel();
             tlp_main = new TableLayoutPanel();
             tlp_vmControl = new TableLayoutPanel();
-            tableLayoutPanel1 = new TableLayoutPanel();
             ls_machineName = new Label();
             ls_machinesText = new Label();
             ls_machineOS = new Label();
@@ -95,9 +95,11 @@
             sep1 = new ToolStripSeparator();
             sep2 = new ToolStripSeparator();
             deburgggg = new Label();
+            tlp_mediaTab = new TableLayoutPanel();
             tlp_machineInfo.SuspendLayout();
             tlp_cpuTab.SuspendLayout();
             tlp_graphicsAndSound.SuspendLayout();
+            tlp_mediaTab.SuspendLayout();
             gb_machineDetails.SuspendLayout();
             tc_vmInfo.SuspendLayout();
             tc_vmInfo_media.SuspendLayout();
@@ -108,7 +110,6 @@
             p_main.SuspendLayout();
             tlp_main.SuspendLayout();
             tlp_vmControl.SuspendLayout();
-            tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // ls_machineName
@@ -428,10 +429,46 @@
             sep2.Name = "sep2";
             sep2.Size = new Size(138, 6);
             // 
+            // deburgggg
+            // 
+            deburgggg.AutoSize = true;
+            deburgggg.Location = new Point(3, 0);
+            deburgggg.Name = "deburgggg";
+            deburgggg.Size = new Size(160, 30);
+            deburgggg.TabIndex = 1;
+            deburgggg.Text = "hey monk!\r\nthis is in debug so be careful!";
+            // 
+            // tlp_mediaTab
+            // 
+            tlp_mediaTab.ColumnCount = 2;
+            tlp_mediaTab.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tlp_mediaTab.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tlp_mediaTab.Controls.Add(deburgggg, 0, 0);
+            tlp_mediaTab.Controls.Add(omgbuttonilovebutton, 1, 0);
+            tlp_mediaTab.Dock = DockStyle.Fill;
+            tlp_mediaTab.Location = new Point(3, 3);
+            tlp_mediaTab.Name = "tlp_mediaTab";
+            tlp_mediaTab.RowCount = 2;
+            tlp_mediaTab.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tlp_mediaTab.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tlp_mediaTab.Size = new Size(504, 257);
+            tlp_mediaTab.TabIndex = 2;
+            // 
+            // omgbuttonilovebutton
+            // 
+            omgbuttonilovebutton.Location = new Point(255, 3);
+            omgbuttonilovebutton.Name = "omgbuttonilovebutton";
+            omgbuttonilovebutton.Size = new Size(113, 83);
+            omgbuttonilovebutton.TabIndex = 0;
+            omgbuttonilovebutton.Text = "Edit Media";
+            omgbuttonilovebutton.UseVisualStyleBackColor = true;
+            omgbuttonilovebutton.Click += button1_Click;
+            // 
             // lv_vmList
             // 
             lv_vmList.Activation = ItemActivation.OneClick;
             lv_vmList.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lv_vmList.BackColor = SystemColors.Control;
             lv_vmList.BorderStyle = BorderStyle.FixedSingle;
             lv_vmList.Font = new Font("Segoe UI", 12.2264156F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lv_vmList.FullRowSelect = true;
@@ -496,32 +533,14 @@
             // 
             // tc_vmInfo_media
             // 
-            tc_vmInfo_media.Controls.Add(tableLayoutPanel1);
+            tc_vmInfo_media.Controls.Add(tlp_mediaTab);
             tc_vmInfo_media.Location = new Point(4, 24);
             tc_vmInfo_media.Name = "tc_vmInfo_media";
             tc_vmInfo_media.Padding = new Padding(3);
             tc_vmInfo_media.Size = new Size(510, 263);
             tc_vmInfo_media.TabIndex = 2;
             tc_vmInfo_media.Text = "Media";
-            // 
-            // deburgggg
-            // 
-            deburgggg.AutoSize = true;
-            deburgggg.Location = new Point(3, 0);
-            deburgggg.Name = "deburgggg";
-            deburgggg.Size = new Size(160, 30);
-            deburgggg.TabIndex = 1;
-            deburgggg.Text = "hey monk!\r\nthis is in debug so be careful!";
-            // 
-            // omgbuttonilovebutton
-            // 
-            omgbuttonilovebutton.Location = new Point(255, 3);
-            omgbuttonilovebutton.Name = "omgbuttonilovebutton";
-            omgbuttonilovebutton.Size = new Size(113, 83);
-            omgbuttonilovebutton.TabIndex = 0;
-            omgbuttonilovebutton.Text = "Edit Media";
-            omgbuttonilovebutton.UseVisualStyleBackColor = true;
-            omgbuttonilovebutton.Click += button1_Click;
+            tc_vmInfo_media.UseVisualStyleBackColor = true;
             // 
             // tc_vmInfo_cpu
             // 
@@ -742,22 +761,6 @@
             tlp_vmControl.Size = new Size(518, 78);
             tlp_vmControl.TabIndex = 1;
             // 
-            // tableLayoutPanel1
-            // 
-            tableLayoutPanel1.ColumnCount = 2;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Controls.Add(deburgggg, 0, 0);
-            tableLayoutPanel1.Controls.Add(omgbuttonilovebutton, 1, 0);
-            tableLayoutPanel1.Dock = DockStyle.Fill;
-            tableLayoutPanel1.Location = new Point(3, 3);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 2;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Size = new Size(504, 257);
-            tableLayoutPanel1.TabIndex = 2;
-            // 
             // WIN_MAIN
             // 
             AcceptButton = b_startMachine;
@@ -776,6 +779,8 @@
             tlp_cpuTab.PerformLayout();
             tlp_graphicsAndSound.ResumeLayout(false);
             tlp_graphicsAndSound.PerformLayout();
+            tlp_mediaTab.ResumeLayout(false);
+            tlp_mediaTab.PerformLayout();
             gb_machineDetails.ResumeLayout(false);
             gb_machineDetails.PerformLayout();
             tc_vmInfo.ResumeLayout(false);
@@ -789,8 +794,6 @@
             tlp_main.ResumeLayout(false);
             tlp_main.PerformLayout();
             tlp_vmControl.ResumeLayout(false);
-            tableLayoutPanel1.ResumeLayout(false);
-            tableLayoutPanel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -833,11 +836,11 @@
         private TextBox t_cpuCores;
         private TextBox t_soundController;
         private TextBox t_graphicsController;
-        private TabPage tc_vmInfo_media;
         private Label deburgggg;
         private Button omgbuttonilovebutton;
         private TableLayoutPanel tlp_main;
         private TableLayoutPanel tlp_vmControl;
-        private TableLayoutPanel tableLayoutPanel1;
+        private TableLayoutPanel tlp_mediaTab;
+        private TabPage tc_vmInfo_media;
     }
 }

@@ -11,7 +11,7 @@ namespace QEMUInterface
     public class Loader
     {
         private static readonly string FILE_EXT = ".qint";
-        private static readonly string[] requiredKeys = ["name", "os", "type", "pc"];
+        private static readonly string[] requiredKeys = ["name", "os", "type", "pc", "cores", "memory"];
         private static readonly string[] acceptableFlags = ["verbose"];
 
         private string? path;
@@ -41,7 +41,17 @@ namespace QEMUInterface
                     {
                         continue;
                     }
-                    JsonNode? parsed = JsonNode.Parse(content);
+
+                    JsonNode? parsed = null;
+                    try
+                    {
+                        parsed = JsonNode.Parse(content);
+                    } catch (Exception)
+                    {
+                        MessageBox.Show($"Error loading machine: \"{file}\".\n\nThe data is malformed.", "Failed to load VM", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        continue;
+                    }
+
                     if (parsed == null)
                     {
                         continue;
@@ -54,7 +64,9 @@ namespace QEMUInterface
                         {
                             OperatingSystem = OperatingSystems.get(parsed["os"]!.ToString()),
                             PCType = type,
-                            Machine = parsed["pc"]!.ToString()
+                            Machine = parsed["pc"]!.ToString(),
+                            CPUCoreCount = int.Parse(parsed["cores"]!.ToString()),
+                            MemorySize = int.Parse(parsed["memory"]!.ToString())
                         };
 
                         if (parsed["processName"] != null && parsed["processArgs"] != null)
@@ -64,6 +76,10 @@ namespace QEMUInterface
                         }
 
                         machines.Add(vm);
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Error loading machine: \"{file}\".\n\nRequired data is missing.", "Failed to load VM", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             } catch (Exception)

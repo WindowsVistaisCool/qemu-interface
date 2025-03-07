@@ -148,7 +148,7 @@ namespace QEMUInterface
                         }
                         catch (Exception e)
                         {
-                            MessageBox.Show("ERR: " + e);
+                            MessageBox.Show("Error getting machines:\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
 

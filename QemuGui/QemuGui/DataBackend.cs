@@ -163,6 +163,12 @@ namespace QEMUInterface
             }
         }
 
+        public static string getFriendlyPCName(PC_TYPE type)
+        {
+            string[] names = ["Intel Architecture 32-bit", "Intel Itanium", "x86/x64", "ARM 64-Bit", "MIPS", "Power-PC", "RISC-V", "Motorola 68k", "Xtensa", "Other Architecture"];
+            return names[(int)type];
+        }
+
         //public static void dumpMem()
         //{
         //    allSystems.Clear();

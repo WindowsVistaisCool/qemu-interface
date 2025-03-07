@@ -42,7 +42,7 @@ namespace QEMUInterface
 
             t_machineName.Text = " " + vm.Name;
             t_machineOS.Text = " " + vm.OperatingSystem.FriendlyName;
-            t_machineType.Text = " " + vm.PCType.ToString();
+            t_machineType.Text = " " + OperatingSystems.getFriendlyPCName(vm.PCType);
             l_machineSubversion.Visible = vm.OSSubversion != "";
             t_machineSubversion.Visible = vm.OSSubversion != "";
             t_machineSubversion.Text = " " + vm.OSSubversion;

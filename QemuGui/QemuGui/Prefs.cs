@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DarkModeForms;
+using QEMUInterface.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -13,19 +15,27 @@ namespace QEMUInterface
 {
     public partial class WIN_Prefs : Form
     {
-
-        bool hasUnsavedChanges = false;
-        bool finishedInit = false;
-        bool cancelFormClosing = false;
+        private bool hasUnsavedChanges = false;
+        private bool finishedInit = false;
+        private bool cancelFormClosing = false;
+        private bool needsRepainting = false;
 
         public WIN_Prefs()
         {
+
             InitializeComponent();
-        }
 
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
+            if (Settings.Default.darkMode)
+            {
+                _ = new DarkModeCS(this)
+                {
+                    ColorMode = DarkModeCS.DisplayMode.DarkMode
+                };
+            }
 
+            rb_theme_light.Checked = !Settings.Default.darkMode;
+            rb_theme_dark.Checked = Settings.Default.darkMode;
+            needsRepainting = false;
         }
 
         private void b_selFolder_Click(object sender, EventArgs e)
@@ -71,11 +81,17 @@ namespace QEMUInterface
                 return;
             }
 
-            Properties.Settings.Default.vmFolder = t_vmFolder.Text;
-            Properties.Settings.Default.qemuFolder = t_qemuPath.Text;
-            Properties.Settings.Default.Save();
+            Settings.Default.vmFolder = t_vmFolder.Text;
+            Settings.Default.qemuFolder = t_qemuPath.Text;
+            Settings.Default.darkMode = rb_theme_dark.Checked;
+            Settings.Default.Save();
 
-            this.Close();
+            if (needsRepainting)
+            {
+                MessageBox.Show("The new theme will be applied after you restart QEMUInterface.", "Theme Change", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            Close();
         }
 
         private void b_cancel_Click(object sender, EventArgs e)
@@ -118,6 +134,11 @@ namespace QEMUInterface
             {
                 t_qemuPath.Text = fbd_qemuFolder.SelectedPath;
             }
+        }
+
+        private void triggerRepaintFlag(object sender, EventArgs e)
+        {
+            needsRepainting = true;
         }
     }
 }

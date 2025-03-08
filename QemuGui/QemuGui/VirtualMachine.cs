@@ -52,7 +52,7 @@ namespace QEMUInterface
             exitEvent += e;
         }
 
-        public void EditControlOnExit(Control c, Action<Control> rawModification)
+        public void EditControlOnExit(Action rawModification)
         {
             AddExitEvent((_, _) =>
             {
@@ -60,7 +60,7 @@ namespace QEMUInterface
                 {
                     return;
                 }
-                SafeModifyControl(c, rawModification);
+                rawModification();
             });
         }
 

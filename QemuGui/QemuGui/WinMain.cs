@@ -1,8 +1,20 @@
+using DarkModeForms;
+using QEMUInterface.Properties;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Reflection.Metadata;
 
 namespace QEMUInterface
 {
+    internal enum MACHINE_STATE
+    {
+        RUN,
+        STOP,
+        FAIL,
+        NONE
+    }
+
+
     public partial class WIN_MAIN : Form
     {
         private Loader loader;
@@ -12,9 +24,14 @@ namespace QEMUInterface
 
         private List<VirtualMachine> machines = [];
 
+        private DarkModeCS dm = null;
+        private bool isDarkMode = false;
+
         public WIN_MAIN()
         {
             InitializeComponent();
+
+            CheckDarkMode();
 
             loader = new Loader();
 
@@ -23,23 +40,35 @@ namespace QEMUInterface
             UpdateVMList();
         }
 
+        private void CheckDarkMode()
+        {
+            if (Settings.Default.darkMode)
+            {
+                dm = new DarkModeCS(this)
+                {
+                    ColorMode = DarkModeCS.DisplayMode.DarkMode
+                };
+                isDarkMode = true;
+            }
+            else
+            {
+                isDarkMode = false;
+            }
+        }
+
         private void DisplayVM(VirtualMachine? vm)
         {
-
             if (vm == null)
             {
                 b_machineSettings.Enabled = true;
+                SetMachineState(MACHINE_STATE.NONE);
                 return;
             }
 
             currentlySelectedMachineID = vm.ID;
             bool isRunning = vm.IsRunning();
-            b_startMachine.Enabled = !isRunning;
-            b_machineSettings.Enabled = !isRunning;
-            b_startMachine.BackColor = isRunning ? Color.FromKnownColor(KnownColor.Control) : Color.FromArgb(128, 255, 128);
-            l_machineState.Text = isRunning ? "RUNNING" : "STOPPED";
-            l_machineState.ForeColor = isRunning ? Color.FromArgb(0, 192, 0) : Color.FromArgb(192, 0, 0);
-
+            SetMachineState(isRunning ? MACHINE_STATE.RUN : MACHINE_STATE.STOP);
+            
             t_machineName.Text = " " + vm.Name;
             t_machineOS.Text = " " + vm.OperatingSystem.FriendlyName;
             t_machineType.Text = " " + OperatingSystems.getFriendlyPCName(vm.PCType);
@@ -50,6 +79,52 @@ namespace QEMUInterface
             t_cpuCores.Text = " " + vm.CPUCoreCount.ToString();
             t_ram.Text = " " + vm.MemorySize.ToString() + "MB";
 
+        }
+
+        private void SetMachineState(MACHINE_STATE state)
+        {
+            switch (state)
+            {
+                case MACHINE_STATE.RUN:
+                    b_startMachine.Visible = true;
+                    b_machineSettings.Visible = true;
+                    gb_machineState.Visible = true;
+
+                    b_startMachine.Enabled = false;
+                    b_machineSettings.Enabled = false;
+
+                    b_startMachine.BackColor = Color.FromKnownColor(KnownColor.Control);
+                    l_machineState.Text = "RUNNING";
+                    l_machineState.ForeColor = Color.FromArgb(0, 192, 0);
+                    break;
+                case MACHINE_STATE.STOP:
+                    b_startMachine.Visible = true;
+                    b_machineSettings.Visible = true;
+                    gb_machineState.Visible = true;
+
+                    b_startMachine.Enabled = true;
+                    b_machineSettings.Enabled = true;
+
+                    b_startMachine.BackColor = Color.FromArgb(isDarkMode ? 64 : 128, isDarkMode ? 128 : 255, isDarkMode ? 64 : 128);
+                    l_machineState.Text = "STOPPED";
+                    l_machineState.ForeColor = Color.FromArgb(isDarkMode ? 255 : 192, 0, 0);
+                    break;
+                case MACHINE_STATE.NONE:
+                    b_startMachine.Visible = false;
+                    b_machineSettings.Visible = false;
+                    gb_machineState.Visible = false;
+
+                    b_startMachine.Enabled = false;
+                    b_machineSettings.Enabled = false;
+
+                    l_machineState.Text = "NONE";
+                    l_machineState.ForeColor = Color.FromArgb(192, 192, 192);
+                    break;
+                default:
+                    l_machineState.Text = "UNKNOWN";
+                    l_machineState.ForeColor = Color.FromArgb(192, 192, 192);
+                    break;
+            }
         }
 
         private void LoadVMList()
@@ -72,22 +147,13 @@ namespace QEMUInterface
             for (int i = 0; i < machines.Count; i++)
             {
                 machines[i].ControlModifyCondition = (id) => currentlySelectedMachineID == id;
-                machines[i].EditControlOnExit(l_machineState, (c) =>
+                machines[i].EditControlOnExit(() =>
                 {
-                    c.Text = "STOPPED";
-                    c.ForeColor = Color.FromArgb(192, 0, 0);
-                });
-                machines[i].EditControlOnExit(b_startMachine, (c) =>
-                {
-                    c.BackColor = Color.FromArgb(128, 255, 128);
-                    c.Enabled = true;
+                    SetMachineState(MACHINE_STATE.STOP);
                 });
                 machines[i].EditControlOnAbort(() =>
                 {
-                    l_machineState.Text = "FAILED";
-                    l_machineState.ForeColor = Color.FromArgb(96, 0, 0);
-                    b_startMachine.Enabled = true;
-                    b_startMachine.BackColor = Color.FromArgb(128, 255, 128);
+                    SetMachineState(MACHINE_STATE.FAIL);
                 });
             }
 
@@ -102,7 +168,7 @@ namespace QEMUInterface
             {
                 currentlySelectedMachine = -1;
                 currentlySelectedMachineID = -9999;
-                DisplayVM(new VirtualMachine());
+                DisplayVM(null);
             }
         }
 

@@ -24,7 +24,7 @@ namespace QEMUInterface
 
         public Func<int, bool> ControlModifyCondition { get; set; } = (id) => true;
 
-        public string ProcessName { get; set; }  = "cmd.exe";
+        public string ProcessName { get; set; } = "cmd.exe";
         public string ProcessArgs { get; set; } = "/k echo running";
 
         private Process? process;
@@ -52,7 +52,14 @@ namespace QEMUInterface
             exitEvent += e;
         }
 
-        public void EditControlOnExit(Action rawModification)
+        /*
+         * dont ask me what this code is idek
+         * 
+         * parameter explanation - pass in the SafeModifyControl function that modifies
+         * the control
+         * the parent action can call SafeModifyControl to modify the control
+         */
+        public void EditControlOnExit(Action modification)
         {
             AddExitEvent((_, _) =>
             {
@@ -60,7 +67,7 @@ namespace QEMUInterface
                 {
                     return;
                 }
-                rawModification();
+                modification();
             });
         }
 
@@ -79,7 +86,8 @@ namespace QEMUInterface
             try
             {
                 return !process.HasExited;
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 MessageBox.Show("Failed to check run state:\n" + e.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
@@ -105,7 +113,8 @@ namespace QEMUInterface
             try
             {
                 process.Start();
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 if (abortEvent != null)
                 {
@@ -122,24 +131,13 @@ namespace QEMUInterface
                 try
                 {
                     process.Kill();
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     MessageBox.Show("Failed to kill process <X>:\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 process.Dispose();
                 process = null;
-            }
-        }
-
-        private void SafeModifyControl(Control c, Action<Control> rawModification)
-        {
-            if (c.InvokeRequired)
-            {
-                c.Invoke(delegate { SafeModifyControl(c, rawModification); });
-            }
-            else
-            {
-                rawModification.Invoke(c);
             }
         }
     }

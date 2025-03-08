@@ -6,7 +6,7 @@ using System.Reflection.Metadata;
 
 namespace QEMUInterface
 {
-    internal enum MACHINE_STATE
+    public enum MACHINE_STATE
     {
         RUN,
         STOP,
@@ -14,10 +14,15 @@ namespace QEMUInterface
         NONE
     }
 
+    public struct ThreadSafeModification(Control c, Action<Control> m)
+    {
+        public readonly Control Control = c;
+        public readonly Action<Control> Modifier = m;
+    }
 
     public partial class WIN_MAIN : Form
     {
-        private Loader loader;
+        private readonly Loader loader;
 
         private int currentlySelectedMachine = -1;
         private int currentlySelectedMachineID = -9999;
@@ -39,6 +44,7 @@ namespace QEMUInterface
 
             UpdateVMList();
         }
+
 
         private void CheckDarkMode()
         {
@@ -68,10 +74,10 @@ namespace QEMUInterface
             currentlySelectedMachineID = vm.ID;
             bool isRunning = vm.IsRunning();
             SetMachineState(isRunning ? MACHINE_STATE.RUN : MACHINE_STATE.STOP);
-            
+
             t_machineName.Text = " " + vm.Name;
             t_machineOS.Text = " " + vm.OperatingSystem.FriendlyName;
-            t_machineType.Text = " " + OperatingSystems.getFriendlyPCName(vm.PCType);
+            t_machineType.Text = " " + QemuMachines.getFriendlyPCName(vm.PCType);
             l_machineSubversion.Visible = vm.OSSubversion != "";
             t_machineSubversion.Visible = vm.OSSubversion != "";
             t_machineSubversion.Text = " " + vm.OSSubversion;
@@ -81,50 +87,113 @@ namespace QEMUInterface
 
         }
 
-        private void SetMachineState(MACHINE_STATE state)
+        private List<ThreadSafeModification> SetMachineState(MACHINE_STATE state, bool isSafe)
         {
+            List<ThreadSafeModification> modifications = [];
             switch (state)
             {
                 case MACHINE_STATE.RUN:
-                    b_startMachine.Visible = true;
-                    b_machineSettings.Visible = true;
-                    gb_machineState.Visible = true;
-
-                    b_startMachine.Enabled = false;
-                    b_machineSettings.Enabled = false;
-
-                    b_startMachine.BackColor = Color.FromKnownColor(KnownColor.Control);
-                    l_machineState.Text = "RUNNING";
-                    l_machineState.ForeColor = Color.FromArgb(0, 192, 0);
+                    modifications = [
+                        new ThreadSafeModification(b_startMachine, (c) =>
+                        {
+                            c.Visible = true;
+                            c.Enabled = false;
+                            c.BackColor = Color.FromKnownColor(KnownColor.Control);
+                        }),
+                        new ThreadSafeModification(b_machineSettings, (c) =>
+                        {
+                            c.Visible = true;
+                            c.Enabled = false;
+                        }),
+                        new ThreadSafeModification(gb_machineDetails, (c) => {
+                            c.Visible = true;
+                        }),
+                        new ThreadSafeModification(l_machineState, (c) => {
+                            c.Text = "RUNNING";
+                            c.ForeColor = Color.FromArgb(0, 192, 0);
+                        }),
+                    ];
                     break;
                 case MACHINE_STATE.STOP:
-                    b_startMachine.Visible = true;
-                    b_machineSettings.Visible = true;
-                    gb_machineState.Visible = true;
-
-                    b_startMachine.Enabled = true;
-                    b_machineSettings.Enabled = true;
-
-                    b_startMachine.BackColor = Color.FromArgb(isDarkMode ? 64 : 128, isDarkMode ? 128 : 255, isDarkMode ? 64 : 128);
-                    l_machineState.Text = "STOPPED";
-                    l_machineState.ForeColor = Color.FromArgb(isDarkMode ? 255 : 192, 0, 0);
+                    modifications = [
+                        new ThreadSafeModification(b_startMachine, (c) =>
+                        {
+                            c.Visible = true;
+                            c.Enabled = true;
+                            c.BackColor = Color.FromArgb(isDarkMode ? 64 : 128, isDarkMode ? 128 : 255, isDarkMode ? 64 : 128);;
+                        }),
+                        new ThreadSafeModification(b_machineSettings, (c) =>
+                        {
+                            c.Visible = true;
+                            c.Enabled = true;
+                        }),
+                        new ThreadSafeModification(gb_machineDetails, (c) => {
+                            c.Visible = true;
+                        }),
+                        new ThreadSafeModification(l_machineState, (c) => {
+                            c.Text = "STOPPED";
+                            c.ForeColor = Color.FromArgb(isDarkMode ? 255 : 192, 0, 0);
+                        }),
+                    ];
+                    break;
+                case MACHINE_STATE.FAIL:
+                    modifications = [
+                        new ThreadSafeModification(b_startMachine, (c) =>
+                        {
+                            c.Visible = true;
+                            c.Enabled = true;
+                            c.BackColor = Color.FromArgb(isDarkMode ? 64 : 128, isDarkMode ? 128 : 255, isDarkMode ? 64 : 128);;
+                        }),
+                        new ThreadSafeModification(b_machineSettings, (c) =>
+                        {
+                            c.Visible = true;
+                            c.Enabled = true;
+                        }),
+                        new ThreadSafeModification(gb_machineDetails, (c) => {
+                            c.Visible = true;
+                        }),
+                        new ThreadSafeModification(l_machineState, (c) => {
+                            c.Text = "FAILED";
+                            c.ForeColor = Color.FromArgb(isDarkMode ? 255 : 192, 0, 0);
+                        }),
+                    ];
                     break;
                 case MACHINE_STATE.NONE:
-                    b_startMachine.Visible = false;
-                    b_machineSettings.Visible = false;
-                    gb_machineState.Visible = false;
-
-                    b_startMachine.Enabled = false;
-                    b_machineSettings.Enabled = false;
-
-                    l_machineState.Text = "NONE";
-                    l_machineState.ForeColor = Color.FromArgb(192, 192, 192);
+                    modifications = [
+                        new ThreadSafeModification(b_startMachine, (c) =>
+                        {
+                            c.Visible = false;
+                            c.Enabled = false;
+                            c.BackColor = Color.FromArgb(isDarkMode ? 64 : 128, isDarkMode ? 128 : 255, isDarkMode ? 64 : 128);;
+                        }),
+                        new ThreadSafeModification(b_machineSettings, (c) =>
+                        {
+                            c.Visible = false;
+                            c.Enabled = false;
+                        }),
+                        new ThreadSafeModification(gb_machineDetails, (c) => {
+                            c.Visible = false;
+                        }),
+                        new ThreadSafeModification(l_machineState, (c) => {
+                            c.Text = "NONE";
+                            c.ForeColor = Color.FromArgb(192, 192, 192);
+                        }),
+                    ];
                     break;
                 default:
-                    l_machineState.Text = "UNKNOWN";
-                    l_machineState.ForeColor = Color.FromArgb(192, 192, 192);
+                    modifications.Add(new ThreadSafeModification(l_machineState, (c) =>
+                    {
+                        c.Text = "UNKNOWN";
+                        c.ForeColor = Color.FromArgb(192, 192, 192);
+                    }));
                     break;
             }
+            return modifications;
+        }
+        private void SetMachineState(MACHINE_STATE state)
+        {
+            // main thread, no safety needed so we just run the modifer without checking invocation
+            SetMachineState(state, true).ForEach((m) => m.Modifier(m.Control));
         }
 
         private void LoadVMList()
@@ -149,11 +218,11 @@ namespace QEMUInterface
                 machines[i].ControlModifyCondition = (id) => currentlySelectedMachineID == id;
                 machines[i].EditControlOnExit(() =>
                 {
-                    SetMachineState(MACHINE_STATE.STOP);
+                    SetMachineState(MACHINE_STATE.STOP, true).ForEach(SafeModifyControl);
                 });
                 machines[i].EditControlOnAbort(() =>
                 {
-                    SetMachineState(MACHINE_STATE.FAIL);
+                    SetMachineState(MACHINE_STATE.FAIL, true).ForEach(SafeModifyControl);
                 });
             }
 
@@ -174,7 +243,7 @@ namespace QEMUInterface
 
         private void ts_help_about_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Made by Kyle Rush\nFebruary 2025", "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            new WIN_ABOUT().ShowDialog();
         }
 
         private void ts_file_exit_Click(object sender, EventArgs e)
@@ -189,12 +258,18 @@ namespace QEMUInterface
 
         private void b_newMachine_Click(object sender, EventArgs e)
         {
+            VirtualMachine? newVm = null;
             new WIN_NewMachine((vm) =>
             {
                 //loader.storeVM(vm);
+                newVm = vm;
                 machines.Add(vm);
                 UpdateVMList();
             }).ShowDialog();
+            if (newVm != null)
+            {
+                new WIN_MEDIA(newVm!).ShowDialog();
+            }
         }
 
         private void b_startMachine_Click(object sender, EventArgs e)
@@ -227,6 +302,18 @@ namespace QEMUInterface
         private void button1_Click(object sender, EventArgs e)
         {
             new WIN_MEDIA(machines[currentlySelectedMachine]).ShowDialog();
+        }
+
+        public static void SafeModifyControl(ThreadSafeModification modification)
+        {
+            if (modification.Control.InvokeRequired)
+            {
+                modification.Control.Invoke(delegate { SafeModifyControl(modification); });
+            }
+            else
+            {
+                modification.Modifier.Invoke(modification.Control);
+            }
         }
     }
 }

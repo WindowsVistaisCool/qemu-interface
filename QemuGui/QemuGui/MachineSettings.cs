@@ -1,4 +1,6 @@
-﻿namespace QEMUInterface
+﻿using DarkModeForms;
+
+namespace QEMUInterface
 {
     public partial class WIN_MachineSettings : Form
     {
@@ -10,7 +12,15 @@
         {
             this.machine = machine;
             InitializeComponent();
-            Text += " - " + machine.Name;
+            Text += machine.Name;
+
+            if (Properties.Settings.Default.darkMode)
+            {
+                _ = new DarkModeCS(this)
+                {
+                    ColorMode = DarkModeCS.DisplayMode.DarkMode,
+                };
+            }
         }
 
         private void b_cancel_Click(object sender, EventArgs e)

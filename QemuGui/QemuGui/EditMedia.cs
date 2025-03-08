@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DarkModeForms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,7 +22,15 @@ namespace QEMUInterface
             this.machine = machine;
             InitializeComponent();
 
-            this.Text = "Edit Media - " + machine.Name;
+            if (Properties.Settings.Default.darkMode)
+            {
+                _ = new DarkModeCS(this)
+                {
+                    ColorMode = DarkModeCS.DisplayMode.DarkMode,
+                };
+            }
+
+            Text = "Edit Media - " + machine.Name;
         }
 
         private void WIN_MEDIA_FormClosing(object sender, FormClosingEventArgs e)

@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using DarkModeForms;
 using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Design;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace QEMUInterface
 {
@@ -35,6 +24,15 @@ namespace QEMUInterface
             vmReturner = newVMCallback;
 
             InitializeComponent();
+
+            if (Properties.Settings.Default.darkMode)
+            {
+                _ = new DarkModeCS(this)
+                {
+                    ColorMode = DarkModeCS.DisplayMode.DarkMode,
+                };
+                //MessageBox.Show("This window is not well optimized for dark mode!\n\nUse the preferences menu to switch back to light if you experience issues.", "Dark Mode", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
 
             osRadioButtons = new Dictionary<RadioButton, OS_FAMILY>
             {
@@ -107,63 +105,39 @@ namespace QEMUInterface
                     {
                         break;
                     }
+
+                    // clear listview
+                    lv_p2_type.Visible = false;
                     lv_p2_type.Items.Clear();
                     machineListPopulated = null;
 
-                    string param = "$ex = '" + OperatingSystems.getQemuCmd(selectedMachineType) + " -machine help';";
-                    string regex = @"^\s*(?<Name>[^\s]+)\s+(?<Desc>.+)$";
-                    string script = param + @"
-                        $f = $false;
-                        $(Invoke-Expression $ex) -split '\r?\n' | Select-Object -Skip 1 | ForEach-Object {
-                            if ($_ -match 'Recognized CPUID flags:') {
-                                $f = $true;
-                            }
-                            if ($f -eq $false -and $_ -match 'REGEX_GOES_HERE') {
-                                Write-Host $Matches['Name']','$Matches['Desc'];
-                            }
-                        }
-                    ".Replace("REGEX_GOES_HERE", regex);
-                    ProcessStartInfo psi = new ProcessStartInfo
-                    {
-                        FileName = "powershell.exe",
-                        Arguments = $"-NoProfile -ExecutionPolicy Bypass -Command \"{script}\"",
-                        RedirectStandardOutput = true,
-                        UseShellExecute = false,
-                        CreateNoWindow = true
-                    };
+                    // start asnyc load
+                    progressBarGeneric.Visible = true;
+                    progressBarGeneric.Value = 1;
 
-                    Process process = new Process { StartInfo = psi };
-
-                    process.Start();
-                    process.EnableRaisingEvents = true;
-                    // todo: make this control non bocking
-                    while (!process.StandardOutput.EndOfStream)
-                    {
-                        try
+                    QemuMachines.getWithAsync(selectedMachineType, (machines) => {
+                        List<ListViewItem> items = [];
+                        foreach (string[] output in machines)
                         {
-                            string[] line = process.StandardOutput.ReadLine().Split(" , ");
-                            ListViewItem lvi = new(line[0]);
-                            lvi.SubItems.Add(line[1]);
-                            lv_p2_type.Items.Add(lvi);
+                            ListViewItem lvi = new(output[0]);
+                            lvi.SubItems.Add(output[1]);
+                            items.Add(lvi);
                         }
-                        catch (Exception e)
+
+                        WIN_MAIN.SafeModifyControl(new ThreadSafeModification(lv_p2_type, (c) =>
                         {
-                            MessageBox.Show("Error getting machines:\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                    }
+                            c.Visible = true;
+                            ListView? lv = c as ListView;
+                            items.ForEach(item => lv!.Items.Add(item));
 
-                    if (lv_p2_type.Items.Count > 0)
-                    {
-                        machineListPopulated = selectedMachineType;
-                    }
-                    else
-                    {
-                        machineListPopulated = null;
-                    }
+                            lv_p2_type_machine.Width = -2;
+                            lv_p2_type_machine.Width += 2;
+                            lv_p2_type_desc.Width = -2;
+                        }));
+                        WIN_MAIN.SafeModifyControl(new ThreadSafeModification(progressBarGeneric, (c) => c.Visible = false));
 
-                    lv_p2_type_machine.Width = -2;
-                    lv_p2_type_machine.Width += 2;
-                    lv_p2_type_desc.Width = -2;
+                        machineListPopulated = lv_p2_type.Items.Count > 0 ? selectedMachineType : null;
+                    });
                     break;
                 case 3:
                     // store from page 2 if needed
@@ -172,7 +146,7 @@ namespace QEMUInterface
                         l_pfin_machine.Text = lv_p2_type.SelectedItems[0].Text;
                     }
 
-                    cb_p3_cpuType.Text = "CPU TYPE 1";
+                    //cb_p3_cpuType.Text = "CPU TYPE 1";
                     break;
                 case 4:
                     // store from page 3 if needed
@@ -261,7 +235,7 @@ namespace QEMUInterface
         private void updatePanel()
         {
             p0.Visible = currentTabPage == 0;
-            p1.Visible = currentTabPage == 1;
+            p1_os.Visible = currentTabPage == 1;
             p2_pcType.Visible = currentTabPage == 2;
             p3_hardware.Visible = currentTabPage == 3;
             pfin.Visible = currentTabPage == maxTabPage;
@@ -334,6 +308,7 @@ namespace QEMUInterface
                     CPUCoreCount = (int)num_p3_cores.Value,
                     MemorySize = (int)num_p3_ram.Value
                 };
+
                 vmReturner(vm);
             }
 

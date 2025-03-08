@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -62,6 +63,86 @@ namespace QEMUInterface
             ImageIndex = imageIndex;
         }
 
+    }
+
+    internal static class QemuMachines
+    {
+        public static string getQemuCmd(PC_TYPE type)
+        {
+            switch (type)
+            {
+                case PC_TYPE.X86_64:
+                    return "qemu-system-x86_64.exe";
+                case PC_TYPE.PPC:
+                    return "qemu-system-ppc.exe";
+                case PC_TYPE.AARCH64:
+                    return "qemu-system-aarch64.exe";
+                case PC_TYPE.MIPS:
+                    return "qemu-system-mips.exe";
+                case PC_TYPE.M68K:
+                    return "qemu-system-m68k.exe";
+                default:
+                    return "qemu-system-x86_64.exe";
+            }
+        }
+
+        public static string getFriendlyPCName(PC_TYPE type)
+        {
+            string[] names = ["Intel Architecture 32-bit", "Intel Itanium", "x86/x64", "ARM 64-Bit", "MIPS", "Power-PC", "RISC-V", "Motorola 68k", "Xtensa", "Other Architecture"];
+            return names[(int)type];
+        }
+
+        public static void getWithAsync(PC_TYPE type, Action<List<string[]>> machines)
+        {
+            string param = "$ex = '" + getQemuCmd(type) + " -machine help';";
+            string regex = @"^\s*(?<Name>[^\s]+)\s+(?<Desc>.+)$";
+            string script = param + @"
+                $f = $false;
+                $(Invoke-Expression $ex) -split '\r?\n' | Select-Object -Skip 1 | ForEach-Object {
+                    if ($_ -match 'Recognized CPUID flags:') {
+                        $f = $true;
+                    }
+                    if ($f -eq $false -and $_ -match 'REGEX_GOES_HERE') {
+                        Write-Host $Matches['Name']','$Matches['Desc'];
+                    }
+                }
+            ".Replace("REGEX_GOES_HERE", regex);
+            ProcessStartInfo psi = new()
+            {
+                FileName = "powershell.exe",
+                Arguments = $"-NoProfile -ExecutionPolicy Bypass -Command \"{script}\"",
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            Process process = new()
+            {
+                StartInfo = psi
+            };
+
+            List<string[]> lines = [];
+
+            Thread capture = new(() =>
+            {
+                while (!process.StandardOutput.EndOfStream)
+                {
+                    try
+                    {
+                        lines.Add(process.StandardOutput.ReadLine()!.Split(" , "));
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show("Error getting machines:\n\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                    }
+                }
+                machines(lines);
+            });
+
+            process.Start();
+            capture.Start();
+        }
     }
 
     internal static class OperatingSystems
@@ -143,35 +224,5 @@ namespace QEMUInterface
             loadSystems();
             return allSystems.First(os => os.FriendlyName == friendlyName);
         }
-
-        public static string getQemuCmd(PC_TYPE type)
-        {
-            switch (type)
-            {
-                case PC_TYPE.X86_64:
-                    return "qemu-system-x86_64.exe";
-                case PC_TYPE.PPC:
-                    return "qemu-system-ppc.exe";
-                case PC_TYPE.AARCH64:
-                    return "qemu-system-aarch64.exe";
-                case PC_TYPE.MIPS:
-                    return "qemu-system-mips.exe";
-                case PC_TYPE.M68K:
-                    return "qemu-system-m68k.exe";
-                default:
-                    return "qemu-system-x86_64.exe";
-            }
-        }
-
-        public static string getFriendlyPCName(PC_TYPE type)
-        {
-            string[] names = ["Intel Architecture 32-bit", "Intel Itanium", "x86/x64", "ARM 64-Bit", "MIPS", "Power-PC", "RISC-V", "Motorola 68k", "Xtensa", "Other Architecture"];
-            return names[(int)type];
-        }
-
-        //public static void dumpMem()
-        //{
-        //    allSystems.Clear();
-        //}
     }
 }

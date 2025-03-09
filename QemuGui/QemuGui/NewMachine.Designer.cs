@@ -30,6 +30,15 @@
         {
             FlowLayoutPanel fpl_bottom;
             Panel p_main;
+            SplitContainer sc_p3_main;
+            Label ls_p3_info;
+            Label ls_p3_cpu_type;
+            Label ls_p3_cpu_cores;
+            TableLayoutPanel tlp_p3_cpu_cores;
+            Label ls_p3_coreBoundaryLeft;
+            TableLayoutPanel tlp_p3_ram;
+            Label ls_p3_ramBoundaryLeft;
+            Label ls_p3_cpu_ram;
             SplitContainer sc_p0_main;
             Label ls_p0_info;
             Label ls_p0_placeholder;
@@ -46,15 +55,6 @@
             SplitContainer sc_p2_main;
             Label ls_p2_info;
             Label ls_p2_hardwareInfo;
-            SplitContainer sc_p3_main;
-            Label ls_p3_info;
-            Label ls_p3_cpu_type;
-            Label ls_p3_cpu_cores;
-            TableLayoutPanel tlp_p3_cpu_cores;
-            Label ls_p3_coreBoundaryLeft;
-            TableLayoutPanel tlp_p3_ram;
-            Label ls_p3_ramBoundaryLeft;
-            Label ls_p3_cpu_ram;
             SplitContainer sc_pfin_main;
             Label ls_pfin_info;
             Label ls_pfin_name;
@@ -63,10 +63,25 @@
             Label ls_pfin_machine;
             Label ls_pfin_ram;
             Label ls_pfin_cpu;
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WIN_NewMachine));
             b_cancel = new Button();
             b_next = new Button();
             b_back = new Button();
             progressBarGeneric = new ProgressBar();
+            p3_hardware = new Panel();
+            tc_p3_main = new TabControl();
+            tp_p3_main_cpu = new TabPage();
+            tlp_p3_cpu = new TableLayoutPanel();
+            cb_p3_cpuType = new ComboBox();
+            l_p3_coreBoundaryRight = new Label();
+            slider_p3_cores = new TrackBar();
+            num_p3_cores = new NumericUpDown();
+            l_p3_ramBoundaryRight = new Label();
+            slider_p3_ram = new TrackBar();
+            num_p3_ram = new NumericUpDown();
+            tp_p3_main_graphics = new TabPage();
+            tlp_p3_graphics = new TableLayoutPanel();
+            tp_p3_main_accel = new TabPage();
             p0 = new Panel();
             tlp_p0_basic = new TableLayoutPanel();
             t_p0_name = new TextBox();
@@ -98,20 +113,6 @@
             lv_p2_type = new ListView();
             lv_p2_type_machine = new ColumnHeader();
             lv_p2_type_desc = new ColumnHeader();
-            p3_hardware = new Panel();
-            tc_p3_main = new TabControl();
-            tp_p3_main_cpu = new TabPage();
-            tlp_p3_cpu = new TableLayoutPanel();
-            cb_p3_cpuType = new ComboBox();
-            l_p3_coreBoundaryRight = new Label();
-            slider_p3_cores = new TrackBar();
-            num_p3_cores = new NumericUpDown();
-            l_p3_ramBoundaryRight = new Label();
-            slider_p3_ram = new TrackBar();
-            num_p3_ram = new NumericUpDown();
-            tp_p3_main_graphics = new TabPage();
-            tlp_p3_graphics = new TableLayoutPanel();
-            tp_p3_main_accel = new TabPage();
             pfin = new Panel();
             tlp_pfin_main = new TableLayoutPanel();
             l_pfin_name = new Label();
@@ -122,6 +123,15 @@
             l_pfin_cpu = new Label();
             fpl_bottom = new FlowLayoutPanel();
             p_main = new Panel();
+            sc_p3_main = new SplitContainer();
+            ls_p3_info = new Label();
+            ls_p3_cpu_type = new Label();
+            ls_p3_cpu_cores = new Label();
+            tlp_p3_cpu_cores = new TableLayoutPanel();
+            ls_p3_coreBoundaryLeft = new Label();
+            tlp_p3_ram = new TableLayoutPanel();
+            ls_p3_ramBoundaryLeft = new Label();
+            ls_p3_cpu_ram = new Label();
             sc_p0_main = new SplitContainer();
             ls_p0_info = new Label();
             ls_p0_placeholder = new Label();
@@ -138,15 +148,6 @@
             sc_p2_main = new SplitContainer();
             ls_p2_info = new Label();
             ls_p2_hardwareInfo = new Label();
-            sc_p3_main = new SplitContainer();
-            ls_p3_info = new Label();
-            ls_p3_cpu_type = new Label();
-            ls_p3_cpu_cores = new Label();
-            tlp_p3_cpu_cores = new TableLayoutPanel();
-            ls_p3_coreBoundaryLeft = new Label();
-            tlp_p3_ram = new TableLayoutPanel();
-            ls_p3_ramBoundaryLeft = new Label();
-            ls_p3_cpu_ram = new Label();
             sc_pfin_main = new SplitContainer();
             ls_pfin_info = new Label();
             ls_pfin_name = new Label();
@@ -157,6 +158,21 @@
             ls_pfin_cpu = new Label();
             fpl_bottom.SuspendLayout();
             p_main.SuspendLayout();
+            p3_hardware.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)sc_p3_main).BeginInit();
+            sc_p3_main.Panel1.SuspendLayout();
+            sc_p3_main.Panel2.SuspendLayout();
+            sc_p3_main.SuspendLayout();
+            tc_p3_main.SuspendLayout();
+            tp_p3_main_cpu.SuspendLayout();
+            tlp_p3_cpu.SuspendLayout();
+            tlp_p3_cpu_cores.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)slider_p3_cores).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)num_p3_cores).BeginInit();
+            tlp_p3_ram.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)slider_p3_ram).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)num_p3_ram).BeginInit();
+            tp_p3_main_graphics.SuspendLayout();
             p0.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)sc_p0_main).BeginInit();
             sc_p0_main.Panel1.SuspendLayout();
@@ -183,21 +199,6 @@
             sc_p2_main.SuspendLayout();
             gb_p2_pcType.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
-            p3_hardware.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)sc_p3_main).BeginInit();
-            sc_p3_main.Panel1.SuspendLayout();
-            sc_p3_main.Panel2.SuspendLayout();
-            sc_p3_main.SuspendLayout();
-            tc_p3_main.SuspendLayout();
-            tp_p3_main_cpu.SuspendLayout();
-            tlp_p3_cpu.SuspendLayout();
-            tlp_p3_cpu_cores.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)slider_p3_cores).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)num_p3_cores).BeginInit();
-            tlp_p3_ram.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)slider_p3_ram).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)num_p3_ram).BeginInit();
-            tp_p3_main_graphics.SuspendLayout();
             pfin.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)sc_pfin_main).BeginInit();
             sc_pfin_main.Panel1.SuspendLayout();
@@ -272,10 +273,10 @@
             // p_main
             // 
             p_main.BackColor = SystemColors.Control;
+            p_main.Controls.Add(p3_hardware);
             p_main.Controls.Add(p0);
             p_main.Controls.Add(p1_os);
             p_main.Controls.Add(p2_pcType);
-            p_main.Controls.Add(p3_hardware);
             p_main.Controls.Add(pfin);
             p_main.Dock = DockStyle.Fill;
             p_main.Location = new Point(0, 0);
@@ -284,6 +285,340 @@
             p_main.Padding = new Padding(10);
             p_main.Size = new Size(594, 435);
             p_main.TabIndex = 3;
+            // 
+            // p3_hardware
+            // 
+            p3_hardware.Controls.Add(sc_p3_main);
+            p3_hardware.Dock = DockStyle.Fill;
+            p3_hardware.Location = new Point(10, 10);
+            p3_hardware.Name = "p3_hardware";
+            p3_hardware.Size = new Size(574, 415);
+            p3_hardware.TabIndex = 4;
+            p3_hardware.Visible = false;
+            // 
+            // sc_p3_main
+            // 
+            sc_p3_main.Dock = DockStyle.Fill;
+            sc_p3_main.IsSplitterFixed = true;
+            sc_p3_main.Location = new Point(0, 0);
+            sc_p3_main.Name = "sc_p3_main";
+            sc_p3_main.Orientation = Orientation.Horizontal;
+            // 
+            // sc_p3_main.Panel1
+            // 
+            sc_p3_main.Panel1.Controls.Add(ls_p3_info);
+            // 
+            // sc_p3_main.Panel2
+            // 
+            sc_p3_main.Panel2.Controls.Add(tc_p3_main);
+            sc_p3_main.Panel2.Padding = new Padding(5);
+            sc_p3_main.Size = new Size(574, 415);
+            sc_p3_main.SplitterDistance = 63;
+            sc_p3_main.SplitterWidth = 5;
+            sc_p3_main.TabIndex = 0;
+            sc_p3_main.TabStop = false;
+            // 
+            // ls_p3_info
+            // 
+            ls_p3_info.Dock = DockStyle.Fill;
+            ls_p3_info.Location = new Point(0, 0);
+            ls_p3_info.Margin = new Padding(0);
+            ls_p3_info.Name = "ls_p3_info";
+            ls_p3_info.Padding = new Padding(5);
+            ls_p3_info.Size = new Size(574, 63);
+            ls_p3_info.TabIndex = 1;
+            ls_p3_info.Text = "Here is where you will specifiy the hardware details of the VM.";
+            ls_p3_info.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // tc_p3_main
+            // 
+            tc_p3_main.Controls.Add(tp_p3_main_cpu);
+            tc_p3_main.Controls.Add(tp_p3_main_graphics);
+            tc_p3_main.Controls.Add(tp_p3_main_accel);
+            tc_p3_main.Dock = DockStyle.Fill;
+            tc_p3_main.Location = new Point(5, 5);
+            tc_p3_main.Margin = new Padding(5);
+            tc_p3_main.Name = "tc_p3_main";
+            tc_p3_main.SelectedIndex = 0;
+            tc_p3_main.Size = new Size(564, 337);
+            tc_p3_main.TabIndex = 0;
+            // 
+            // tp_p3_main_cpu
+            // 
+            tp_p3_main_cpu.BackColor = SystemColors.ControlLightLight;
+            tp_p3_main_cpu.BorderStyle = BorderStyle.FixedSingle;
+            tp_p3_main_cpu.Controls.Add(tlp_p3_cpu);
+            tp_p3_main_cpu.Location = new Point(4, 26);
+            tp_p3_main_cpu.Name = "tp_p3_main_cpu";
+            tp_p3_main_cpu.Padding = new Padding(3);
+            tp_p3_main_cpu.Size = new Size(556, 307);
+            tp_p3_main_cpu.TabIndex = 1;
+            tp_p3_main_cpu.Text = "CPU/RAM";
+            // 
+            // tlp_p3_cpu
+            // 
+            tlp_p3_cpu.ColumnCount = 2;
+            tlp_p3_cpu.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16F));
+            tlp_p3_cpu.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 84F));
+            tlp_p3_cpu.Controls.Add(ls_p3_cpu_type, 0, 0);
+            tlp_p3_cpu.Controls.Add(cb_p3_cpuType, 1, 0);
+            tlp_p3_cpu.Controls.Add(ls_p3_cpu_cores, 0, 1);
+            tlp_p3_cpu.Controls.Add(tlp_p3_cpu_cores, 1, 1);
+            tlp_p3_cpu.Controls.Add(tlp_p3_ram, 1, 2);
+            tlp_p3_cpu.Controls.Add(ls_p3_cpu_ram, 0, 2);
+            tlp_p3_cpu.Dock = DockStyle.Fill;
+            tlp_p3_cpu.Location = new Point(3, 3);
+            tlp_p3_cpu.Margin = new Padding(5);
+            tlp_p3_cpu.Name = "tlp_p3_cpu";
+            tlp_p3_cpu.Padding = new Padding(5, 10, 5, 5);
+            tlp_p3_cpu.RowCount = 4;
+            tlp_p3_cpu.RowStyles.Add(new RowStyle());
+            tlp_p3_cpu.RowStyles.Add(new RowStyle());
+            tlp_p3_cpu.RowStyles.Add(new RowStyle());
+            tlp_p3_cpu.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tlp_p3_cpu.Size = new Size(548, 299);
+            tlp_p3_cpu.TabIndex = 0;
+            // 
+            // ls_p3_cpu_type
+            // 
+            ls_p3_cpu_type.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            ls_p3_cpu_type.AutoSize = true;
+            ls_p3_cpu_type.Location = new Point(20, 15);
+            ls_p3_cpu_type.Margin = new Padding(5);
+            ls_p3_cpu_type.Name = "ls_p3_cpu_type";
+            ls_p3_cpu_type.Size = new Size(66, 25);
+            ls_p3_cpu_type.TabIndex = 3;
+            ls_p3_cpu_type.Text = "CPU Type:";
+            ls_p3_cpu_type.TextAlign = ContentAlignment.MiddleRight;
+            ls_p3_cpu_type.Visible = false;
+            // 
+            // cb_p3_cpuType
+            // 
+            cb_p3_cpuType.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            cb_p3_cpuType.DropDownStyle = ComboBoxStyle.DropDownList;
+            cb_p3_cpuType.FormattingEnabled = true;
+            cb_p3_cpuType.Items.AddRange(new object[] { "CPU TYPE 1", "CPU TYPE 2" });
+            cb_p3_cpuType.Location = new Point(101, 15);
+            cb_p3_cpuType.Margin = new Padding(10, 5, 10, 5);
+            cb_p3_cpuType.Name = "cb_p3_cpuType";
+            cb_p3_cpuType.Size = new Size(432, 25);
+            cb_p3_cpuType.TabIndex = 4;
+            cb_p3_cpuType.Visible = false;
+            // 
+            // ls_p3_cpu_cores
+            // 
+            ls_p3_cpu_cores.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            ls_p3_cpu_cores.AutoSize = true;
+            ls_p3_cpu_cores.Location = new Point(14, 55);
+            ls_p3_cpu_cores.Margin = new Padding(5, 10, 5, 10);
+            ls_p3_cpu_cores.Name = "ls_p3_cpu_cores";
+            ls_p3_cpu_cores.Size = new Size(72, 77);
+            ls_p3_cpu_cores.TabIndex = 5;
+            ls_p3_cpu_cores.Text = "Number of Cores:";
+            ls_p3_cpu_cores.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // tlp_p3_cpu_cores
+            // 
+            tlp_p3_cpu_cores.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            tlp_p3_cpu_cores.AutoSize = true;
+            tlp_p3_cpu_cores.ColumnCount = 3;
+            tlp_p3_cpu_cores.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 28.76023F));
+            tlp_p3_cpu_cores.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 46.40309F));
+            tlp_p3_cpu_cores.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 24.8366776F));
+            tlp_p3_cpu_cores.Controls.Add(l_p3_coreBoundaryRight, 1, 1);
+            tlp_p3_cpu_cores.Controls.Add(slider_p3_cores, 0, 0);
+            tlp_p3_cpu_cores.Controls.Add(ls_p3_coreBoundaryLeft, 0, 1);
+            tlp_p3_cpu_cores.Controls.Add(num_p3_cores, 2, 0);
+            tlp_p3_cpu_cores.Location = new Point(96, 55);
+            tlp_p3_cpu_cores.Margin = new Padding(5, 10, 5, 10);
+            tlp_p3_cpu_cores.Name = "tlp_p3_cpu_cores";
+            tlp_p3_cpu_cores.RowCount = 2;
+            tlp_p3_cpu_cores.RowStyles.Add(new RowStyle());
+            tlp_p3_cpu_cores.RowStyles.Add(new RowStyle());
+            tlp_p3_cpu_cores.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tlp_p3_cpu_cores.Size = new Size(442, 77);
+            tlp_p3_cpu_cores.TabIndex = 7;
+            // 
+            // l_p3_coreBoundaryRight
+            // 
+            l_p3_coreBoundaryRight.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            l_p3_coreBoundaryRight.AutoSize = true;
+            l_p3_coreBoundaryRight.Location = new Point(272, 55);
+            l_p3_coreBoundaryRight.Margin = new Padding(5, 0, 0, 5);
+            l_p3_coreBoundaryRight.Name = "l_p3_coreBoundaryRight";
+            l_p3_coreBoundaryRight.Size = new Size(60, 17);
+            l_p3_coreBoundaryRight.TabIndex = 8;
+            l_p3_coreBoundaryRight.Text = "16 Cores";
+            l_p3_coreBoundaryRight.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // slider_p3_cores
+            // 
+            slider_p3_cores.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tlp_p3_cpu_cores.SetColumnSpan(slider_p3_cores, 2);
+            slider_p3_cores.LargeChange = 1;
+            slider_p3_cores.Location = new Point(5, 5);
+            slider_p3_cores.Margin = new Padding(5, 5, 10, 0);
+            slider_p3_cores.Maximum = 16;
+            slider_p3_cores.Minimum = 1;
+            slider_p3_cores.Name = "slider_p3_cores";
+            slider_p3_cores.Size = new Size(317, 50);
+            slider_p3_cores.TabIndex = 6;
+            slider_p3_cores.TickStyle = TickStyle.Both;
+            slider_p3_cores.Value = 1;
+            slider_p3_cores.Scroll += tb_p3_cores_Scroll;
+            // 
+            // ls_p3_coreBoundaryLeft
+            // 
+            ls_p3_coreBoundaryLeft.AutoSize = true;
+            ls_p3_coreBoundaryLeft.Location = new Point(0, 55);
+            ls_p3_coreBoundaryLeft.Margin = new Padding(0, 0, 5, 5);
+            ls_p3_coreBoundaryLeft.Name = "ls_p3_coreBoundaryLeft";
+            ls_p3_coreBoundaryLeft.Size = new Size(47, 17);
+            ls_p3_coreBoundaryLeft.TabIndex = 7;
+            ls_p3_coreBoundaryLeft.Text = "1 Core";
+            ls_p3_coreBoundaryLeft.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // num_p3_cores
+            // 
+            num_p3_cores.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            num_p3_cores.Location = new Point(337, 15);
+            num_p3_cores.Margin = new Padding(5);
+            num_p3_cores.Maximum = new decimal(new int[] { 16, 0, 0, 0 });
+            num_p3_cores.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            num_p3_cores.Name = "num_p3_cores";
+            num_p3_cores.RightToLeft = RightToLeft.No;
+            num_p3_cores.Size = new Size(100, 25);
+            num_p3_cores.TabIndex = 9;
+            num_p3_cores.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            num_p3_cores.ValueChanged += num_p3_cores_ValueChanged;
+            // 
+            // tlp_p3_ram
+            // 
+            tlp_p3_ram.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            tlp_p3_ram.AutoSize = true;
+            tlp_p3_ram.ColumnCount = 3;
+            tlp_p3_ram.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3462524F));
+            tlp_p3_ram.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 41.64405F));
+            tlp_p3_ram.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25.0096931F));
+            tlp_p3_ram.Controls.Add(l_p3_ramBoundaryRight, 1, 1);
+            tlp_p3_ram.Controls.Add(slider_p3_ram, 0, 0);
+            tlp_p3_ram.Controls.Add(ls_p3_ramBoundaryLeft, 0, 1);
+            tlp_p3_ram.Controls.Add(num_p3_ram, 2, 0);
+            tlp_p3_ram.Location = new Point(96, 152);
+            tlp_p3_ram.Margin = new Padding(5, 10, 5, 10);
+            tlp_p3_ram.Name = "tlp_p3_ram";
+            tlp_p3_ram.RowCount = 2;
+            tlp_p3_ram.RowStyles.Add(new RowStyle());
+            tlp_p3_ram.RowStyles.Add(new RowStyle());
+            tlp_p3_ram.Size = new Size(442, 77);
+            tlp_p3_ram.TabIndex = 8;
+            // 
+            // l_p3_ramBoundaryRight
+            // 
+            l_p3_ramBoundaryRight.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            l_p3_ramBoundaryRight.AutoSize = true;
+            l_p3_ramBoundaryRight.Location = new Point(289, 55);
+            l_p3_ramBoundaryRight.Margin = new Padding(5, 0, 0, 5);
+            l_p3_ramBoundaryRight.Name = "l_p3_ramBoundaryRight";
+            l_p3_ramBoundaryRight.Size = new Size(42, 17);
+            l_p3_ramBoundaryRight.TabIndex = 8;
+            l_p3_ramBoundaryRight.Text = "16 GB";
+            l_p3_ramBoundaryRight.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // slider_p3_ram
+            // 
+            slider_p3_ram.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tlp_p3_ram.SetColumnSpan(slider_p3_ram, 2);
+            slider_p3_ram.LargeChange = 2048;
+            slider_p3_ram.Location = new Point(5, 5);
+            slider_p3_ram.Margin = new Padding(5, 5, 10, 0);
+            slider_p3_ram.Maximum = 16384;
+            slider_p3_ram.Minimum = 1;
+            slider_p3_ram.Name = "slider_p3_ram";
+            slider_p3_ram.Size = new Size(316, 50);
+            slider_p3_ram.SmallChange = 1024;
+            slider_p3_ram.TabIndex = 6;
+            slider_p3_ram.TickFrequency = 4096;
+            slider_p3_ram.TickStyle = TickStyle.Both;
+            slider_p3_ram.Value = 1;
+            slider_p3_ram.Scroll += slider_p3_ram_Scroll;
+            // 
+            // ls_p3_ramBoundaryLeft
+            // 
+            ls_p3_ramBoundaryLeft.AutoSize = true;
+            ls_p3_ramBoundaryLeft.Location = new Point(0, 55);
+            ls_p3_ramBoundaryLeft.Margin = new Padding(0, 0, 5, 5);
+            ls_p3_ramBoundaryLeft.Name = "ls_p3_ramBoundaryLeft";
+            ls_p3_ramBoundaryLeft.Size = new Size(38, 17);
+            ls_p3_ramBoundaryLeft.TabIndex = 7;
+            ls_p3_ramBoundaryLeft.Text = "1 MB";
+            ls_p3_ramBoundaryLeft.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // num_p3_ram
+            // 
+            num_p3_ram.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            num_p3_ram.Location = new Point(336, 15);
+            num_p3_ram.Margin = new Padding(5);
+            num_p3_ram.Maximum = new decimal(new int[] { 16384, 0, 0, 0 });
+            num_p3_ram.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            num_p3_ram.Name = "num_p3_ram";
+            num_p3_ram.RightToLeft = RightToLeft.No;
+            num_p3_ram.Size = new Size(101, 25);
+            num_p3_ram.TabIndex = 9;
+            num_p3_ram.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            num_p3_ram.ValueChanged += num_p3_ram_ValueChanged;
+            // 
+            // ls_p3_cpu_ram
+            // 
+            ls_p3_cpu_ram.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            ls_p3_cpu_ram.AutoSize = true;
+            ls_p3_cpu_ram.Location = new Point(47, 152);
+            ls_p3_cpu_ram.Margin = new Padding(5, 10, 5, 10);
+            ls_p3_cpu_ram.Name = "ls_p3_cpu_ram";
+            ls_p3_cpu_ram.Size = new Size(39, 77);
+            ls_p3_cpu_ram.TabIndex = 9;
+            ls_p3_cpu_ram.Text = "RAM:";
+            ls_p3_cpu_ram.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // tp_p3_main_graphics
+            // 
+            tp_p3_main_graphics.BorderStyle = BorderStyle.FixedSingle;
+            tp_p3_main_graphics.Controls.Add(tlp_p3_graphics);
+            tp_p3_main_graphics.Location = new Point(4, 26);
+            tp_p3_main_graphics.Name = "tp_p3_main_graphics";
+            tp_p3_main_graphics.Padding = new Padding(3);
+            tp_p3_main_graphics.Size = new Size(556, 307);
+            tp_p3_main_graphics.TabIndex = 3;
+            tp_p3_main_graphics.Text = "Graphics/Audio";
+            tp_p3_main_graphics.UseVisualStyleBackColor = true;
+            // 
+            // tlp_p3_graphics
+            // 
+            tlp_p3_graphics.ColumnCount = 2;
+            tlp_p3_graphics.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16F));
+            tlp_p3_graphics.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 84F));
+            tlp_p3_graphics.Dock = DockStyle.Fill;
+            tlp_p3_graphics.Location = new Point(3, 3);
+            tlp_p3_graphics.Margin = new Padding(5);
+            tlp_p3_graphics.Name = "tlp_p3_graphics";
+            tlp_p3_graphics.Padding = new Padding(5, 10, 5, 5);
+            tlp_p3_graphics.RowCount = 4;
+            tlp_p3_graphics.RowStyles.Add(new RowStyle(SizeType.Percent, 26.3077488F));
+            tlp_p3_graphics.RowStyles.Add(new RowStyle(SizeType.Percent, 26.3077488F));
+            tlp_p3_graphics.RowStyles.Add(new RowStyle(SizeType.Percent, 26.3077488F));
+            tlp_p3_graphics.RowStyles.Add(new RowStyle(SizeType.Percent, 21.0767574F));
+            tlp_p3_graphics.Size = new Size(548, 299);
+            tlp_p3_graphics.TabIndex = 1;
+            // 
+            // tp_p3_main_accel
+            // 
+            tp_p3_main_accel.Location = new Point(4, 26);
+            tp_p3_main_accel.Name = "tp_p3_main_accel";
+            tp_p3_main_accel.Padding = new Padding(3);
+            tp_p3_main_accel.Size = new Size(556, 307);
+            tp_p3_main_accel.TabIndex = 4;
+            tp_p3_main_accel.Text = "Acceleration";
+            tp_p3_main_accel.UseVisualStyleBackColor = true;
             // 
             // p0
             // 
@@ -905,340 +1240,6 @@
             ls_p2_hardwareInfo.Text = "Choose a machine:";
             ls_p2_hardwareInfo.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // p3_hardware
-            // 
-            p3_hardware.Controls.Add(sc_p3_main);
-            p3_hardware.Dock = DockStyle.Fill;
-            p3_hardware.Location = new Point(10, 10);
-            p3_hardware.Name = "p3_hardware";
-            p3_hardware.Size = new Size(574, 415);
-            p3_hardware.TabIndex = 4;
-            p3_hardware.Visible = false;
-            // 
-            // sc_p3_main
-            // 
-            sc_p3_main.Dock = DockStyle.Fill;
-            sc_p3_main.IsSplitterFixed = true;
-            sc_p3_main.Location = new Point(0, 0);
-            sc_p3_main.Name = "sc_p3_main";
-            sc_p3_main.Orientation = Orientation.Horizontal;
-            // 
-            // sc_p3_main.Panel1
-            // 
-            sc_p3_main.Panel1.Controls.Add(ls_p3_info);
-            // 
-            // sc_p3_main.Panel2
-            // 
-            sc_p3_main.Panel2.Controls.Add(tc_p3_main);
-            sc_p3_main.Panel2.Padding = new Padding(5);
-            sc_p3_main.Size = new Size(574, 415);
-            sc_p3_main.SplitterDistance = 63;
-            sc_p3_main.SplitterWidth = 5;
-            sc_p3_main.TabIndex = 0;
-            sc_p3_main.TabStop = false;
-            // 
-            // ls_p3_info
-            // 
-            ls_p3_info.Dock = DockStyle.Fill;
-            ls_p3_info.Location = new Point(0, 0);
-            ls_p3_info.Margin = new Padding(0);
-            ls_p3_info.Name = "ls_p3_info";
-            ls_p3_info.Padding = new Padding(5);
-            ls_p3_info.Size = new Size(574, 63);
-            ls_p3_info.TabIndex = 1;
-            ls_p3_info.Text = "Here is where you will specifiy the hardware details of the VM.";
-            ls_p3_info.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // tc_p3_main
-            // 
-            tc_p3_main.Controls.Add(tp_p3_main_cpu);
-            tc_p3_main.Controls.Add(tp_p3_main_graphics);
-            tc_p3_main.Controls.Add(tp_p3_main_accel);
-            tc_p3_main.Dock = DockStyle.Fill;
-            tc_p3_main.Location = new Point(5, 5);
-            tc_p3_main.Margin = new Padding(5);
-            tc_p3_main.Name = "tc_p3_main";
-            tc_p3_main.SelectedIndex = 0;
-            tc_p3_main.Size = new Size(564, 337);
-            tc_p3_main.TabIndex = 0;
-            // 
-            // tp_p3_main_cpu
-            // 
-            tp_p3_main_cpu.BackColor = SystemColors.ControlLightLight;
-            tp_p3_main_cpu.BorderStyle = BorderStyle.FixedSingle;
-            tp_p3_main_cpu.Controls.Add(tlp_p3_cpu);
-            tp_p3_main_cpu.Location = new Point(4, 26);
-            tp_p3_main_cpu.Name = "tp_p3_main_cpu";
-            tp_p3_main_cpu.Padding = new Padding(3);
-            tp_p3_main_cpu.Size = new Size(556, 307);
-            tp_p3_main_cpu.TabIndex = 1;
-            tp_p3_main_cpu.Text = "CPU/RAM";
-            // 
-            // tlp_p3_cpu
-            // 
-            tlp_p3_cpu.ColumnCount = 2;
-            tlp_p3_cpu.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16F));
-            tlp_p3_cpu.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 84F));
-            tlp_p3_cpu.Controls.Add(ls_p3_cpu_type, 0, 0);
-            tlp_p3_cpu.Controls.Add(cb_p3_cpuType, 1, 0);
-            tlp_p3_cpu.Controls.Add(ls_p3_cpu_cores, 0, 1);
-            tlp_p3_cpu.Controls.Add(tlp_p3_cpu_cores, 1, 1);
-            tlp_p3_cpu.Controls.Add(tlp_p3_ram, 1, 2);
-            tlp_p3_cpu.Controls.Add(ls_p3_cpu_ram, 0, 2);
-            tlp_p3_cpu.Dock = DockStyle.Fill;
-            tlp_p3_cpu.Location = new Point(3, 3);
-            tlp_p3_cpu.Margin = new Padding(5);
-            tlp_p3_cpu.Name = "tlp_p3_cpu";
-            tlp_p3_cpu.Padding = new Padding(5, 10, 5, 5);
-            tlp_p3_cpu.RowCount = 4;
-            tlp_p3_cpu.RowStyles.Add(new RowStyle());
-            tlp_p3_cpu.RowStyles.Add(new RowStyle());
-            tlp_p3_cpu.RowStyles.Add(new RowStyle());
-            tlp_p3_cpu.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tlp_p3_cpu.Size = new Size(548, 299);
-            tlp_p3_cpu.TabIndex = 0;
-            // 
-            // ls_p3_cpu_type
-            // 
-            ls_p3_cpu_type.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            ls_p3_cpu_type.AutoSize = true;
-            ls_p3_cpu_type.Location = new Point(20, 15);
-            ls_p3_cpu_type.Margin = new Padding(5);
-            ls_p3_cpu_type.Name = "ls_p3_cpu_type";
-            ls_p3_cpu_type.Size = new Size(66, 25);
-            ls_p3_cpu_type.TabIndex = 3;
-            ls_p3_cpu_type.Text = "CPU Type:";
-            ls_p3_cpu_type.TextAlign = ContentAlignment.MiddleRight;
-            ls_p3_cpu_type.Visible = false;
-            // 
-            // cb_p3_cpuType
-            // 
-            cb_p3_cpuType.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            cb_p3_cpuType.DropDownStyle = ComboBoxStyle.DropDownList;
-            cb_p3_cpuType.FormattingEnabled = true;
-            cb_p3_cpuType.Items.AddRange(new object[] { "CPU TYPE 1", "CPU TYPE 2" });
-            cb_p3_cpuType.Location = new Point(101, 15);
-            cb_p3_cpuType.Margin = new Padding(10, 5, 10, 5);
-            cb_p3_cpuType.Name = "cb_p3_cpuType";
-            cb_p3_cpuType.Size = new Size(432, 25);
-            cb_p3_cpuType.TabIndex = 4;
-            cb_p3_cpuType.Visible = false;
-            // 
-            // ls_p3_cpu_cores
-            // 
-            ls_p3_cpu_cores.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            ls_p3_cpu_cores.AutoSize = true;
-            ls_p3_cpu_cores.Location = new Point(14, 55);
-            ls_p3_cpu_cores.Margin = new Padding(5, 10, 5, 10);
-            ls_p3_cpu_cores.Name = "ls_p3_cpu_cores";
-            ls_p3_cpu_cores.Size = new Size(72, 77);
-            ls_p3_cpu_cores.TabIndex = 5;
-            ls_p3_cpu_cores.Text = "Number of Cores:";
-            ls_p3_cpu_cores.TextAlign = ContentAlignment.MiddleRight;
-            // 
-            // tlp_p3_cpu_cores
-            // 
-            tlp_p3_cpu_cores.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            tlp_p3_cpu_cores.AutoSize = true;
-            tlp_p3_cpu_cores.ColumnCount = 3;
-            tlp_p3_cpu_cores.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 28.76023F));
-            tlp_p3_cpu_cores.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 46.40309F));
-            tlp_p3_cpu_cores.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 24.8366776F));
-            tlp_p3_cpu_cores.Controls.Add(l_p3_coreBoundaryRight, 1, 1);
-            tlp_p3_cpu_cores.Controls.Add(slider_p3_cores, 0, 0);
-            tlp_p3_cpu_cores.Controls.Add(ls_p3_coreBoundaryLeft, 0, 1);
-            tlp_p3_cpu_cores.Controls.Add(num_p3_cores, 2, 0);
-            tlp_p3_cpu_cores.Location = new Point(96, 55);
-            tlp_p3_cpu_cores.Margin = new Padding(5, 10, 5, 10);
-            tlp_p3_cpu_cores.Name = "tlp_p3_cpu_cores";
-            tlp_p3_cpu_cores.RowCount = 2;
-            tlp_p3_cpu_cores.RowStyles.Add(new RowStyle());
-            tlp_p3_cpu_cores.RowStyles.Add(new RowStyle());
-            tlp_p3_cpu_cores.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tlp_p3_cpu_cores.Size = new Size(442, 77);
-            tlp_p3_cpu_cores.TabIndex = 7;
-            // 
-            // l_p3_coreBoundaryRight
-            // 
-            l_p3_coreBoundaryRight.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            l_p3_coreBoundaryRight.AutoSize = true;
-            l_p3_coreBoundaryRight.Location = new Point(272, 55);
-            l_p3_coreBoundaryRight.Margin = new Padding(5, 0, 0, 5);
-            l_p3_coreBoundaryRight.Name = "l_p3_coreBoundaryRight";
-            l_p3_coreBoundaryRight.Size = new Size(60, 17);
-            l_p3_coreBoundaryRight.TabIndex = 8;
-            l_p3_coreBoundaryRight.Text = "16 Cores";
-            l_p3_coreBoundaryRight.TextAlign = ContentAlignment.MiddleRight;
-            // 
-            // slider_p3_cores
-            // 
-            slider_p3_cores.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            tlp_p3_cpu_cores.SetColumnSpan(slider_p3_cores, 2);
-            slider_p3_cores.LargeChange = 1;
-            slider_p3_cores.Location = new Point(5, 5);
-            slider_p3_cores.Margin = new Padding(5, 5, 10, 0);
-            slider_p3_cores.Maximum = 16;
-            slider_p3_cores.Minimum = 1;
-            slider_p3_cores.Name = "slider_p3_cores";
-            slider_p3_cores.Size = new Size(317, 50);
-            slider_p3_cores.TabIndex = 6;
-            slider_p3_cores.TickStyle = TickStyle.Both;
-            slider_p3_cores.Value = 1;
-            slider_p3_cores.Scroll += tb_p3_cores_Scroll;
-            // 
-            // ls_p3_coreBoundaryLeft
-            // 
-            ls_p3_coreBoundaryLeft.AutoSize = true;
-            ls_p3_coreBoundaryLeft.Location = new Point(0, 55);
-            ls_p3_coreBoundaryLeft.Margin = new Padding(0, 0, 5, 5);
-            ls_p3_coreBoundaryLeft.Name = "ls_p3_coreBoundaryLeft";
-            ls_p3_coreBoundaryLeft.Size = new Size(47, 17);
-            ls_p3_coreBoundaryLeft.TabIndex = 7;
-            ls_p3_coreBoundaryLeft.Text = "1 Core";
-            ls_p3_coreBoundaryLeft.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // num_p3_cores
-            // 
-            num_p3_cores.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            num_p3_cores.Location = new Point(337, 15);
-            num_p3_cores.Margin = new Padding(5);
-            num_p3_cores.Maximum = new decimal(new int[] { 16, 0, 0, 0 });
-            num_p3_cores.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
-            num_p3_cores.Name = "num_p3_cores";
-            num_p3_cores.RightToLeft = RightToLeft.No;
-            num_p3_cores.Size = new Size(100, 25);
-            num_p3_cores.TabIndex = 9;
-            num_p3_cores.Value = new decimal(new int[] { 1, 0, 0, 0 });
-            num_p3_cores.ValueChanged += num_p3_cores_ValueChanged;
-            // 
-            // tlp_p3_ram
-            // 
-            tlp_p3_ram.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            tlp_p3_ram.AutoSize = true;
-            tlp_p3_ram.ColumnCount = 3;
-            tlp_p3_ram.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3462524F));
-            tlp_p3_ram.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 41.64405F));
-            tlp_p3_ram.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25.0096931F));
-            tlp_p3_ram.Controls.Add(l_p3_ramBoundaryRight, 1, 1);
-            tlp_p3_ram.Controls.Add(slider_p3_ram, 0, 0);
-            tlp_p3_ram.Controls.Add(ls_p3_ramBoundaryLeft, 0, 1);
-            tlp_p3_ram.Controls.Add(num_p3_ram, 2, 0);
-            tlp_p3_ram.Location = new Point(96, 152);
-            tlp_p3_ram.Margin = new Padding(5, 10, 5, 10);
-            tlp_p3_ram.Name = "tlp_p3_ram";
-            tlp_p3_ram.RowCount = 2;
-            tlp_p3_ram.RowStyles.Add(new RowStyle());
-            tlp_p3_ram.RowStyles.Add(new RowStyle());
-            tlp_p3_ram.Size = new Size(442, 77);
-            tlp_p3_ram.TabIndex = 8;
-            // 
-            // l_p3_ramBoundaryRight
-            // 
-            l_p3_ramBoundaryRight.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            l_p3_ramBoundaryRight.AutoSize = true;
-            l_p3_ramBoundaryRight.Location = new Point(289, 55);
-            l_p3_ramBoundaryRight.Margin = new Padding(5, 0, 0, 5);
-            l_p3_ramBoundaryRight.Name = "l_p3_ramBoundaryRight";
-            l_p3_ramBoundaryRight.Size = new Size(42, 17);
-            l_p3_ramBoundaryRight.TabIndex = 8;
-            l_p3_ramBoundaryRight.Text = "16 GB";
-            l_p3_ramBoundaryRight.TextAlign = ContentAlignment.MiddleRight;
-            // 
-            // slider_p3_ram
-            // 
-            slider_p3_ram.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            tlp_p3_ram.SetColumnSpan(slider_p3_ram, 2);
-            slider_p3_ram.LargeChange = 2048;
-            slider_p3_ram.Location = new Point(5, 5);
-            slider_p3_ram.Margin = new Padding(5, 5, 10, 0);
-            slider_p3_ram.Maximum = 16384;
-            slider_p3_ram.Minimum = 1;
-            slider_p3_ram.Name = "slider_p3_ram";
-            slider_p3_ram.Size = new Size(316, 50);
-            slider_p3_ram.SmallChange = 1024;
-            slider_p3_ram.TabIndex = 6;
-            slider_p3_ram.TickFrequency = 4096;
-            slider_p3_ram.TickStyle = TickStyle.Both;
-            slider_p3_ram.Value = 1;
-            slider_p3_ram.Scroll += slider_p3_ram_Scroll;
-            // 
-            // ls_p3_ramBoundaryLeft
-            // 
-            ls_p3_ramBoundaryLeft.AutoSize = true;
-            ls_p3_ramBoundaryLeft.Location = new Point(0, 55);
-            ls_p3_ramBoundaryLeft.Margin = new Padding(0, 0, 5, 5);
-            ls_p3_ramBoundaryLeft.Name = "ls_p3_ramBoundaryLeft";
-            ls_p3_ramBoundaryLeft.Size = new Size(38, 17);
-            ls_p3_ramBoundaryLeft.TabIndex = 7;
-            ls_p3_ramBoundaryLeft.Text = "1 MB";
-            ls_p3_ramBoundaryLeft.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // num_p3_ram
-            // 
-            num_p3_ram.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            num_p3_ram.Location = new Point(336, 15);
-            num_p3_ram.Margin = new Padding(5);
-            num_p3_ram.Maximum = new decimal(new int[] { 16384, 0, 0, 0 });
-            num_p3_ram.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
-            num_p3_ram.Name = "num_p3_ram";
-            num_p3_ram.RightToLeft = RightToLeft.No;
-            num_p3_ram.Size = new Size(101, 25);
-            num_p3_ram.TabIndex = 9;
-            num_p3_ram.Value = new decimal(new int[] { 1, 0, 0, 0 });
-            num_p3_ram.ValueChanged += num_p3_ram_ValueChanged;
-            // 
-            // ls_p3_cpu_ram
-            // 
-            ls_p3_cpu_ram.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            ls_p3_cpu_ram.AutoSize = true;
-            ls_p3_cpu_ram.Location = new Point(47, 152);
-            ls_p3_cpu_ram.Margin = new Padding(5, 10, 5, 10);
-            ls_p3_cpu_ram.Name = "ls_p3_cpu_ram";
-            ls_p3_cpu_ram.Size = new Size(39, 77);
-            ls_p3_cpu_ram.TabIndex = 9;
-            ls_p3_cpu_ram.Text = "RAM:";
-            ls_p3_cpu_ram.TextAlign = ContentAlignment.MiddleRight;
-            // 
-            // tp_p3_main_graphics
-            // 
-            tp_p3_main_graphics.BorderStyle = BorderStyle.FixedSingle;
-            tp_p3_main_graphics.Controls.Add(tlp_p3_graphics);
-            tp_p3_main_graphics.Location = new Point(4, 26);
-            tp_p3_main_graphics.Name = "tp_p3_main_graphics";
-            tp_p3_main_graphics.Padding = new Padding(3);
-            tp_p3_main_graphics.Size = new Size(556, 307);
-            tp_p3_main_graphics.TabIndex = 3;
-            tp_p3_main_graphics.Text = "Graphics/Audio";
-            tp_p3_main_graphics.UseVisualStyleBackColor = true;
-            // 
-            // tlp_p3_graphics
-            // 
-            tlp_p3_graphics.ColumnCount = 2;
-            tlp_p3_graphics.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16F));
-            tlp_p3_graphics.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 84F));
-            tlp_p3_graphics.Dock = DockStyle.Fill;
-            tlp_p3_graphics.Location = new Point(3, 3);
-            tlp_p3_graphics.Margin = new Padding(5);
-            tlp_p3_graphics.Name = "tlp_p3_graphics";
-            tlp_p3_graphics.Padding = new Padding(5, 10, 5, 5);
-            tlp_p3_graphics.RowCount = 4;
-            tlp_p3_graphics.RowStyles.Add(new RowStyle(SizeType.Percent, 26.3077488F));
-            tlp_p3_graphics.RowStyles.Add(new RowStyle(SizeType.Percent, 26.3077488F));
-            tlp_p3_graphics.RowStyles.Add(new RowStyle(SizeType.Percent, 26.3077488F));
-            tlp_p3_graphics.RowStyles.Add(new RowStyle(SizeType.Percent, 21.0767574F));
-            tlp_p3_graphics.Size = new Size(548, 299);
-            tlp_p3_graphics.TabIndex = 1;
-            // 
-            // tp_p3_main_accel
-            // 
-            tp_p3_main_accel.Location = new Point(4, 26);
-            tp_p3_main_accel.Name = "tp_p3_main_accel";
-            tp_p3_main_accel.Padding = new Padding(3);
-            tp_p3_main_accel.Size = new Size(556, 307);
-            tp_p3_main_accel.TabIndex = 4;
-            tp_p3_main_accel.Text = "Acceleration";
-            tp_p3_main_accel.UseVisualStyleBackColor = true;
-            // 
             // pfin
             // 
             pfin.Controls.Add(sc_pfin_main);
@@ -1466,6 +1467,7 @@
             ClientSize = new Size(594, 484);
             Controls.Add(p_main);
             Controls.Add(fpl_bottom);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MinimumSize = new Size(610, 525);
             Name = "WIN_NewMachine";
             StartPosition = FormStartPosition.CenterParent;
@@ -1473,6 +1475,24 @@
             FormClosing += WIN_NewMachine_FormClosing;
             fpl_bottom.ResumeLayout(false);
             p_main.ResumeLayout(false);
+            p3_hardware.ResumeLayout(false);
+            sc_p3_main.Panel1.ResumeLayout(false);
+            sc_p3_main.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)sc_p3_main).EndInit();
+            sc_p3_main.ResumeLayout(false);
+            tc_p3_main.ResumeLayout(false);
+            tp_p3_main_cpu.ResumeLayout(false);
+            tlp_p3_cpu.ResumeLayout(false);
+            tlp_p3_cpu.PerformLayout();
+            tlp_p3_cpu_cores.ResumeLayout(false);
+            tlp_p3_cpu_cores.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)slider_p3_cores).EndInit();
+            ((System.ComponentModel.ISupportInitialize)num_p3_cores).EndInit();
+            tlp_p3_ram.ResumeLayout(false);
+            tlp_p3_ram.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)slider_p3_ram).EndInit();
+            ((System.ComponentModel.ISupportInitialize)num_p3_ram).EndInit();
+            tp_p3_main_graphics.ResumeLayout(false);
             p0.ResumeLayout(false);
             sc_p0_main.Panel1.ResumeLayout(false);
             sc_p0_main.Panel2.ResumeLayout(false);
@@ -1511,24 +1531,6 @@
             gb_p2_pcType.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
-            p3_hardware.ResumeLayout(false);
-            sc_p3_main.Panel1.ResumeLayout(false);
-            sc_p3_main.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)sc_p3_main).EndInit();
-            sc_p3_main.ResumeLayout(false);
-            tc_p3_main.ResumeLayout(false);
-            tp_p3_main_cpu.ResumeLayout(false);
-            tlp_p3_cpu.ResumeLayout(false);
-            tlp_p3_cpu.PerformLayout();
-            tlp_p3_cpu_cores.ResumeLayout(false);
-            tlp_p3_cpu_cores.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)slider_p3_cores).EndInit();
-            ((System.ComponentModel.ISupportInitialize)num_p3_cores).EndInit();
-            tlp_p3_ram.ResumeLayout(false);
-            tlp_p3_ram.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)slider_p3_ram).EndInit();
-            ((System.ComponentModel.ISupportInitialize)num_p3_ram).EndInit();
-            tp_p3_main_graphics.ResumeLayout(false);
             pfin.ResumeLayout(false);
             sc_pfin_main.Panel1.ResumeLayout(false);
             sc_pfin_main.Panel2.ResumeLayout(false);

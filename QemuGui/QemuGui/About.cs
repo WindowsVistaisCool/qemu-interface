@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -28,6 +29,20 @@ namespace QEMUInterface
         private void CloseWindow(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void ls_name_Click(object sender, EventArgs e)
+        {
+            Messenger.MessageBox("Hey! You found me!", "Secret!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void l_github_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo()
+            {
+                FileName = "https://github.com/WindowsVistaisCool/qemu-interface",
+                UseShellExecute = true
+            });
         }
     }
 }

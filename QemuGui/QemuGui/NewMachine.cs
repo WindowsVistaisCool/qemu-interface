@@ -115,7 +115,8 @@ namespace QEMUInterface
                     progressBarGeneric.Visible = true;
                     progressBarGeneric.Value = 1;
 
-                    QemuMachines.getWithAsync(selectedMachineType, (machines) => {
+                    QemuMachines.getWithAsync(selectedMachineType, (machines) =>
+                    {
                         List<ListViewItem> items = [];
                         foreach (string[] output in machines)
                         {
@@ -124,17 +125,17 @@ namespace QEMUInterface
                             items.Add(lvi);
                         }
 
-                        WIN_MAIN.SafeModifyControl(new ThreadSafeModification(lv_p2_type, (c) =>
+
+                        new ThreadSafeModification<ListView>(lv_p2_type, (c) =>
                         {
                             c.Visible = true;
-                            ListView? lv = c as ListView;
-                            items.ForEach(item => lv!.Items.Add(item));
+                            items.ForEach(item => c.Items.Add(item));
 
                             lv_p2_type_machine.Width = -2;
                             lv_p2_type_machine.Width += 2;
                             lv_p2_type_desc.Width = -2;
-                        }));
-                        WIN_MAIN.SafeModifyControl(new ThreadSafeModification(progressBarGeneric, (c) => c.Visible = false));
+                        }).Apply();
+                        TSMPresets.SetVisible(progressBarGeneric, false).Apply();
 
                         machineListPopulated = lv_p2_type.Items.Count > 0 ? selectedMachineType : null;
                     });

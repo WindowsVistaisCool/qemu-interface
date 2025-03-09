@@ -1,5 +1,6 @@
 using DarkModeForms;
 using QEMUInterface.Properties;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reflection.Metadata;
@@ -12,12 +13,6 @@ namespace QEMUInterface
         STOP,
         FAIL,
         NONE
-    }
-
-    public struct ThreadSafeModification(Control c, Action<Control> m)
-    {
-        public readonly Control Control = c;
-        public readonly Action<Control> Modifier = m;
     }
 
     public partial class WIN_MAIN : Form
@@ -34,6 +29,7 @@ namespace QEMUInterface
 
         public WIN_MAIN()
         {
+
             InitializeComponent();
 
             CheckDarkMode();
@@ -87,28 +83,26 @@ namespace QEMUInterface
 
         }
 
-        private List<ThreadSafeModification> SetMachineState(MACHINE_STATE state, bool isSafe)
+        private TSMCollection SetMachineState(MACHINE_STATE state, bool isSafe)
         {
-            List<ThreadSafeModification> modifications = [];
+            List<IThreadSafeModification> modifications = [];
             switch (state)
             {
                 case MACHINE_STATE.RUN:
                     modifications = [
-                        new ThreadSafeModification(b_startMachine, (c) =>
+                        new ThreadSafeModification<Button>(b_startMachine, (c) =>
                         {
                             c.Visible = true;
                             c.Enabled = false;
                             c.BackColor = Color.FromKnownColor(KnownColor.Control);
                         }),
-                        new ThreadSafeModification(b_machineSettings, (c) =>
+                        new ThreadSafeModification<Button>(b_machineSettings, (c) =>
                         {
                             c.Visible = true;
                             c.Enabled = false;
                         }),
-                        new ThreadSafeModification(gb_machineDetails, (c) => {
-                            c.Visible = true;
-                        }),
-                        new ThreadSafeModification(l_machineState, (c) => {
+                        TSMPresets.SetVisible(gb_machineDetails, true),
+                        new ThreadSafeModification<Label>(l_machineState, (c) => {
                             c.Text = "RUNNING";
                             c.ForeColor = Color.FromArgb(0, 192, 0);
                         }),
@@ -116,21 +110,19 @@ namespace QEMUInterface
                     break;
                 case MACHINE_STATE.STOP:
                     modifications = [
-                        new ThreadSafeModification(b_startMachine, (c) =>
+                        new ThreadSafeModification<Button>(b_startMachine, (c) =>
                         {
                             c.Visible = true;
                             c.Enabled = true;
                             c.BackColor = Color.FromArgb(isDarkMode ? 64 : 128, isDarkMode ? 128 : 255, isDarkMode ? 64 : 128);;
                         }),
-                        new ThreadSafeModification(b_machineSettings, (c) =>
+                        new ThreadSafeModification<Button>(b_machineSettings, (c) =>
                         {
                             c.Visible = true;
                             c.Enabled = true;
                         }),
-                        new ThreadSafeModification(gb_machineDetails, (c) => {
-                            c.Visible = true;
-                        }),
-                        new ThreadSafeModification(l_machineState, (c) => {
+                        TSMPresets.SetVisible(gb_machineDetails, true),
+                        new ThreadSafeModification<Label>(l_machineState, (c) => {
                             c.Text = "STOPPED";
                             c.ForeColor = Color.FromArgb(isDarkMode ? 255 : 192, 0, 0);
                         }),
@@ -138,21 +130,19 @@ namespace QEMUInterface
                     break;
                 case MACHINE_STATE.FAIL:
                     modifications = [
-                        new ThreadSafeModification(b_startMachine, (c) =>
+                        new ThreadSafeModification<Button>(b_startMachine, (c) =>
                         {
                             c.Visible = true;
                             c.Enabled = true;
                             c.BackColor = Color.FromArgb(isDarkMode ? 64 : 128, isDarkMode ? 128 : 255, isDarkMode ? 64 : 128);;
                         }),
-                        new ThreadSafeModification(b_machineSettings, (c) =>
+                        new ThreadSafeModification<Button>(b_machineSettings, (c) =>
                         {
                             c.Visible = true;
                             c.Enabled = true;
                         }),
-                        new ThreadSafeModification(gb_machineDetails, (c) => {
-                            c.Visible = true;
-                        }),
-                        new ThreadSafeModification(l_machineState, (c) => {
+                        TSMPresets.SetVisible(gb_machineDetails, true),
+                        new ThreadSafeModification<Label>(l_machineState, (c) => {
                             c.Text = "FAILED";
                             c.ForeColor = Color.FromArgb(isDarkMode ? 255 : 192, 0, 0);
                         }),
@@ -160,40 +150,38 @@ namespace QEMUInterface
                     break;
                 case MACHINE_STATE.NONE:
                     modifications = [
-                        new ThreadSafeModification(b_startMachine, (c) =>
+                        new ThreadSafeModification<Button>(b_startMachine, (c) =>
                         {
                             c.Visible = false;
                             c.Enabled = false;
                             c.BackColor = Color.FromArgb(isDarkMode ? 64 : 128, isDarkMode ? 128 : 255, isDarkMode ? 64 : 128);;
                         }),
-                        new ThreadSafeModification(b_machineSettings, (c) =>
+                        new ThreadSafeModification<Button>(b_machineSettings, (c) =>
                         {
                             c.Visible = false;
                             c.Enabled = false;
                         }),
-                        new ThreadSafeModification(gb_machineDetails, (c) => {
-                            c.Visible = false;
-                        }),
-                        new ThreadSafeModification(l_machineState, (c) => {
+                        TSMPresets.SetVisible(gb_machineDetails, false),
+                        new ThreadSafeModification<Label>(l_machineState, (c) => {
                             c.Text = "NONE";
                             c.ForeColor = Color.FromArgb(192, 192, 192);
                         }),
                     ];
                     break;
                 default:
-                    modifications.Add(new ThreadSafeModification(l_machineState, (c) =>
+                    modifications.Add(new ThreadSafeModification<Label>(l_machineState, (c) =>
                     {
                         c.Text = "UNKNOWN";
                         c.ForeColor = Color.FromArgb(192, 192, 192);
                     }));
                     break;
             }
-            return modifications;
+            return new TSMCollection(modifications);
         }
         private void SetMachineState(MACHINE_STATE state)
         {
             // main thread, no safety needed so we just run the modifer without checking invocation
-            SetMachineState(state, true).ForEach((m) => m.Modifier(m.Control));
+            SetMachineState(state, true).ApplyUnsafe();
         }
 
         private void LoadVMList()
@@ -216,14 +204,8 @@ namespace QEMUInterface
             for (int i = 0; i < machines.Count; i++)
             {
                 machines[i].ControlModifyCondition = (id) => currentlySelectedMachineID == id;
-                machines[i].EditControlOnExit(() =>
-                {
-                    SetMachineState(MACHINE_STATE.STOP, true).ForEach(SafeModifyControl);
-                });
-                machines[i].EditControlOnAbort(() =>
-                {
-                    SetMachineState(MACHINE_STATE.FAIL, true).ForEach(SafeModifyControl);
-                });
+                machines[i].EditControlOnExit(() => SetMachineState(MACHINE_STATE.STOP, true).Apply());
+                machines[i].EditControlOnAbort(() => SetMachineState(MACHINE_STATE.FAIL, true).Apply());
             }
 
             LoadVMList();
@@ -302,18 +284,6 @@ namespace QEMUInterface
         private void button1_Click(object sender, EventArgs e)
         {
             new WIN_MEDIA(machines[currentlySelectedMachine]).ShowDialog();
-        }
-
-        public static void SafeModifyControl(ThreadSafeModification modification)
-        {
-            if (modification.Control.InvokeRequired)
-            {
-                modification.Control.Invoke(delegate { SafeModifyControl(modification); });
-            }
-            else
-            {
-                modification.Modifier.Invoke(modification.Control);
-            }
         }
     }
 }

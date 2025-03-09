@@ -762,6 +762,7 @@
             ClientSize = new Size(824, 699);
             Controls.Add(p_main);
             Controls.Add(ms);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = ms;
             MinimumSize = new Size(840, 740);
             Name = "WIN_MAIN";

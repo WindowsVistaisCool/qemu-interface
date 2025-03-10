@@ -39,6 +39,12 @@
             TableLayoutPanel tlp_p3_ram;
             Label ls_p3_ramBoundaryLeft;
             Label ls_p3_cpu_ram;
+            GroupBox gb_p3_graphics;
+            TableLayoutPanel tlp_p3_graphics;
+            Label ls_p3_graphics;
+            GroupBox gb_p3_audio;
+            TableLayoutPanel tlp_p3_audio;
+            Label ls_p3_audio;
             SplitContainer sc_p0_main;
             Label ls_p0_info;
             Label ls_p0_placeholder;
@@ -80,7 +86,9 @@
             slider_p3_ram = new TrackBar();
             num_p3_ram = new NumericUpDown();
             tp_p3_main_graphics = new TabPage();
-            tlp_p3_graphics = new TableLayoutPanel();
+            tlp_p3_main = new TableLayoutPanel();
+            cb_p3_graphics = new ComboBox();
+            cb_p3_audio = new ComboBox();
             tp_p3_main_accel = new TabPage();
             p0 = new Panel();
             tlp_p0_basic = new TableLayoutPanel();
@@ -132,6 +140,12 @@
             tlp_p3_ram = new TableLayoutPanel();
             ls_p3_ramBoundaryLeft = new Label();
             ls_p3_cpu_ram = new Label();
+            gb_p3_graphics = new GroupBox();
+            tlp_p3_graphics = new TableLayoutPanel();
+            ls_p3_graphics = new Label();
+            gb_p3_audio = new GroupBox();
+            tlp_p3_audio = new TableLayoutPanel();
+            ls_p3_audio = new Label();
             sc_p0_main = new SplitContainer();
             ls_p0_info = new Label();
             ls_p0_placeholder = new Label();
@@ -173,6 +187,11 @@
             ((System.ComponentModel.ISupportInitialize)slider_p3_ram).BeginInit();
             ((System.ComponentModel.ISupportInitialize)num_p3_ram).BeginInit();
             tp_p3_main_graphics.SuspendLayout();
+            tlp_p3_main.SuspendLayout();
+            gb_p3_graphics.SuspendLayout();
+            tlp_p3_graphics.SuspendLayout();
+            gb_p3_audio.SuspendLayout();
+            tlp_p3_audio.SuspendLayout();
             p0.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)sc_p0_main).BeginInit();
             sc_p0_main.Panel1.SuspendLayout();
@@ -583,7 +602,7 @@
             // tp_p3_main_graphics
             // 
             tp_p3_main_graphics.BorderStyle = BorderStyle.FixedSingle;
-            tp_p3_main_graphics.Controls.Add(tlp_p3_graphics);
+            tp_p3_main_graphics.Controls.Add(tlp_p3_main);
             tp_p3_main_graphics.Location = new Point(4, 26);
             tp_p3_main_graphics.Name = "tp_p3_main_graphics";
             tp_p3_main_graphics.Padding = new Padding(3);
@@ -592,23 +611,137 @@
             tp_p3_main_graphics.Text = "Graphics/Audio";
             tp_p3_main_graphics.UseVisualStyleBackColor = true;
             // 
+            // tlp_p3_main
+            // 
+            tlp_p3_main.ColumnCount = 1;
+            tlp_p3_main.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tlp_p3_main.Controls.Add(gb_p3_graphics, 0, 0);
+            tlp_p3_main.Controls.Add(gb_p3_audio, 0, 1);
+            tlp_p3_main.Dock = DockStyle.Fill;
+            tlp_p3_main.Location = new Point(3, 3);
+            tlp_p3_main.Margin = new Padding(5);
+            tlp_p3_main.Name = "tlp_p3_main";
+            tlp_p3_main.Padding = new Padding(5, 10, 5, 5);
+            tlp_p3_main.RowCount = 3;
+            tlp_p3_main.RowStyles.Add(new RowStyle());
+            tlp_p3_main.RowStyles.Add(new RowStyle());
+            tlp_p3_main.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tlp_p3_main.Size = new Size(548, 299);
+            tlp_p3_main.TabIndex = 1;
+            // 
+            // gb_p3_graphics
+            // 
+            gb_p3_graphics.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            gb_p3_graphics.AutoSize = true;
+            gb_p3_graphics.Controls.Add(tlp_p3_graphics);
+            gb_p3_graphics.Location = new Point(10, 15);
+            gb_p3_graphics.Margin = new Padding(5);
+            gb_p3_graphics.Name = "gb_p3_graphics";
+            gb_p3_graphics.Padding = new Padding(3, 3, 3, 8);
+            gb_p3_graphics.Size = new Size(528, 74);
+            gb_p3_graphics.TabIndex = 0;
+            gb_p3_graphics.TabStop = false;
+            gb_p3_graphics.Text = "Graphics";
+            // 
             // tlp_p3_graphics
             // 
+            tlp_p3_graphics.AutoSize = true;
             tlp_p3_graphics.ColumnCount = 2;
-            tlp_p3_graphics.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16F));
-            tlp_p3_graphics.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 84F));
+            tlp_p3_graphics.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 19.53125F));
+            tlp_p3_graphics.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80.46875F));
+            tlp_p3_graphics.Controls.Add(cb_p3_graphics, 1, 0);
+            tlp_p3_graphics.Controls.Add(ls_p3_graphics, 0, 0);
             tlp_p3_graphics.Dock = DockStyle.Fill;
-            tlp_p3_graphics.Location = new Point(3, 3);
+            tlp_p3_graphics.Location = new Point(3, 21);
             tlp_p3_graphics.Margin = new Padding(5);
             tlp_p3_graphics.Name = "tlp_p3_graphics";
-            tlp_p3_graphics.Padding = new Padding(5, 10, 5, 5);
-            tlp_p3_graphics.RowCount = 4;
-            tlp_p3_graphics.RowStyles.Add(new RowStyle(SizeType.Percent, 26.3077488F));
-            tlp_p3_graphics.RowStyles.Add(new RowStyle(SizeType.Percent, 26.3077488F));
-            tlp_p3_graphics.RowStyles.Add(new RowStyle(SizeType.Percent, 26.3077488F));
-            tlp_p3_graphics.RowStyles.Add(new RowStyle(SizeType.Percent, 21.0767574F));
-            tlp_p3_graphics.Size = new Size(548, 299);
-            tlp_p3_graphics.TabIndex = 1;
+            tlp_p3_graphics.Padding = new Padding(5);
+            tlp_p3_graphics.RowCount = 1;
+            tlp_p3_graphics.RowStyles.Add(new RowStyle());
+            tlp_p3_graphics.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tlp_p3_graphics.Size = new Size(522, 45);
+            tlp_p3_graphics.TabIndex = 0;
+            // 
+            // cb_p3_graphics
+            // 
+            cb_p3_graphics.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            cb_p3_graphics.DropDownStyle = ComboBoxStyle.DropDownList;
+            cb_p3_graphics.FormattingEnabled = true;
+            cb_p3_graphics.Items.AddRange(new object[] { "" });
+            cb_p3_graphics.Location = new Point(110, 10);
+            cb_p3_graphics.Margin = new Padding(5);
+            cb_p3_graphics.Name = "cb_p3_graphics";
+            cb_p3_graphics.Size = new Size(402, 25);
+            cb_p3_graphics.TabIndex = 1;
+            // 
+            // ls_p3_graphics
+            // 
+            ls_p3_graphics.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            ls_p3_graphics.AutoSize = true;
+            ls_p3_graphics.Location = new Point(31, 10);
+            ls_p3_graphics.Margin = new Padding(5);
+            ls_p3_graphics.Name = "ls_p3_graphics";
+            ls_p3_graphics.Size = new Size(69, 25);
+            ls_p3_graphics.TabIndex = 0;
+            ls_p3_graphics.Text = "Controller:";
+            ls_p3_graphics.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // gb_p3_audio
+            // 
+            gb_p3_audio.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            gb_p3_audio.AutoSize = true;
+            gb_p3_audio.Controls.Add(tlp_p3_audio);
+            gb_p3_audio.Location = new Point(10, 99);
+            gb_p3_audio.Margin = new Padding(5);
+            gb_p3_audio.Name = "gb_p3_audio";
+            gb_p3_audio.Padding = new Padding(3, 3, 3, 8);
+            gb_p3_audio.Size = new Size(528, 74);
+            gb_p3_audio.TabIndex = 3;
+            gb_p3_audio.TabStop = false;
+            gb_p3_audio.Text = "Audio";
+            // 
+            // tlp_p3_audio
+            // 
+            tlp_p3_audio.AutoSize = true;
+            tlp_p3_audio.ColumnCount = 2;
+            tlp_p3_audio.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 18.55469F));
+            tlp_p3_audio.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 81.44531F));
+            tlp_p3_audio.Controls.Add(cb_p3_audio, 1, 0);
+            tlp_p3_audio.Controls.Add(ls_p3_audio, 0, 0);
+            tlp_p3_audio.Dock = DockStyle.Fill;
+            tlp_p3_audio.Location = new Point(3, 21);
+            tlp_p3_audio.Margin = new Padding(5);
+            tlp_p3_audio.Name = "tlp_p3_audio";
+            tlp_p3_audio.Padding = new Padding(5);
+            tlp_p3_audio.RowCount = 1;
+            tlp_p3_audio.RowStyles.Add(new RowStyle());
+            tlp_p3_audio.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tlp_p3_audio.Size = new Size(522, 45);
+            tlp_p3_audio.TabIndex = 0;
+            // 
+            // cb_p3_audio
+            // 
+            cb_p3_audio.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            cb_p3_audio.DropDownStyle = ComboBoxStyle.DropDownList;
+            cb_p3_audio.FormattingEnabled = true;
+            cb_p3_audio.Items.AddRange(new object[] { "" });
+            cb_p3_audio.Location = new Point(105, 10);
+            cb_p3_audio.Margin = new Padding(5);
+            cb_p3_audio.Name = "cb_p3_audio";
+            cb_p3_audio.Size = new Size(407, 25);
+            cb_p3_audio.TabIndex = 3;
+            // 
+            // ls_p3_audio
+            // 
+            ls_p3_audio.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            ls_p3_audio.AutoSize = true;
+            ls_p3_audio.Location = new Point(50, 10);
+            ls_p3_audio.Margin = new Padding(5);
+            ls_p3_audio.Name = "ls_p3_audio";
+            ls_p3_audio.Size = new Size(45, 25);
+            ls_p3_audio.TabIndex = 2;
+            ls_p3_audio.Text = "Audio:";
+            ls_p3_audio.TextAlign = ContentAlignment.MiddleRight;
             // 
             // tp_p3_main_accel
             // 
@@ -1493,6 +1626,16 @@
             ((System.ComponentModel.ISupportInitialize)slider_p3_ram).EndInit();
             ((System.ComponentModel.ISupportInitialize)num_p3_ram).EndInit();
             tp_p3_main_graphics.ResumeLayout(false);
+            tlp_p3_main.ResumeLayout(false);
+            tlp_p3_main.PerformLayout();
+            gb_p3_graphics.ResumeLayout(false);
+            gb_p3_graphics.PerformLayout();
+            tlp_p3_graphics.ResumeLayout(false);
+            tlp_p3_graphics.PerformLayout();
+            gb_p3_audio.ResumeLayout(false);
+            gb_p3_audio.PerformLayout();
+            tlp_p3_audio.ResumeLayout(false);
+            tlp_p3_audio.PerformLayout();
             p0.ResumeLayout(false);
             sc_p0_main.Panel1.ResumeLayout(false);
             sc_p0_main.Panel2.ResumeLayout(false);
@@ -1594,7 +1737,7 @@
         private RadioButton rb_p0_emType_m68k;
         private Label l_p1_bitness;
         private FlowLayoutPanel flp_p1_bitness;
-        private TableLayoutPanel tlp_p3_graphics;
+        private TableLayoutPanel tlp_p3_main;
         private TabPage tp_p3_main_accel;
         private TableLayoutPanel tlp_pfin_main;
         private Label ls_pfin_emtype;
@@ -1607,5 +1750,9 @@
         private Label l_pfin_ram;
         private Label l_pfin_cpu;
         private ProgressBar progressBarGeneric;
+        private Label ls_p3_graphics;
+        private ComboBox cb_p3_graphics;
+        private GroupBox gb_p3_graphics;
+        private ComboBox cb_p3_audio;
     }
 }

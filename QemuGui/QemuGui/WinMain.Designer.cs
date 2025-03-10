@@ -458,6 +458,8 @@
             // lv_vmList
             // 
             lv_vmList.Activation = ItemActivation.OneClick;
+            lv_vmList.Alignment = ListViewAlignment.SnapToGrid;
+            lv_vmList.AllowColumnReorder = true;
             lv_vmList.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lv_vmList.BackColor = SystemColors.Control;
             lv_vmList.BorderStyle = BorderStyle.FixedSingle;
@@ -465,6 +467,7 @@
             lv_vmList.FullRowSelect = true;
             lv_vmList.GridLines = true;
             lv_vmList.HeaderStyle = ColumnHeaderStyle.Nonclickable;
+            lv_vmList.ImeMode = ImeMode.NoControl;
             lv_vmList.LargeImageList = il_vmList;
             lv_vmList.Location = new Point(4, 100);
             lv_vmList.MultiSelect = false;

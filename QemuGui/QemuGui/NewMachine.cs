@@ -45,6 +45,12 @@ namespace QEMUInterface
             loadOSVersions(null, null);
             onLoadPageEvents();
 
+            // find max cpu cores
+            int maxCores = Environment.ProcessorCount;
+            slider_p3_cores.Maximum = maxCores;
+            num_p3_cores.Maximum = maxCores;
+            
+            // find ram of the system
             ulong ramMB = new Microsoft.VisualBasic.Devices.ComputerInfo().TotalPhysicalMemory / (1024 * 1024);
             l_p3_ramBoundaryRight.Text = (ramMB / 1024).ToString() + " GB";
             slider_p3_ram.Maximum = (int)ramMB;
@@ -115,7 +121,7 @@ namespace QEMUInterface
                     progressBarGeneric.Visible = true;
                     progressBarGeneric.Value = 1;
 
-                    QemuMachines.getWithAsync(selectedMachineType, (machines) =>
+                    QemuMachines.getPCTypesAsync(selectedMachineType, (machines) =>
                     {
                         List<ListViewItem> items = [];
                         foreach (string[] output in machines)
@@ -146,6 +152,30 @@ namespace QEMUInterface
                     {
                         l_pfin_machine.Text = lv_p2_type.SelectedItems[0].Text;
                     }
+
+                    // load graphics options
+                    cb_p3_graphics.Items.Clear();
+                    foreach (GRAPHICS_TYPE gType in Enum.GetValues(typeof(GRAPHICS_TYPE)))
+                    {
+                        cb_p3_graphics.Items.Add(gType.ToString());
+                        cb_p3_graphics.Text = GRAPHICS_TYPE.STD.ToString();
+                    }
+
+                    cb_p3_audio.Text = "";
+                    cb_p3_audio.Items.Clear();
+                    progressBarGeneric.Visible = true;
+                    cb_p3_audio.Enabled = false;
+                    // load audio options
+                    QemuMachines.getAudioTypesAsync(selectedMachineType, (audioTypes) =>
+                    {
+                        new ThreadSafeModification<ComboBox>(cb_p3_audio, (c) =>
+                        {
+                            audioTypes.ForEach((i) => c.Items.Add(i));
+                            c.Text = audioTypes.Count > 0 ? audioTypes[0] : "";
+                            c.Enabled = true;
+                        }).Apply();
+                        TSMPresets.SetVisible(progressBarGeneric, false).Apply();
+                    });
 
                     //cb_p3_cpuType.Text = "CPU TYPE 1";
                     break;
@@ -297,8 +327,9 @@ namespace QEMUInterface
                 return;
             }
 
-            if (isOnFinishTab)
+            if (isOnFinishTab && closeInvokedByFinishButton)
             {
+                closeInvokedByFinishButton = false;
                 VirtualMachine vm = new()
                 {
                     Name = t_p0_name.Text,
@@ -307,7 +338,9 @@ namespace QEMUInterface
                     Machine = lv_p2_type.SelectedItems[0].Text,
                     OSSubversion = cb_p1_subversion.Text,
                     CPUCoreCount = (int)num_p3_cores.Value,
-                    MemorySize = (int)num_p3_ram.Value
+                    MemorySize = (int)num_p3_ram.Value,
+                    GraphicsType = (GRAPHICS_TYPE)Enum.Parse(typeof(GRAPHICS_TYPE), cb_p3_graphics.Text),
+                    AudioType = cb_p3_audio.Text,
                 };
 
                 vmReturner(vm);

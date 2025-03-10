@@ -3,7 +3,6 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace QEMUInterface
 {
-
     public class VirtualMachine
     {
         private static int defaultID = 0;
@@ -12,6 +11,7 @@ namespace QEMUInterface
 
         public string Name { get; set; }
         public int ID { get; private set; }
+
         internal PC_TYPE PCType { get; set; }
         internal OperatingSystem OperatingSystem { get; set; }
         internal string OSSubversion { get; set; } = "";
@@ -19,6 +19,9 @@ namespace QEMUInterface
 
         internal int CPUCoreCount { get; set; } = 1;
         internal int MemorySize { get; set; } = 1024;
+
+        internal GRAPHICS_TYPE GraphicsType { get; set; } = GRAPHICS_TYPE.STD;
+        internal string AudioType { get; set; } = "none";
 
         public bool VerboseRunning { get; set; } = false;
 
@@ -41,6 +44,12 @@ namespace QEMUInterface
         public VirtualMachine() : this("", "", defaultID++) { }
         public VirtualMachine(string path, string name) : this(path, name, defaultID++) { }
 
+
+        public void GenerateProcessArgs()
+        {
+            ProcessName = QemuMachines.getQemuCmd(PCType);
+
+        }
         public void Run()
         {
             DisposeProcess();
@@ -96,7 +105,7 @@ namespace QEMUInterface
 
         private void CreateProcess()
         {
-            process = new System.Diagnostics.Process();
+            process = new Process();
             process.StartInfo.FileName = ProcessName;
             process.StartInfo.Arguments = ProcessArgs;
 
@@ -134,7 +143,7 @@ namespace QEMUInterface
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show("Failed to kill process <X>:\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Failed to kill process:\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 process.Dispose();
                 process = null;

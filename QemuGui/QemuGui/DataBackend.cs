@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
+﻿using System.Diagnostics;
 
 namespace QEMUInterface
 {
@@ -29,6 +22,19 @@ namespace QEMUInterface
         M68K,
         XTENSA,
         OTHER
+    }
+
+    internal enum GRAPHICS_TYPE
+    {
+        STD,
+        CIRRUS,
+        VMWARE,
+        QXL,
+        XENFB,
+        TCX,
+        CG3,
+        VIRTIO,
+        NONE
     }
 
     internal readonly struct OperatingSystem
@@ -92,9 +98,8 @@ namespace QEMUInterface
             return names[(int)type];
         }
 
-        public static void getWithAsync(PC_TYPE type, Action<List<string[]>> machines)
-        {
-            string param = "$ex = '" + getQemuCmd(type) + " -machine help';";
+        public static void getPCTypesAsync(PC_TYPE type, Action<List<string[]>> machines) {
+            string param = $"$ex = '{getQemuCmd(type)} -machine help';";
             string regex = @"^\s*(?<Name>[^\s]+)\s+(?<Desc>.+)$";
             string script = param + @"
                 $f = $false;
@@ -107,6 +112,33 @@ namespace QEMUInterface
                     }
                 }
             ".Replace("REGEX_GOES_HERE", regex);
+            Action<List<string>> translator = (s) => {
+                List<string[]> ret = [];
+                foreach (string line in s)
+                {
+                    if (line.Length == 0) continue;
+                    string[] parts = line.Split(',');
+                    if (parts.Length < 2) continue;
+                    ret.Add([parts[0].Trim(), parts[1].Trim()]);
+                }
+                machines(ret);
+            };
+            getInternalAsync(script, translator);
+        }
+
+        public static void getAudioTypesAsync(PC_TYPE type, Action<List<string>> audio)
+        {
+            string script = $"$ex = '{getQemuCmd(type)} -audio help';" + @"
+                $(Invoke-Expression $ex) -split '\r?\n' | Select-Object -Skip 1 | ForEach-Object {
+                    Write-Host $_;
+                }
+            ";
+            getInternalAsync(script, audio);
+        }
+
+
+        private static void getInternalAsync(string script, Action<List<string>> ret)
+        {            
             ProcessStartInfo psi = new()
             {
                 FileName = "powershell.exe",
@@ -121,7 +153,7 @@ namespace QEMUInterface
                 StartInfo = psi
             };
 
-            List<string[]> lines = [];
+            List<string> lines = [];
 
             Thread capture = new(() =>
             {
@@ -129,15 +161,15 @@ namespace QEMUInterface
                 {
                     try
                     {
-                        lines.Add(process.StandardOutput.ReadLine()!.Split(" , "));
+                        lines.Add(process.StandardOutput.ReadLine()!);
                     }
                     catch (Exception e)
                     {
-                        MessageBox.Show("Error getting machines:\n\n" + e, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Internal script fetch error':\n\n{e}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         break;
                     }
                 }
-                machines(lines);
+                ret(lines);
             });
 
             process.Start();

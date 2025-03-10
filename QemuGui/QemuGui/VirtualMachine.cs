@@ -6,16 +6,16 @@ namespace QEMUInterface
     public class VirtualMachine
     {
         private static int defaultID = 0;
+        public readonly bool needsRecovery = false;
 
-        private string filePath;
-
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
+        public string FilePath { get; set; } = "";
         public int ID { get; private set; }
 
         internal PC_TYPE PCType { get; set; }
         internal OperatingSystem OperatingSystem { get; set; }
         internal string OSSubversion { get; set; } = "";
-        internal string Machine { get; set; }
+        internal string Machine { get; set; } = "";
 
         internal int CPUCoreCount { get; set; } = 1;
         internal int MemorySize { get; set; } = 1024;
@@ -28,26 +28,25 @@ namespace QEMUInterface
         public Func<int, bool> ControlModifyCondition { get; set; } = (id) => true;
 
         public string ProcessName { get; set; } = "cmd.exe";
-        public string ProcessArgs { get; set; } = "/k echo running";
+        public string ProcessArgs { get; set; } = "";
 
         private Process? process;
 
         private EventHandler? exitEvent;
         private Action? abortEvent;
 
-        public VirtualMachine(string path, string name, int id)
-        {
-            filePath = path;
-            Name = name;
-            ID = id;
+        public VirtualMachine(bool recovery) : this() {
+            needsRecovery = recovery;
         }
-        public VirtualMachine() : this("", "", defaultID++) { }
-        public VirtualMachine(string path, string name) : this(path, name, defaultID++) { }
-
+        public VirtualMachine()
+        {
+            ID = defaultID++;
+        }
 
         public void GenerateProcessArgs()
         {
             ProcessName = QemuMachines.getQemuCmd(PCType);
+            ProcessArgs = "";
 
         }
         public void Run()

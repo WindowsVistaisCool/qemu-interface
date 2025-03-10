@@ -50,5 +50,10 @@ namespace QEMUInterface
     {
         public static ThreadSafeModification<Control> SetVisible(Control control, bool visible) => new(control, (c) => c.Visible = visible);
         public static ThreadSafeModification<Control> SetEnabled(Control control, bool enabled) => new(control, (c) => c.Enabled = enabled);
+        public static ThreadSafeModification<Control> SetVisibleAndEnabled(Control control, bool visible, bool enabled) => new(control, (c) =>
+        {
+            c.Visible = visible;
+            c.Enabled = enabled;
+        });
     }
 }

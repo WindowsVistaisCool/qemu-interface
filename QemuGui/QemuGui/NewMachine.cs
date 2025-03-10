@@ -7,12 +7,15 @@ namespace QEMUInterface
     {
         private readonly Action<VirtualMachine> vmReturner;
 
+        private bool repairMode = false;
+        private VirtualMachine? machineToRepair = null;
+
         private int currentTabPage = 0;
         private readonly int maxTabPage = 4;
         private bool isOnFinishTab = false;
         private bool closeInvokedByFinishButton = false;
 
-        private readonly Dictionary<RadioButton, OS_FAMILY> osRadioButtons;
+        private Dictionary<RadioButton, OS_FAMILY> osRadioButtons = [];
 
         private PC_TYPE selectedMachineType = PC_TYPE.X86_64;
         private PC_TYPE? machineListPopulated = null;
@@ -25,6 +28,96 @@ namespace QEMUInterface
 
             InitializeComponent();
 
+            SetDarkMode();
+
+            FirstLoadEvents();
+        }
+
+        public WIN_NewMachine(Action<VirtualMachine> newVMCallback, VirtualMachine machine)
+        {
+            vmReturner = newVMCallback;
+            repairMode = true;
+            machineToRepair = machine;
+
+            InitializeComponent();
+
+            SetDarkMode();
+
+            Text = "QEMU Interface - Machine Repair";
+
+            if (machine.Name.Length > 0)
+            {
+                t_p0_name.Text = machine.Name;
+            }
+
+            try
+            {
+                rb_p1_os_win.Checked = machine.OperatingSystem.Family == OS_FAMILY.WINDOWS;
+                rb_p1_os_mac.Checked = machine.OperatingSystem.Family == OS_FAMILY.MACOS;
+                rb_p1_os_linux.Checked = machine.OperatingSystem.Family == OS_FAMILY.LINUX;
+
+                cb_p1_version.Text = machine.OperatingSystem.FriendlyName;
+                cb_p1_subversion.Text = machine.OSSubversion;
+            }
+            catch (Exception) { }
+
+            switch (machine.PCType)
+            {
+                case PC_TYPE.X86_64:
+                    rb_p0_emType_x86.Checked = true;
+                    break;
+                case PC_TYPE.PPC:
+                    rb_p0_emType_PPC.Checked = true;
+                    break;
+                case PC_TYPE.M68K:
+                    rb_p0_emType_m68k.Checked = true;
+                    break;
+                case PC_TYPE.IA_32:
+                    rb_p0_emType_i386.Checked = true;
+                    break;
+                case PC_TYPE.OTHER:
+                    rb_p0_emType_other.Checked = true;
+                    cb_p0_otherEm.Text = machine.PCType.ToString();
+                    break;
+            }
+            l_pfin_emType.Text = machine.PCType.ToString();
+
+            if (machine.Machine.Length > 0)
+            {
+                l_pfin_machine.Text = machine.Machine;
+
+            }
+
+            FirstLoadEvents();
+        }
+
+        private void FirstLoadEvents()
+        {
+            osRadioButtons = new Dictionary<RadioButton, OS_FAMILY>
+            {
+                { rb_p1_os_win, OS_FAMILY.WINDOWS },
+                { rb_p1_os_mac, OS_FAMILY.MACOS },
+                { rb_p1_os_linux, OS_FAMILY.LINUX }
+            };
+
+            UpdatePanel();
+            LoadOSVersions(null, null);
+            OnLoadPageEvents();
+
+            // find max cpu cores
+            int maxCores = Environment.ProcessorCount;
+            slider_p3_cores.Maximum = maxCores;
+            num_p3_cores.Maximum = maxCores;
+
+            // find ram of the system
+            ulong ramMB = new Microsoft.VisualBasic.Devices.ComputerInfo().TotalPhysicalMemory / (1024 * 1024);
+            l_p3_ramBoundaryRight.Text = (ramMB / 1024).ToString() + " GB";
+            slider_p3_ram.Maximum = (int)ramMB;
+            num_p3_ram.Maximum = (int)ramMB;
+        }
+
+        private void SetDarkMode()
+        {
             if (Properties.Settings.Default.darkMode)
             {
                 _ = new DarkModeCS(this)
@@ -33,33 +126,9 @@ namespace QEMUInterface
                 };
                 //MessageBox.Show("This window is not well optimized for dark mode!\n\nUse the preferences menu to switch back to light if you experience issues.", "Dark Mode", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-
-            osRadioButtons = new Dictionary<RadioButton, OS_FAMILY>
-            {
-                { rb_p1_os_win, OS_FAMILY.WINDOWS },
-                { rb_p1_os_mac, OS_FAMILY.MACOS },
-                { rb_p1_os_linux, OS_FAMILY.LINUX }
-            };
-
-            updatePanel();
-            loadOSVersions(null, null);
-            onLoadPageEvents();
-
-            // find max cpu cores
-            int maxCores = Environment.ProcessorCount;
-            slider_p3_cores.Maximum = maxCores;
-            num_p3_cores.Maximum = maxCores;
-            
-            // find ram of the system
-            ulong ramMB = new Microsoft.VisualBasic.Devices.ComputerInfo().TotalPhysicalMemory / (1024 * 1024);
-            l_p3_ramBoundaryRight.Text = (ramMB / 1024).ToString() + " GB";
-            slider_p3_ram.Maximum = (int)ramMB;
-            num_p3_ram.Maximum = (int)ramMB;
-
-            //checkNextButtonEnabled(null, null);
         }
 
-        private void onLoadPageEvents()
+        private void OnLoadPageEvents()
         {
             switch (currentTabPage)
             {
@@ -96,8 +165,8 @@ namespace QEMUInterface
                         rb_p1_bitness_32.Checked = false;
                         rb_p1_bitness_64.Checked = false;
                     }
-                    loadOSVersions(null, null);
-                    loadOSMinorVersions(null, null);
+                    LoadOSVersions(null, null);
+                    LoadOSMinorVersions(null, null);
                     break;
                 case 2:
                     // store from page 1 if needed
@@ -124,18 +193,31 @@ namespace QEMUInterface
                     QemuMachines.getPCTypesAsync(selectedMachineType, (machines) =>
                     {
                         List<ListViewItem> items = [];
+                        List<string> machineNames = [];
                         foreach (string[] output in machines)
                         {
                             ListViewItem lvi = new(output[0]);
                             lvi.SubItems.Add(output[1]);
                             items.Add(lvi);
+                            machineNames.Add(output[0]);
                         }
-
 
                         new ThreadSafeModification<ListView>(lv_p2_type, (c) =>
                         {
                             c.Visible = true;
                             items.ForEach(item => c.Items.Add(item));
+
+                            if (repairMode)
+                            {
+                                if (machineToRepair!.Machine != null)
+                                {
+                                    try
+                                    {
+                                        c.SelectedIndices.Add(machineNames.IndexOf(machineToRepair.Machine));
+                                    }
+                                    catch (ArgumentOutOfRangeException) { }
+                                }
+                            }
 
                             lv_p2_type_machine.Width = -2;
                             lv_p2_type_machine.Width += 2;
@@ -193,10 +275,10 @@ namespace QEMUInterface
                 default:
                     break;
             }
-            checkNextButtonEnabled(null, null);
+            CheckNextButton(null, null);
         }
 
-        private void loadOSVersions(object? sender, EventArgs? e)
+        private void LoadOSVersions(object? sender, EventArgs? e)
         {
             foreach (RadioButton rb in osRadioButtons.Keys)
             {
@@ -217,7 +299,7 @@ namespace QEMUInterface
             }
         }
 
-        private void loadOSMinorVersions(object? sender, EventArgs? e)
+        private void LoadOSMinorVersions(object? sender, EventArgs? e)
         {
             cb_p1_subversion.Text = "";
             cb_p1_subversion.Items.Clear();
@@ -263,7 +345,7 @@ namespace QEMUInterface
             }
         }
 
-        private void updatePanel()
+        private void UpdatePanel()
         {
             p0.Visible = currentTabPage == 0;
             p1_os.Visible = currentTabPage == 1;
@@ -272,7 +354,7 @@ namespace QEMUInterface
             pfin.Visible = currentTabPage == maxTabPage;
         }
 
-        private void checkNextButtonEnabled(object? sender, EventArgs? e)
+        private void CheckNextButton(object? sender, EventArgs? e)
         {
             bool isEnabled = false;
             switch (currentTabPage)
@@ -330,6 +412,8 @@ namespace QEMUInterface
             if (isOnFinishTab && closeInvokedByFinishButton)
             {
                 closeInvokedByFinishButton = false;
+
+                // repairs are done by creating a new VirtualMachine
                 VirtualMachine vm = new()
                 {
                     Name = t_p0_name.Text,
@@ -343,6 +427,8 @@ namespace QEMUInterface
                     AudioType = cb_p3_audio.Text,
                 };
 
+                vm.GenerateProcessArgs();
+
                 vmReturner(vm);
             }
 
@@ -352,8 +438,8 @@ namespace QEMUInterface
         {
             if (currentTabPage > 0)
             {
-                DialogResult r = MessageBox.Show("Are you sure you want to cancel?", "Cancel", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (r == DialogResult.No)
+                DialogResult result = MessageBox.Show("Are you sure you want to cancel?", "Cancel", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (result == DialogResult.No)
                 {
                     closeInvokedByFinishButton = true;
                     return;
@@ -370,7 +456,7 @@ namespace QEMUInterface
             }
 
             currentTabPage--;
-            updatePanel();
+            UpdatePanel();
 
             if (isOnFinishTab)
             {
@@ -386,7 +472,7 @@ namespace QEMUInterface
 
             b_next.Enabled = false;
 
-            onLoadPageEvents();
+            OnLoadPageEvents();
         }
 
         private void b_next_Click(object sender, EventArgs e)
@@ -399,7 +485,7 @@ namespace QEMUInterface
             }
             currentTabPage++;
             b_back.Enabled = true;
-            updatePanel();
+            UpdatePanel();
 
             if (currentTabPage >= maxTabPage)
             {
@@ -409,7 +495,7 @@ namespace QEMUInterface
 
             b_next.Enabled = false;
 
-            onLoadPageEvents();
+            OnLoadPageEvents();
         }
 
 
@@ -429,7 +515,7 @@ namespace QEMUInterface
         {
             _ = Enum.TryParse(cb_p0_otherEm.Text.ToUpper(), out PC_TYPE type);
             selectedMachineType = type;
-            checkNextButtonEnabled(sender, e);
+            CheckNextButton(sender, e);
         }
 
         private void rb_p0_emType_x86_CheckedChanged(object sender, EventArgs e)

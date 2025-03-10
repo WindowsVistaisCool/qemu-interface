@@ -36,7 +36,7 @@ namespace QEMUInterface
 
             loader = new Loader();
 
-            machines = loader.populate();
+            machines = loader.Populate();
 
             UpdateVMList();
         }
@@ -96,12 +96,9 @@ namespace QEMUInterface
                             c.Enabled = false;
                             c.BackColor = Color.FromKnownColor(KnownColor.Control);
                         }),
-                        new ThreadSafeModification<Button>(b_machineSettings, (c) =>
-                        {
-                            c.Visible = true;
-                            c.Enabled = false;
-                        }),
+                        TSMPresets.SetVisibleAndEnabled(b_machineSettings, true, false),
                         TSMPresets.SetVisible(gb_machineDetails, true),
+                        TSMPresets.SetVisible(tc_vmInfo, true),
                         new ThreadSafeModification<Label>(l_machineState, (c) => {
                             c.Text = "RUNNING";
                             c.ForeColor = Color.FromArgb(0, 192, 0);
@@ -116,12 +113,9 @@ namespace QEMUInterface
                             c.Enabled = true;
                             c.BackColor = Color.FromArgb(isDarkMode ? 64 : 128, isDarkMode ? 128 : 255, isDarkMode ? 64 : 128);;
                         }),
-                        new ThreadSafeModification<Button>(b_machineSettings, (c) =>
-                        {
-                            c.Visible = true;
-                            c.Enabled = true;
-                        }),
+                        TSMPresets.SetVisibleAndEnabled(b_machineSettings, true, true),
                         TSMPresets.SetVisible(gb_machineDetails, true),
+                        TSMPresets.SetVisible(tc_vmInfo, true),
                         new ThreadSafeModification<Label>(l_machineState, (c) => {
                             c.Text = "STOPPED";
                             c.ForeColor = Color.FromArgb(isDarkMode ? 255 : 192, 0, 0);
@@ -136,12 +130,9 @@ namespace QEMUInterface
                             c.Enabled = true;
                             c.BackColor = Color.FromArgb(isDarkMode ? 64 : 128, isDarkMode ? 128 : 255, isDarkMode ? 64 : 128);;
                         }),
-                        new ThreadSafeModification<Button>(b_machineSettings, (c) =>
-                        {
-                            c.Visible = true;
-                            c.Enabled = true;
-                        }),
+                        TSMPresets.SetVisibleAndEnabled(b_machineSettings, true, true),
                         TSMPresets.SetVisible(gb_machineDetails, true),
+                        TSMPresets.SetVisible(tc_vmInfo, true),
                         new ThreadSafeModification<Label>(l_machineState, (c) => {
                             c.Text = "FAILED";
                             c.ForeColor = Color.FromArgb(isDarkMode ? 255 : 192, 0, 0);
@@ -156,12 +147,9 @@ namespace QEMUInterface
                             c.Enabled = false;
                             c.BackColor = Color.FromArgb(isDarkMode ? 64 : 128, isDarkMode ? 128 : 255, isDarkMode ? 64 : 128);;
                         }),
-                        new ThreadSafeModification<Button>(b_machineSettings, (c) =>
-                        {
-                            c.Visible = false;
-                            c.Enabled = false;
-                        }),
+                        TSMPresets.SetVisibleAndEnabled(b_machineSettings, false, false),
                         TSMPresets.SetVisible(gb_machineDetails, false),
+                        TSMPresets.SetVisible(tc_vmInfo, false),
                         new ThreadSafeModification<Label>(l_machineState, (c) => {
                             c.Text = "NONE";
                             c.ForeColor = Color.FromArgb(192, 192, 192);
@@ -169,11 +157,13 @@ namespace QEMUInterface
                     ];
                     break;
                 default:
-                    modifications.Add(new ThreadSafeModification<Label>(l_machineState, (c) =>
-                    {
-                        c.Text = "UNKNOWN";
-                        c.ForeColor = Color.FromArgb(192, 192, 192);
-                    }));
+                    modifications = [
+                        new ThreadSafeModification<Label>(l_machineState, (c) =>
+                        {
+                            c.Text = "UNKNOWN";
+                            c.ForeColor = Color.FromArgb(192, 192, 192);
+                        }),
+                    ];
                     break;
             }
             return new TSMCollection(modifications);
@@ -243,7 +233,7 @@ namespace QEMUInterface
             VirtualMachine? newVm = null;
             new WIN_NewMachine((vm) =>
             {
-                //loader.storeVM(vm);
+                loader.StoreVM(vm);
                 newVm = vm;
                 machines.Add(vm);
                 UpdateVMList();
@@ -277,7 +267,7 @@ namespace QEMUInterface
 
         private void ts_file_refresh_Click(object sender, EventArgs e)
         {
-            machines = loader.populate();
+            machines = loader.Populate();
             UpdateVMList();
         }
 

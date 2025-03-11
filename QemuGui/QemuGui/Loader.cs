@@ -15,7 +15,7 @@ namespace QEMUInterface
         private static readonly string[] requiredKeys = ["name", "os", "type", "machine", "cores", "memory", "graphics", "audio"];
         private static readonly string[] acceptableFlags = ["verbose"];
 
-        private string? path;
+        private string path;
 
         public Loader()
         {
@@ -103,8 +103,8 @@ namespace QEMUInterface
                                 vm.PCType = pcType;
                             }
                             catch (Exception) { }
-                            try { vm.Machine = parsed["machine"]!.ToString(); }
-                            catch (Exception) { }
+                            try { vm.Machine = parsed["machine"].ToString(); }
+                            catch (NullReferenceException) { }
                             try { vm.CPUCoreCount = int.Parse(parsed["cores"].ToString()); }
                             catch (Exception) { }
                             try { vm.MemorySize = int.Parse(parsed["memory"].ToString()); }

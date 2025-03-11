@@ -1,5 +1,4 @@
 ﻿using DarkModeForms;
-using System.Diagnostics;
 
 namespace QEMUInterface
 {
@@ -17,10 +16,10 @@ namespace QEMUInterface
 
         private Dictionary<RadioButton, OS_FAMILY> osRadioButtons = [];
 
-        private PC_TYPE selectedMachineType = PC_TYPE.X86_64;
-        private PC_TYPE? machineListPopulated = null;
         private OS_FAMILY selectedFamily = OS_FAMILY.WINDOWS;
         private OperatingSystem selectedOS = OperatingSystems.get("Windows 11");
+        private PC_TYPE selectedMachineType = PC_TYPE.X86_64;
+        private PC_TYPE? machineListPopulated = null;
 
         public WIN_NewMachine(Action<VirtualMachine> newVMCallback)
         {
@@ -44,23 +43,15 @@ namespace QEMUInterface
             SetDarkMode();
 
             Text = "QEMU Interface - Machine Repair";
+            
+            FirstLoadEvents();
 
             if (machine.Name.Length > 0)
             {
                 t_p0_name.Text = machine.Name;
             }
 
-            try
-            {
-                rb_p1_os_win.Checked = machine.OperatingSystem.Family == OS_FAMILY.WINDOWS;
-                rb_p1_os_mac.Checked = machine.OperatingSystem.Family == OS_FAMILY.MACOS;
-                rb_p1_os_linux.Checked = machine.OperatingSystem.Family == OS_FAMILY.LINUX;
-
-                cb_p1_version.Text = machine.OperatingSystem.FriendlyName;
-                cb_p1_subversion.Text = machine.OSSubversion;
-            }
-            catch (Exception) { }
-
+            selectedMachineType = machine.PCType;
             switch (machine.PCType)
             {
                 case PC_TYPE.X86_64:
@@ -82,13 +73,36 @@ namespace QEMUInterface
             }
             l_pfin_emType.Text = machine.PCType.ToString();
 
+            try
+            {
+                selectedFamily = machine.OperatingSystem.Family;
+                selectedOS = machine.OperatingSystem;
+                rb_p1_os_win.Checked = selectedFamily == OS_FAMILY.WINDOWS;
+                rb_p1_os_mac.Checked = selectedFamily == OS_FAMILY.MACOS;
+                rb_p1_os_linux.Checked = selectedFamily == OS_FAMILY.LINUX;
+                LoadOSVersions(selectedOS);
+                cb_p1_version.Text = machine.OperatingSystem.FriendlyName;
+                LoadOSMinorVersions(null, null);
+            }
+            catch (Exception) { }
+
             if (machine.Machine.Length > 0)
             {
                 l_pfin_machine.Text = machine.Machine;
-
             }
 
-            FirstLoadEvents();
+            if (machine.CPUCoreCount > 0)
+            {
+                num_p3_cores.Value = machine.CPUCoreCount;
+                slider_p3_cores.Value = machine.CPUCoreCount;
+            }
+
+            if (machine.MemorySize > 0)
+            {
+                num_p3_ram.Value = machine.MemorySize;
+                slider_p3_ram.Value = machine.MemorySize;
+            }
+
         }
 
         private void FirstLoadEvents()
@@ -153,7 +167,11 @@ namespace QEMUInterface
                         entry.Key.Enabled = OperatingSystems.anyInFamilyCompatability(entry.Value, selectedMachineType);
                         if (entry.Key.Enabled && !selectedFirstRadio)
                         {
-                            entry.Key.Checked = true;
+                            if (!repairMode)
+                            {
+                                entry.Key.Checked = true;
+                            }
+
                             selectedFirstRadio = true;
                         }
                     }
@@ -278,7 +296,7 @@ namespace QEMUInterface
             CheckNextButton(null, null);
         }
 
-        private void LoadOSVersions(object? sender, EventArgs? e)
+        private void LoadOSVersions(OperatingSystem? os)
         {
             foreach (RadioButton rb in osRadioButtons.Keys)
             {
@@ -286,7 +304,7 @@ namespace QEMUInterface
                 {
                     _ = Enum.TryParse(rb.Text.ToUpper(), out OS_FAMILY family);
                     selectedFamily = family;
-                    selectedOS = OperatingSystems.getFamily(selectedFamily)[0];
+                    selectedOS = (OperatingSystem)(os == null ? OperatingSystems.getFamily(selectedFamily)[0] : os);
                     break;
                 }
             }
@@ -297,6 +315,10 @@ namespace QEMUInterface
             {
                 cb_p1_version.Text = cb_p1_version.Items[0]!.ToString();
             }
+        }
+        private void LoadOSVersions(object? sender, EventArgs? e)
+        {
+            LoadOSVersions(null);
         }
 
         private void LoadOSMinorVersions(object? sender, EventArgs? e)

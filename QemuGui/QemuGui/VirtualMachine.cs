@@ -28,7 +28,7 @@ namespace QEMUInterface
         public Func<int, bool> ControlModifyCondition { get; set; } = (id) => true;
 
         public string ProcessName { get; set; } = "cmd.exe";
-        public string ProcessArgs { get; set; } = "";
+        public string? ProcessArgs { get; set; }
 
         private Process? process;
 
@@ -46,7 +46,7 @@ namespace QEMUInterface
         public void GenerateProcessArgs()
         {
             ProcessName = QemuMachines.getQemuCmd(PCType);
-            ProcessArgs = "";
+            ProcessArgs ??= "";
 
         }
         public void Run()

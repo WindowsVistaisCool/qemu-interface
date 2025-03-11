@@ -112,6 +112,7 @@ namespace QEMUInterface
                             c.Visible = true;
                             c.Enabled = true;
                             c.BackColor = Color.FromArgb(isDarkMode ? 64 : 128, isDarkMode ? 128 : 255, isDarkMode ? 64 : 128);;
+                            ts_machine_new.Enabled = true;
                         }),
                         TSMPresets.SetVisibleAndEnabled(b_machineSettings, true, true),
                         TSMPresets.SetVisible(gb_machineDetails, true),

@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reflection.Metadata;
+using System.Windows.Forms;
 
 namespace QEMUInterface
 {
@@ -84,7 +85,6 @@ namespace QEMUInterface
             t_graphicsController.Text = " " + vm.GraphicsType.ToString();
             //t_graphicsVRAM.Text = " " + vm.GraphicsVRAM.ToString() + "MB";
             t_audio.Text = " " + vm.AudioType;
-
 
         }
 
@@ -185,6 +185,7 @@ namespace QEMUInterface
 
         private void LoadVMList()
         {
+            p_lvWrapper.BackColor = lv_vmList.BackColor;
             for (int i = 0; i < machines.Count; i++)
             {
                 ListViewItem lvi = new(machines[i].Name)
@@ -193,6 +194,9 @@ namespace QEMUInterface
                 };
                 lvi.SubItems.Add(machines[i].OperatingSystem.FriendlyName);
                 lvi.SubItems.Add(machines[i].ID.ToString());
+
+
+
                 lv_vmList.Items.Add(lvi);
             }
         }
@@ -208,18 +212,18 @@ namespace QEMUInterface
             }
 
             LoadVMList();
-            if (machines.Count > 0)
-            {
-                currentlySelectedMachine = 0;
-                currentlySelectedMachineID = machines[0].ID;
-                DisplayVM(machines[currentlySelectedMachine]);
-            }
-            else
-            {
-                currentlySelectedMachine = -1;
-                currentlySelectedMachineID = -9999;
-                DisplayVM(null);
-            }
+            //if (machines.Count > 0)
+            //{
+            //    currentlySelectedMachine = 0;
+            //    currentlySelectedMachineID = machines[0].ID;
+            //    DisplayVM(machines[currentlySelectedMachine]);
+            //}
+            //else
+            //{
+            currentlySelectedMachine = -1;
+            currentlySelectedMachineID = -9999;
+            DisplayVM(null);
+            //}
         }
 
         private void ts_help_about_Click(object sender, EventArgs e)
@@ -268,10 +272,15 @@ namespace QEMUInterface
 
         private void lv_vmList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (lv_vmList.SelectedIndices.Count == 0) return;
+            if (lv_vmList.SelectedIndices.Count == 0)
+            {
+                currentlySelectedMachine = -1;
+                currentlySelectedMachineID = -9999;
+                DisplayVM(null);
+                return;
+            }
             currentlySelectedMachine = lv_vmList.SelectedIndices[0];
             DisplayVM(machines[currentlySelectedMachine]);
-
         }
 
         private void ts_file_refresh_Click(object sender, EventArgs e)
@@ -283,6 +292,23 @@ namespace QEMUInterface
         private void button1_Click(object sender, EventArgs e)
         {
             new WIN_MEDIA(machines[currentlySelectedMachine]).ShowDialog();
+        }
+
+        private void createShortcutOnDesktopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lv_vmList_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                var focusedItem = lv_vmList.FocusedItem;
+                if (focusedItem != null && focusedItem.Bounds.Contains(e.Location))
+                {
+                    cms_vmList.Show(Cursor.Position);
+                }
+            }
         }
     }
 }

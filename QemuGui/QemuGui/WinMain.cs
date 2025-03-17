@@ -81,6 +81,11 @@ namespace QEMUInterface
             t_cpuCores.Text = " " + vm.CPUCoreCount.ToString();
             t_ram.Text = " " + vm.MemorySize.ToString() + "MB";
 
+            t_graphicsController.Text = " " + vm.GraphicsType.ToString();
+            //t_graphicsVRAM.Text = " " + vm.GraphicsVRAM.ToString() + "MB";
+            t_audio.Text = " " + vm.AudioType;
+
+
         }
 
         private TSMCollection SetMachineState(MACHINE_STATE state, bool isSafe)
@@ -95,6 +100,7 @@ namespace QEMUInterface
                             c.Visible = true;
                             c.Enabled = false;
                             c.BackColor = Color.FromKnownColor(KnownColor.Control);
+                            ts_machine_start.Enabled = false;
                         }),
                         TSMPresets.SetVisibleAndEnabled(b_machineSettings, true, false),
                         TSMPresets.SetVisible(gb_machineDetails, true),
@@ -111,8 +117,8 @@ namespace QEMUInterface
                         {
                             c.Visible = true;
                             c.Enabled = true;
-                            c.BackColor = Color.FromArgb(isDarkMode ? 64 : 128, isDarkMode ? 128 : 255, isDarkMode ? 64 : 128);;
-                            ts_machine_new.Enabled = true;
+                            c.BackColor = Color.FromArgb(isDarkMode ? 64 : 128, isDarkMode ? 128 : 255, isDarkMode ? 64 : 128);
+                            ts_machine_start.Enabled = true;
                         }),
                         TSMPresets.SetVisibleAndEnabled(b_machineSettings, true, true),
                         TSMPresets.SetVisible(gb_machineDetails, true),
@@ -130,6 +136,7 @@ namespace QEMUInterface
                             c.Visible = true;
                             c.Enabled = true;
                             c.BackColor = Color.FromArgb(isDarkMode ? 64 : 128, isDarkMode ? 128 : 255, isDarkMode ? 64 : 128);;
+                            ts_machine_start.Enabled = true;
                         }),
                         TSMPresets.SetVisibleAndEnabled(b_machineSettings, true, true),
                         TSMPresets.SetVisible(gb_machineDetails, true),
@@ -147,6 +154,7 @@ namespace QEMUInterface
                             c.Visible = false;
                             c.Enabled = false;
                             c.BackColor = Color.FromArgb(isDarkMode ? 64 : 128, isDarkMode ? 128 : 255, isDarkMode ? 64 : 128);;
+                            ts_machine_start.Enabled = false;
                         }),
                         TSMPresets.SetVisibleAndEnabled(b_machineSettings, false, false),
                         TSMPresets.SetVisible(gb_machineDetails, false),

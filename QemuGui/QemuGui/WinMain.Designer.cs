@@ -39,10 +39,11 @@
             Label ls_ram;
             TableLayoutPanel tlp_graphicsAndSound;
             Label ls_graphicsController;
-            Label ls_soundController;
+            Label ls_audio;
             ToolStripSeparator sep_file_1;
             ToolStripSeparator sep_machine_1;
             TableLayoutPanel tlp_mediaTab;
+            Panel lv_wrapper;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WIN_MAIN));
             t_machineType = new TextBox();
             t_machineOS = new TextBox();
@@ -51,7 +52,7 @@
             t_machineSubversion = new TextBox();
             t_ram = new TextBox();
             t_cpuCores = new TextBox();
-            t_soundController = new TextBox();
+            t_audio = new TextBox();
             t_graphicsController = new TextBox();
             b_editMedia = new Button();
             lv_vmList = new ListView();
@@ -90,14 +91,16 @@
             ls_ram = new Label();
             tlp_graphicsAndSound = new TableLayoutPanel();
             ls_graphicsController = new Label();
-            ls_soundController = new Label();
+            ls_audio = new Label();
             sep_file_1 = new ToolStripSeparator();
             sep_machine_1 = new ToolStripSeparator();
             tlp_mediaTab = new TableLayoutPanel();
+            lv_wrapper = new Panel();
             tlp_machineInfo.SuspendLayout();
             tlp_cpuTab.SuspendLayout();
             tlp_graphicsAndSound.SuspendLayout();
             tlp_mediaTab.SuspendLayout();
+            lv_wrapper.SuspendLayout();
             gb_machineDetails.SuspendLayout();
             tc_vmInfo.SuspendLayout();
             tc_vmInfo_media.SuspendLayout();
@@ -345,8 +348,8 @@
             tlp_graphicsAndSound.ColumnStyles.Add(new ColumnStyle());
             tlp_graphicsAndSound.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 77.83019F));
             tlp_graphicsAndSound.Controls.Add(ls_graphicsController, 0, 0);
-            tlp_graphicsAndSound.Controls.Add(ls_soundController, 0, 1);
-            tlp_graphicsAndSound.Controls.Add(t_soundController, 1, 1);
+            tlp_graphicsAndSound.Controls.Add(ls_audio, 0, 1);
+            tlp_graphicsAndSound.Controls.Add(t_audio, 1, 1);
             tlp_graphicsAndSound.Controls.Add(t_graphicsController, 1, 0);
             tlp_graphicsAndSound.Dock = DockStyle.Fill;
             tlp_graphicsAndSound.Location = new Point(3, 3);
@@ -372,34 +375,34 @@
             ls_graphicsController.Text = "Graphics Controller:";
             ls_graphicsController.TextAlign = ContentAlignment.MiddleRight;
             // 
-            // ls_soundController
+            // ls_audio
             // 
-            ls_soundController.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            ls_soundController.AutoSize = true;
-            ls_soundController.Location = new Point(24, 40);
-            ls_soundController.Margin = new Padding(10, 5, 5, 5);
-            ls_soundController.Name = "ls_soundController";
-            ls_soundController.Size = new Size(110, 25);
-            ls_soundController.TabIndex = 6;
-            ls_soundController.Text = "Sound Controller:";
-            ls_soundController.TextAlign = ContentAlignment.MiddleRight;
+            ls_audio.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            ls_audio.AutoSize = true;
+            ls_audio.Location = new Point(24, 40);
+            ls_audio.Margin = new Padding(10, 5, 5, 5);
+            ls_audio.Name = "ls_audio";
+            ls_audio.Size = new Size(110, 25);
+            ls_audio.TabIndex = 6;
+            ls_audio.Text = "Sound Controller:";
+            ls_audio.TextAlign = ContentAlignment.MiddleRight;
             // 
-            // t_soundController
+            // t_audio
             // 
-            t_soundController.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            t_soundController.BackColor = SystemColors.HighlightText;
-            t_soundController.BorderStyle = BorderStyle.FixedSingle;
-            t_soundController.CausesValidation = false;
-            t_soundController.Enabled = false;
-            t_soundController.Font = new Font("Segoe UI Semibold", 8.830189F, FontStyle.Bold);
-            t_soundController.HideSelection = false;
-            t_soundController.Location = new Point(144, 40);
-            t_soundController.Margin = new Padding(5);
-            t_soundController.Name = "t_soundController";
-            t_soundController.ReadOnly = true;
-            t_soundController.ShortcutsEnabled = false;
-            t_soundController.Size = new Size(340, 25);
-            t_soundController.TabIndex = 7;
+            t_audio.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            t_audio.BackColor = SystemColors.HighlightText;
+            t_audio.BorderStyle = BorderStyle.FixedSingle;
+            t_audio.CausesValidation = false;
+            t_audio.Enabled = false;
+            t_audio.Font = new Font("Segoe UI Semibold", 8.830189F, FontStyle.Bold);
+            t_audio.HideSelection = false;
+            t_audio.Location = new Point(144, 40);
+            t_audio.Margin = new Padding(5);
+            t_audio.Name = "t_audio";
+            t_audio.ReadOnly = true;
+            t_audio.ShortcutsEnabled = false;
+            t_audio.Size = new Size(340, 25);
+            t_audio.TabIndex = 7;
             // 
             // t_graphicsController
             // 
@@ -455,25 +458,36 @@
             b_editMedia.UseVisualStyleBackColor = true;
             b_editMedia.Click += button1_Click;
             // 
+            // lv_wrapper
+            // 
+            lv_wrapper.BorderStyle = BorderStyle.FixedSingle;
+            lv_wrapper.Controls.Add(lv_vmList);
+            lv_wrapper.Dock = DockStyle.Fill;
+            lv_wrapper.Location = new Point(4, 100);
+            lv_wrapper.Name = "lv_wrapper";
+            lv_wrapper.Padding = new Padding(12, 4, 12, 0);
+            tlp_main.SetRowSpan(lv_wrapper, 2);
+            lv_wrapper.Size = new Size(282, 550);
+            lv_wrapper.TabIndex = 10;
+            // 
             // lv_vmList
             // 
             lv_vmList.Activation = ItemActivation.OneClick;
             lv_vmList.Alignment = ListViewAlignment.SnapToGrid;
             lv_vmList.AllowColumnReorder = true;
-            lv_vmList.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lv_vmList.BackColor = SystemColors.Control;
-            lv_vmList.BorderStyle = BorderStyle.FixedSingle;
+            lv_vmList.BorderStyle = BorderStyle.None;
+            lv_vmList.Dock = DockStyle.Fill;
             lv_vmList.Font = new Font("Segoe UI", 12.2264156F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lv_vmList.FullRowSelect = true;
             lv_vmList.GridLines = true;
             lv_vmList.HeaderStyle = ColumnHeaderStyle.Nonclickable;
             lv_vmList.ImeMode = ImeMode.NoControl;
             lv_vmList.LargeImageList = il_vmList;
-            lv_vmList.Location = new Point(4, 100);
+            lv_vmList.Location = new Point(12, 4);
             lv_vmList.MultiSelect = false;
             lv_vmList.Name = "lv_vmList";
-            tlp_main.SetRowSpan(lv_vmList, 2);
-            lv_vmList.Size = new Size(282, 550);
+            lv_vmList.Size = new Size(256, 544);
             lv_vmList.TabIndex = 0;
             lv_vmList.TileSize = new Size(221, 50);
             lv_vmList.UseCompatibleStateImageBehavior = false;
@@ -724,10 +738,10 @@
             tlp_main.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35.5897446F));
             tlp_main.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 64.4102554F));
             tlp_main.Controls.Add(ls_machinesText, 0, 0);
-            tlp_main.Controls.Add(lv_vmList, 0, 1);
             tlp_main.Controls.Add(tlp_vmControl, 1, 0);
             tlp_main.Controls.Add(gb_machineDetails, 1, 1);
             tlp_main.Controls.Add(tc_vmInfo, 1, 2);
+            tlp_main.Controls.Add(lv_wrapper, 0, 1);
             tlp_main.Dock = DockStyle.Fill;
             tlp_main.Location = new Point(5, 10);
             tlp_main.Name = "tlp_main";
@@ -777,6 +791,7 @@
             tlp_graphicsAndSound.ResumeLayout(false);
             tlp_graphicsAndSound.PerformLayout();
             tlp_mediaTab.ResumeLayout(false);
+            lv_wrapper.ResumeLayout(false);
             gb_machineDetails.ResumeLayout(false);
             gb_machineDetails.PerformLayout();
             tc_vmInfo.ResumeLayout(false);
@@ -830,7 +845,7 @@
         private TabPage tc_vmInfo_gpu;
         private TextBox t_ram;
         private TextBox t_cpuCores;
-        private TextBox t_soundController;
+        private TextBox t_audio;
         private TextBox t_graphicsController;
         private Label deburgggg;
         private Button b_editMedia;

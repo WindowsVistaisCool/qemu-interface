@@ -107,6 +107,7 @@ namespace QEMUInterface
                             c.Visible = true;
                             c.Enabled = false;
                             cmsi_vmList_settings.Enabled = false;
+                            cmsi_vmList_config.Enabled = false;
                         }),
                         TSMPresets.SetVisible(gb_machineDetails, true),
                         TSMPresets.SetVisible(tc_vmInfo, true),
@@ -130,6 +131,7 @@ namespace QEMUInterface
                             c.Visible = true;
                             c.Enabled = true;
                             cmsi_vmList_settings.Enabled = true;
+                            cmsi_vmList_config.Enabled = true;
                         }),
                         TSMPresets.SetVisible(gb_machineDetails, true),
                         TSMPresets.SetVisible(tc_vmInfo, true),
@@ -153,6 +155,7 @@ namespace QEMUInterface
                             c.Visible = true;
                             c.Enabled = true;
                             cmsi_vmList_settings.Enabled = true;
+                            cmsi_vmList_config.Enabled = true;
                         }),
                         TSMPresets.SetVisible(gb_machineDetails, true),
                         TSMPresets.SetVisible(tc_vmInfo, true),
@@ -176,6 +179,7 @@ namespace QEMUInterface
                             c.Visible = false;
                             c.Enabled = false;
                             cmsi_vmList_settings.Enabled = false;
+                            cmsi_vmList_config.Enabled = false;
                         }),
                         TSMPresets.SetVisible(gb_machineDetails, false),
                         TSMPresets.SetVisible(tc_vmInfo, false),
@@ -264,14 +268,16 @@ namespace QEMUInterface
         private void b_newMachine_Click(object sender, EventArgs e)
         {
             VirtualMachine? newVm = null;
-            new WIN_NewMachine((vm) =>
+            bool launchMedia = false;
+            new WIN_NewMachine((vm, shouldLaunchMedia) =>
             {
                 loader.StoreVM(vm);
                 newVm = vm;
+                launchMedia = shouldLaunchMedia;
                 machines.Add(vm);
                 UpdateVMList();
             }).ShowDialog();
-            if (newVm != null)
+            if (newVm != null && launchMedia)
             {
                 new WIN_MEDIA(newVm!).ShowDialog();
             }

@@ -11,15 +11,14 @@ using System.Windows.Forms;
 
 namespace QEMUInterface
 {
-    public partial class WIN_MEDIA : Form
+    public partial class WIN_NewDisk: Form
     {
-        private readonly VirtualMachine machine;
+        private VirtualMachine machine;
 
         private bool isEditing = false;
 
-        public WIN_MEDIA(VirtualMachine machine)
+        public WIN_NewDisk(VirtualMachine machine)
         {
-            this.machine = machine;
             InitializeComponent();
 
             if (Properties.Settings.Default.darkMode)
@@ -30,7 +29,7 @@ namespace QEMUInterface
                 };
             }
 
-            Text = "Edit Media - " + machine.Name;
+            this.machine = machine;
         }
 
         private void WIN_MEDIA_FormClosing(object sender, FormClosingEventArgs e)
@@ -61,16 +60,6 @@ namespace QEMUInterface
                 isEditing = false;
             }
             Close();
-        }
-
-        private void b_newDisk_Click(object sender, EventArgs e)
-        {
-            new WIN_NewDisk(machine).ShowDialog();
-        }
-
-        private void tlp_main_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }

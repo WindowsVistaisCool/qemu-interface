@@ -4,7 +4,7 @@ namespace QEMUInterface
 {
     public partial class WIN_NewMachine : Form
     {
-        private readonly Action<VirtualMachine> vmReturner;
+        private readonly Action<VirtualMachine, bool> vmReturner;
 
         private bool repairMode = false;
         private VirtualMachine? machineToRepair = null;
@@ -13,6 +13,7 @@ namespace QEMUInterface
         private readonly int maxTabPage = 4;
         private bool isOnFinishTab = false;
         private bool closeInvokedByFinishButton = false;
+        private bool shouldLaunchMedia = true;
 
         private Dictionary<RadioButton, OS_FAMILY> osRadioButtons = [];
 
@@ -21,7 +22,7 @@ namespace QEMUInterface
         private PC_TYPE selectedMachineType = PC_TYPE.X86_64;
         private PC_TYPE? machineListPopulated = null;
 
-        public WIN_NewMachine(Action<VirtualMachine> newVMCallback)
+        public WIN_NewMachine(Action<VirtualMachine, bool> newVMCallback)
         {
             vmReturner = newVMCallback;
 
@@ -32,7 +33,7 @@ namespace QEMUInterface
             FirstLoadEvents();
         }
 
-        public WIN_NewMachine(Action<VirtualMachine> newVMCallback, VirtualMachine machine)
+        public WIN_NewMachine(Action<VirtualMachine, bool> newVMCallback, VirtualMachine machine)
         {
             vmReturner = newVMCallback;
             repairMode = true;
@@ -43,7 +44,7 @@ namespace QEMUInterface
             SetDarkMode();
 
             Text = "QEMU Interface - Machine Repair";
-            
+
             FirstLoadEvents();
 
             if (machine.Name.Length > 0)
@@ -451,7 +452,7 @@ namespace QEMUInterface
 
                 vm.GenerateProcessArgs();
 
-                vmReturner(vm);
+                vmReturner(vm, shouldLaunchMedia);
             }
 
         }
@@ -578,5 +579,14 @@ namespace QEMUInterface
             num_p3_ram.Value = slider_p3_ram.Value;
         }
 
+        private void rb_pfin_createDisk_CheckedChanged(object sender, EventArgs e)
+        {
+            shouldLaunchMedia = true;
+        }
+
+        private void rb_pfin_skipDisks_CheckedChanged(object sender, EventArgs e)
+        {
+            shouldLaunchMedia = false;
+        }
     }
 }

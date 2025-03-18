@@ -122,7 +122,7 @@ namespace QEMUInterface
                                 vm.ProcessArgs = parsed["processArgs"]!.ToString();
                             }
 
-                            new WIN_NewMachine((vm) =>
+                            new WIN_NewMachine((vm, shouldLaunchMedia) =>
                             {
                                 machines.Add(vm);
                                 StoreVM(vm, file);
@@ -139,7 +139,7 @@ namespace QEMUInterface
             return machines;
         }
 
-        public bool ValidateJson(JsonNode inp)
+        public static bool ValidateJson(JsonNode inp)
         {
             foreach (string k in requiredKeys)
             {
@@ -164,16 +164,16 @@ namespace QEMUInterface
         {
 
             string content = "{\n";
-            content += $"\"name\": \"{vm.Name}\",\n";
-            content += $"\"os\": \"{vm.OperatingSystem.Name}\",\n";
-            content += $"\"type\": \"{vm.PCType}\",\n";
-            content += $"\"machine\": \"{vm.Machine}\",\n";
-            content += $"\"cores\": {vm.CPUCoreCount},\n";
-            content += $"\"memory\": {vm.MemorySize},\n";
-            content += $"\"graphics\": \"{vm.GraphicsType}\",\n";
-            content += $"\"audio\": \"{vm.AudioType}\",\n";
-            content += $"\"processName\": \"{vm.ProcessName}\",\n";
-            content += $"\"processArgs\": \"{vm.ProcessArgs}\"\n";
+            content += $"  \"name\": \"{vm.Name}\",\n";
+            content += $"  \"os\": \"{vm.OperatingSystem.Name}\",\n";
+            content += $"  \"type\": \"{vm.PCType}\",\n";
+            content += $"  \"machine\": \"{vm.Machine}\",\n";
+            content += $"  \"cores\": {vm.CPUCoreCount},\n";
+            content += $"  \"memory\": {vm.MemorySize},\n";
+            content += $"  \"graphics\": \"{vm.GraphicsType}\",\n";
+            content += $"  \"audio\": \"{vm.AudioType}\",\n";
+            content += $"  \"processName\": \"{vm.ProcessName}\",\n";
+            content += $"  \"processArgs\": \"{vm.ProcessArgs}\"\n";
             content += "}";
 
             File.WriteAllText(filePath, content);

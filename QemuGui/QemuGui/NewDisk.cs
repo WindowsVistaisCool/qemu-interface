@@ -30,6 +30,8 @@ namespace QEMUInterface
             }
 
             this.machine = machine;
+
+            Text += machine.Name;
         }
 
         private void WIN_MEDIA_FormClosing(object sender, FormClosingEventArgs e)

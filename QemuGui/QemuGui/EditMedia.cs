@@ -30,7 +30,7 @@ namespace QEMUInterface
                 };
             }
 
-            Text = "Edit Media - " + machine.Name;
+            Text += machine.Name;
         }
 
         private void WIN_MEDIA_FormClosing(object sender, FormClosingEventArgs e)
@@ -66,11 +66,6 @@ namespace QEMUInterface
         private void b_newDisk_Click(object sender, EventArgs e)
         {
             new WIN_NewDisk(machine).ShowDialog();
-        }
-
-        private void tlp_main_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }

@@ -66,7 +66,7 @@ namespace QEMUInterface
                         VirtualMachine vm = new()
                         {
                             Name = parsed["name"]!.ToString(),
-                            FilePath = path,
+                            FilePath = file,
                             OperatingSystem = OperatingSystems.get(parsed["os"]!.ToString()),
                             PCType = pcType,
                             Machine = parsed["machine"]!.ToString(),

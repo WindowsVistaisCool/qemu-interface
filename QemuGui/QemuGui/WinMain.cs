@@ -101,8 +101,13 @@ namespace QEMUInterface
                             c.Enabled = false;
                             c.BackColor = Color.FromKnownColor(KnownColor.Control);
                             ts_machine_start.Enabled = false;
+                            cmsi_vmList_start.Enabled = false;
                         }),
-                        TSMPresets.SetVisibleAndEnabled(b_machineSettings, true, false),
+                        new ThreadSafeModification<Button>(b_machineSettings, (c) => {
+                            c.Visible = true;
+                            c.Enabled = false;
+                            cmsi_vmList_settings.Enabled = false;
+                        }),
                         TSMPresets.SetVisible(gb_machineDetails, true),
                         TSMPresets.SetVisible(tc_vmInfo, true),
                         new ThreadSafeModification<Label>(l_machineState, (c) => {
@@ -119,8 +124,13 @@ namespace QEMUInterface
                             c.Enabled = true;
                             c.BackColor = Color.FromArgb(isDarkMode ? 64 : 128, isDarkMode ? 128 : 255, isDarkMode ? 64 : 128);
                             ts_machine_start.Enabled = true;
+                            cmsi_vmList_start.Enabled = true;
                         }),
-                        TSMPresets.SetVisibleAndEnabled(b_machineSettings, true, true),
+                        new ThreadSafeModification<Button>(b_machineSettings, (c) => {
+                            c.Visible = true;
+                            c.Enabled = true;
+                            cmsi_vmList_settings.Enabled = true;
+                        }),
                         TSMPresets.SetVisible(gb_machineDetails, true),
                         TSMPresets.SetVisible(tc_vmInfo, true),
                         new ThreadSafeModification<Label>(l_machineState, (c) => {
@@ -137,8 +147,13 @@ namespace QEMUInterface
                             c.Enabled = true;
                             c.BackColor = Color.FromArgb(isDarkMode ? 64 : 128, isDarkMode ? 128 : 255, isDarkMode ? 64 : 128);;
                             ts_machine_start.Enabled = true;
+                            cmsi_vmList_start.Enabled = true;
                         }),
-                        TSMPresets.SetVisibleAndEnabled(b_machineSettings, true, true),
+                        new ThreadSafeModification<Button>(b_machineSettings, (c) => {
+                            c.Visible = true;
+                            c.Enabled = true;
+                            cmsi_vmList_settings.Enabled = true;
+                        }),
                         TSMPresets.SetVisible(gb_machineDetails, true),
                         TSMPresets.SetVisible(tc_vmInfo, true),
                         new ThreadSafeModification<Label>(l_machineState, (c) => {
@@ -155,8 +170,13 @@ namespace QEMUInterface
                             c.Enabled = false;
                             c.BackColor = Color.FromArgb(isDarkMode ? 64 : 128, isDarkMode ? 128 : 255, isDarkMode ? 64 : 128);;
                             ts_machine_start.Enabled = false;
+                            cmsi_vmList_start.Enabled = false;
                         }),
-                        TSMPresets.SetVisibleAndEnabled(b_machineSettings, false, false),
+                        new ThreadSafeModification<Button>(b_machineSettings, (c) => {
+                            c.Visible = false;
+                            c.Enabled = false;
+                            cmsi_vmList_settings.Enabled = false;
+                        }),
                         TSMPresets.SetVisible(gb_machineDetails, false),
                         TSMPresets.SetVisible(tc_vmInfo, false),
                         new ThreadSafeModification<Label>(l_machineState, (c) => {
@@ -309,6 +329,11 @@ namespace QEMUInterface
                     cms_vmList.Show(Cursor.Position);
                 }
             }
+        }
+
+        private void cmsi_vmList_config_Click(object sender, EventArgs e)
+        {
+            Process.Start("notepad.exe", machines[currentlySelectedMachine].FilePath);
         }
     }
 }

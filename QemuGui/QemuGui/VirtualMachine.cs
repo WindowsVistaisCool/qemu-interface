@@ -1,5 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System.CodeDom;
+using System.Diagnostics;
+using System.Reflection;
+using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -21,10 +26,10 @@ namespace QEMUInterface
         internal string Machine { get; set; } = "";
 
         internal int CPUCoreCount { get; set; } = 1;
-        internal int MemorySize { get; set; } = 1024;
+        internal int Memory { get; set; } = 1024;
 
-        internal GRAPHICS_TYPE GraphicsType { get; set; } = GRAPHICS_TYPE.STD;
-        internal string AudioType { get; set; } = "none";
+        internal GRAPHICS_TYPE Graphics { get; set; } = GRAPHICS_TYPE.STD;
+        internal string Audio { get; set; } = "none";
 
         public bool VerboseRunning { get; set; } = false;
 
@@ -46,38 +51,77 @@ namespace QEMUInterface
             ID = defaultID++;
         }
 
-        public JsonNode ToJson()
+        public static Dictionary<string, object> MinimumDataRequired()
         {
-            var content = new
+            // 0 is a placeholder value
+            return new Dictionary<string, object>
             {
-                Name,
-                Specs = new
+                ["Name"] = 0,
+                ["Specs"] = new Dictionary<string, object>
                 {
-                    OS = OperatingSystem.Name,
-                    Type = PCType,
-                    Machine,
-                    CPU = new Dictionary<string, object>
+                    ["OS"] = 0,
+                    ["OSSubversion"] = 0,
+                    ["PCType"] = 0,
+                    ["Machine"] = 0,
+                    ["CPU"] = new Dictionary<string, object>
                     {
-                        ["Type"] = "Default",
-                        ["Cores"] = CPUCoreCount,
+                        ["Cores"] = 0,
                     },
-                    Memory = MemorySize,
-                    Graphics = GraphicsType,
-                    Audio = AudioType,
-                },
-                ProcessDetails = new
+                    ["Memory"] = 0,
+                    //["Graphics"] = 0,
+                    //["Audio"] = 0,
+                }
+                ["ProcessDetails"] = new Dictionary<string, object>
                 {
-                    ProcessName,
-                    ProcessArgs
-                },
+                    ["ProcessName"] = 0,
+                    ["ProcessArgs"] = 0
+                }
             };
-            return JsonNode.Parse(JsonSerializer.Serialize(content)); //wtf is this
+        }
+
+        public Dictionary<string, object> ToJson()
+        {
+            var minData = MinimumDataRequired();
+            minData["Name"] = Name;
+            var specs = (Dictionary<string, object>)minData["Specs"];
+            specs["OS"] = OperatingSystem.Name;
+            specs["OSSubversion"] = OSSubversion;
+            specs["PCType"] = PCType;
+            specs["Machine"] = Machine;
+            specs["CPU"] = new Dictionary<string, object>
+            {
+                ["Cores"] = CPUCoreCount,
+            };
+            specs["Memory"] = Memory;
+            specs["Graphics"] = Graphics;
+            specs["Audio"] = Audio;
+            var processDetails = (Dictionary<string, object>)minData["ProcessDetails"];
+            processDetails["ProcessName"] = ProcessName;
+            processDetails["ProcessArgs"] = ProcessArgs;
+            return minData;
         }
 
         public override string ToString()
         {
             return JsonSerializer.Serialize(ToJson()); // extremely real code
         }
+
+        public bool SetVarString(string varName, object value)
+        {
+
+            if (GetType().GetFields(BindingFlags.Public | BindingFlags.Instance).ToList().Select(i => i.Name).Contains(varName))
+            {
+                var field = GetType().GetProperty(varName)!;
+                if (field.GetType() == value.GetType())
+                {
+                    field.SetValue(this, value);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public void GenerateProcessArgs()
         {
             ProcessName = QemuMachines.getQemuCmd(PCType);

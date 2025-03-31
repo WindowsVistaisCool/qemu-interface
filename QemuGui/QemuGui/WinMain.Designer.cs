@@ -185,7 +185,7 @@
             tlp_machineInfo.RowStyles.Add(new RowStyle());
             tlp_machineInfo.RowStyles.Add(new RowStyle());
             tlp_machineInfo.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tlp_machineInfo.Size = new Size(483, 147);
+            tlp_machineInfo.Size = new Size(483, 157);
             tlp_machineInfo.TabIndex = 6;
             // 
             // ls_pcType
@@ -295,7 +295,7 @@
             tlp_cpuTab.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tlp_cpuTab.RowStyles.Add(new RowStyle(SizeType.Absolute, 18F));
             tlp_cpuTab.RowStyles.Add(new RowStyle(SizeType.Absolute, 18F));
-            tlp_cpuTab.Size = new Size(489, 256);
+            tlp_cpuTab.Size = new Size(489, 246);
             tlp_cpuTab.TabIndex = 7;
             // 
             // ls_cpuCores
@@ -374,7 +374,7 @@
             tlp_graphicsAndSound.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tlp_graphicsAndSound.RowStyles.Add(new RowStyle(SizeType.Absolute, 18F));
             tlp_graphicsAndSound.RowStyles.Add(new RowStyle(SizeType.Absolute, 18F));
-            tlp_graphicsAndSound.Size = new Size(489, 256);
+            tlp_graphicsAndSound.Size = new Size(489, 246);
             tlp_graphicsAndSound.TabIndex = 8;
             // 
             // ls_graphicsController
@@ -457,7 +457,7 @@
             tlp_mediaTab.RowCount = 2;
             tlp_mediaTab.RowStyles.Add(new RowStyle(SizeType.Percent, 35.1535835F));
             tlp_mediaTab.RowStyles.Add(new RowStyle(SizeType.Percent, 64.84641F));
-            tlp_mediaTab.Size = new Size(489, 256);
+            tlp_mediaTab.Size = new Size(489, 246);
             tlp_mediaTab.TabIndex = 2;
             // 
             // b_editMedia
@@ -466,7 +466,7 @@
             b_editMedia.Location = new Point(5, 4);
             b_editMedia.Margin = new Padding(5, 4, 5, 4);
             b_editMedia.Name = "b_editMedia";
-            b_editMedia.Size = new Size(234, 81);
+            b_editMedia.Size = new Size(234, 78);
             b_editMedia.TabIndex = 0;
             b_editMedia.Text = "Edit Media";
             b_editMedia.UseVisualStyleBackColor = true;
@@ -617,7 +617,7 @@
             gb_machineDetails.Margin = new Padding(10, 4, 10, 4);
             gb_machineDetails.Name = "gb_machineDetails";
             gb_machineDetails.Padding = new Padding(10, 9, 10, 9);
-            gb_machineDetails.Size = new Size(503, 181);
+            gb_machineDetails.Size = new Size(503, 191);
             gb_machineDetails.TabIndex = 0;
             gb_machineDetails.TabStop = false;
             gb_machineDetails.Text = "Machine Information";
@@ -628,12 +628,12 @@
             tc_vmInfo.Controls.Add(tc_vmInfo_media);
             tc_vmInfo.Controls.Add(tc_vmInfo_cpu);
             tc_vmInfo.Controls.Add(tc_vmInfo_gpu);
-            tc_vmInfo.Location = new Point(300, 280);
+            tc_vmInfo.Location = new Point(300, 290);
             tc_vmInfo.Margin = new Padding(10, 4, 10, 4);
             tc_vmInfo.Multiline = true;
             tc_vmInfo.Name = "tc_vmInfo";
             tc_vmInfo.SelectedIndex = 0;
-            tc_vmInfo.Size = new Size(503, 290);
+            tc_vmInfo.Size = new Size(503, 280);
             tc_vmInfo.TabIndex = 1;
             // 
             // tc_vmInfo_media
@@ -642,7 +642,7 @@
             tc_vmInfo_media.Location = new Point(4, 24);
             tc_vmInfo_media.Name = "tc_vmInfo_media";
             tc_vmInfo_media.Padding = new Padding(3);
-            tc_vmInfo_media.Size = new Size(495, 262);
+            tc_vmInfo_media.Size = new Size(495, 252);
             tc_vmInfo_media.TabIndex = 2;
             tc_vmInfo_media.Text = "Media";
             tc_vmInfo_media.UseVisualStyleBackColor = true;
@@ -653,7 +653,7 @@
             tc_vmInfo_cpu.Location = new Point(4, 24);
             tc_vmInfo_cpu.Name = "tc_vmInfo_cpu";
             tc_vmInfo_cpu.Padding = new Padding(3);
-            tc_vmInfo_cpu.Size = new Size(495, 262);
+            tc_vmInfo_cpu.Size = new Size(495, 252);
             tc_vmInfo_cpu.TabIndex = 0;
             tc_vmInfo_cpu.Text = "CPU/RAM";
             tc_vmInfo_cpu.UseVisualStyleBackColor = true;
@@ -664,7 +664,7 @@
             tc_vmInfo_gpu.Location = new Point(4, 24);
             tc_vmInfo_gpu.Name = "tc_vmInfo_gpu";
             tc_vmInfo_gpu.Padding = new Padding(3);
-            tc_vmInfo_gpu.Size = new Size(495, 262);
+            tc_vmInfo_gpu.Size = new Size(495, 252);
             tc_vmInfo_gpu.TabIndex = 1;
             tc_vmInfo_gpu.Text = "Graphics and Sound";
             tc_vmInfo_gpu.UseVisualStyleBackColor = true;
@@ -865,8 +865,8 @@
             tlp_main.Name = "tlp_main";
             tlp_main.RowCount = 3;
             tlp_main.RowStyles.Add(new RowStyle(SizeType.Absolute, 84F));
-            tlp_main.RowStyles.Add(new RowStyle(SizeType.Percent, 33.28313F));
-            tlp_main.RowStyles.Add(new RowStyle(SizeType.Percent, 52.1084328F));
+            tlp_main.RowStyles.Add(new RowStyle(SizeType.Percent, 40.8997955F));
+            tlp_main.RowStyles.Add(new RowStyle(SizeType.Percent, 59.1002045F));
             tlp_main.Size = new Size(814, 575);
             tlp_main.TabIndex = 1;
             // 

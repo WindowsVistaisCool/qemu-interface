@@ -98,10 +98,10 @@ namespace QEMUInterface
                 slider_p3_cores.Value = machine.CPUCoreCount;
             }
 
-            if (machine.MemorySize > 0)
+            if (machine.Memory > 0)
             {
-                num_p3_ram.Value = machine.MemorySize;
-                slider_p3_ram.Value = machine.MemorySize;
+                num_p3_ram.Value = machine.Memory;
+                slider_p3_ram.Value = machine.Memory;
             }
 
         }
@@ -445,9 +445,9 @@ namespace QEMUInterface
                     Machine = lv_p2_type.SelectedItems[0].Text,
                     OSSubversion = cb_p1_subversion.Text,
                     CPUCoreCount = (int)num_p3_cores.Value,
-                    MemorySize = (int)num_p3_ram.Value,
-                    GraphicsType = (GRAPHICS_TYPE)Enum.Parse(typeof(GRAPHICS_TYPE), cb_p3_graphics.Text),
-                    AudioType = cb_p3_audio.Text,
+                    Memory = (int)num_p3_ram.Value,
+                    Graphics = (GRAPHICS_TYPE)Enum.Parse(typeof(GRAPHICS_TYPE), cb_p3_graphics.Text),
+                    Audio = cb_p3_audio.Text,
                 };
 
                 vm.GenerateProcessArgs();

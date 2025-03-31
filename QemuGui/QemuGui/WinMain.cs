@@ -80,11 +80,11 @@ namespace QEMUInterface
             t_machineSubversion.Text = " " + vm.OSSubversion;
 
             t_cpuCores.Text = " " + vm.CPUCoreCount.ToString();
-            t_ram.Text = " " + vm.MemorySize.ToString() + "MB";
+            t_ram.Text = " " + vm.Memory.ToString() + "MB";
 
-            t_graphicsController.Text = " " + vm.GraphicsType.ToString();
+            t_graphicsController.Text = " " + vm.Graphics.ToString();
             //t_graphicsVRAM.Text = " " + vm.GraphicsVRAM.ToString() + "MB";
-            t_audio.Text = " " + vm.AudioType;
+            t_audio.Text = " " + vm.Audio;
 
         }
 

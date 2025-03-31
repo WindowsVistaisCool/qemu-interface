@@ -1,5 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Reflection.Metadata.Ecma335;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace QEMUInterface
 {
@@ -43,6 +46,38 @@ namespace QEMUInterface
             ID = defaultID++;
         }
 
+        public JsonNode ToJson()
+        {
+            var content = new
+            {
+                Name,
+                Specs = new
+                {
+                    OS = OperatingSystem.Name,
+                    Type = PCType,
+                    Machine,
+                    CPU = new Dictionary<string, object>
+                    {
+                        ["Type"] = "Default",
+                        ["Cores"] = CPUCoreCount,
+                    },
+                    Memory = MemorySize,
+                    Graphics = GraphicsType,
+                    Audio = AudioType,
+                },
+                ProcessDetails = new
+                {
+                    ProcessName,
+                    ProcessArgs
+                },
+            };
+            return JsonNode.Parse(JsonSerializer.Serialize(content)); //wtf is this
+        }
+
+        public override string ToString()
+        {
+            return JsonSerializer.Serialize(ToJson()); // extremely real code
+        }
         public void GenerateProcessArgs()
         {
             ProcessName = QemuMachines.getQemuCmd(PCType);

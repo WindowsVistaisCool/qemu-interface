@@ -1,15 +1,5 @@
 ﻿using DarkModeForms;
 using QEMUInterface.Properties;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace QEMUInterface
 {
@@ -49,14 +39,14 @@ namespace QEMUInterface
 
         private void Preferences_Load(object sender, EventArgs e)
         {
-            Properties.Settings.Default.Reload();
+            Settings.Default.Reload();
 
-            if (Properties.Settings.Default.vmFolder != null)
+            if (Settings.Default.vmFolder != null)
             {
                 t_vmFolder.Text = Properties.Settings.Default.vmFolder;
             }
 
-            if (Properties.Settings.Default.qemuFolder != null)
+            if (Settings.Default.qemuFolder != null)
             {
                 t_qemuPath.Text = Properties.Settings.Default.qemuFolder;
             }

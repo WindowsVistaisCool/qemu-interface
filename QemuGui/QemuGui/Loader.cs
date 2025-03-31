@@ -162,21 +162,7 @@ namespace QEMUInterface
         }
         public void StoreVM(VirtualMachine vm, string filePath)
         {
-
-            string content = "{\n";
-            content += $"  \"name\": \"{vm.Name}\",\n";
-            content += $"  \"os\": \"{vm.OperatingSystem.Name}\",\n";
-            content += $"  \"type\": \"{vm.PCType}\",\n";
-            content += $"  \"machine\": \"{vm.Machine}\",\n";
-            content += $"  \"cores\": {vm.CPUCoreCount},\n";
-            content += $"  \"memory\": {vm.MemorySize},\n";
-            content += $"  \"graphics\": \"{vm.GraphicsType}\",\n";
-            content += $"  \"audio\": \"{vm.AudioType}\",\n";
-            content += $"  \"processName\": \"{vm.ProcessName}\",\n";
-            content += $"  \"processArgs\": \"{vm.ProcessArgs}\"\n";
-            content += "}";
-
-            File.WriteAllText(filePath, content);
+            File.WriteAllText(filePath, vm.ToString());
         }
     }
 }

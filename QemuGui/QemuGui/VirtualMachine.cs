@@ -13,42 +13,42 @@ namespace QEMUInterface
 {
     public class VirtualMachine
     {
-        private static int defaultID = 0;
         public readonly bool needsRecovery = false;
 
-        public string Name { get; set; } = "";
-        public string FilePath { get; set; } = "";
-        public int ID { get; private set; }
+        public string Name = "";
+        public string FilePath = "";
+        public string UUID { get; private set; }
 
-        internal PC_TYPE PCType { get; set; }
-        internal OperatingSystem OperatingSystem { get; set; }
-        internal string OSSubversion { get; set; } = "";
-        internal string Machine { get; set; } = "";
+        public PC_TYPE PCType = PC_TYPE.IA_32;
+        public OperatingSystem OS = OperatingSystems.get("Windows 7");
+        public string OSSubversion = "";
+        public string Machine = "";
 
-        internal int CPUCoreCount { get; set; } = 1;
-        internal int Memory { get; set; } = 1024;
+        public int CPUCoreCount = 1;
+        public int Memory = 1024;
 
-        internal GRAPHICS_TYPE Graphics { get; set; } = GRAPHICS_TYPE.STD;
-        internal string Audio { get; set; } = "none";
+        public GRAPHICS_TYPE Graphics = GRAPHICS_TYPE.STD;
+        public string Audio = "None";
 
-        public bool VerboseRunning { get; set; } = false;
+        public bool VerboseRunning = false;
 
-        public Func<int, bool> ControlModifyCondition { get; set; } = (id) => true;
+        public Func<string, bool> ControlModifyCondition = (id) => true;
 
-        public string ProcessName { get; set; } = "cmd.exe";
-        public string? ProcessArgs { get; set; }
+        public string ProcessName = "cmd.exe";
+        public string ProcessArgs = "";
 
         private Process? process;
 
         private EventHandler? exitEvent;
         private Action? abortEvent;
 
-        public VirtualMachine(bool recovery) : this() {
+        public VirtualMachine(bool recovery) : this()
+        {
             needsRecovery = recovery;
         }
         public VirtualMachine()
         {
-            ID = defaultID++;
+            UUID = Guid.NewGuid().ToString();
         }
 
         public static Dictionary<string, object> MinimumDataRequired()
@@ -57,6 +57,7 @@ namespace QEMUInterface
             return new Dictionary<string, object>
             {
                 ["Name"] = 0,
+                ["UUID"] = 0,
                 ["Specs"] = new Dictionary<string, object>
                 {
                     ["OS"] = 0,
@@ -68,23 +69,24 @@ namespace QEMUInterface
                         ["Cores"] = 0,
                     },
                     ["Memory"] = 0,
-                    //["Graphics"] = 0,
-                    //["Audio"] = 0,
-                }
+                    ["Graphics"] = 0,
+                    ["Audio"] = 0,
+                },
                 ["ProcessDetails"] = new Dictionary<string, object>
                 {
                     ["ProcessName"] = 0,
-                    ["ProcessArgs"] = 0
-                }
+                    ["ProcessArgs"] = 0,
+                },
             };
         }
 
         public Dictionary<string, object> ToJson()
         {
-            var minData = MinimumDataRequired();
-            minData["Name"] = Name;
-            var specs = (Dictionary<string, object>)minData["Specs"];
-            specs["OS"] = OperatingSystem.Name;
+            var dataConstruct = MinimumDataRequired();
+            dataConstruct["Name"] = Name;
+            dataConstruct["UUID"] = UUID;
+            var specs = (Dictionary<string, object>)dataConstruct["Specs"];
+            specs["OS"] = OS.Name;
             specs["OSSubversion"] = OSSubversion;
             specs["PCType"] = PCType;
             specs["Machine"] = Machine;
@@ -95,10 +97,10 @@ namespace QEMUInterface
             specs["Memory"] = Memory;
             specs["Graphics"] = Graphics;
             specs["Audio"] = Audio;
-            var processDetails = (Dictionary<string, object>)minData["ProcessDetails"];
+            var processDetails = (Dictionary<string, object>)dataConstruct["ProcessDetails"];
             processDetails["ProcessName"] = ProcessName;
             processDetails["ProcessArgs"] = ProcessArgs;
-            return minData;
+            return dataConstruct;
         }
 
         public override string ToString()
@@ -111,21 +113,75 @@ namespace QEMUInterface
 
             if (GetType().GetFields(BindingFlags.Public | BindingFlags.Instance).ToList().Select(i => i.Name).Contains(varName))
             {
-                var field = GetType().GetProperty(varName)!;
+
+                var fieldReflect = GetType().GetField(varName);
+                if (fieldReflect == null) return false;
+
+                var field = fieldReflect.GetValue(this)!;
+
+                if (field == null) return false;
+
+
                 if (field.GetType() == value.GetType())
                 {
-                    field.SetValue(this, value);
+                    fieldReflect.SetValue(this, value);
+
                     return true;
                 }
+                else if (field.GetType() == typeof(PC_TYPE) && value.GetType() == typeof(string))
+                {
+                    try
+                    {
+                        _ = Enum.TryParse(value.ToString(), out PCType);
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else if (field.GetType() == typeof(OperatingSystem))
+                {
+                    try
+                    {
+                        OperatingSystem? sys = OperatingSystems.get(value.ToString()!);
+                        if (sys != null)
+                        {
+                            OS = (OperatingSystem)sys;
+                            return true;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        return false;
+                    }
+                }
+                else if (field.GetType() == typeof(GRAPHICS_TYPE) && value.GetType() == typeof(string))
+                {
+                    try
+                    {
+                        _ = Enum.TryParse(value.ToString(), out Graphics);
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
             }
-
             return false;
         }
 
         public void GenerateProcessArgs()
         {
             ProcessName = QemuMachines.getQemuCmd(PCType);
-            ProcessArgs ??= "";
+            ProcessArgs = "";
 
         }
         public void Run()
@@ -139,18 +195,11 @@ namespace QEMUInterface
             exitEvent += e;
         }
 
-        /*
-         * dont ask me what this code is idek
-         * 
-         * parameter explanation - pass in the SafeModifyControl function that modifies
-         * the control
-         * the parent action can call SafeModifyControl to modify the control
-         */
         public void EditControlOnExit(Action modification)
         {
             AddExitEvent((_, _) =>
             {
-                if (!ControlModifyCondition(ID))
+                if (!ControlModifyCondition(UUID))
                 {
                     return;
                 }
@@ -203,10 +252,7 @@ namespace QEMUInterface
             }
             catch (Exception e)
             {
-                if (abortEvent != null)
-                {
-                    abortEvent();
-                }
+                abortEvent?.Invoke();
                 MessageBox.Show("Failed to start process:\n" + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

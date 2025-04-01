@@ -21,7 +21,7 @@ namespace QEMUInterface
         private readonly Loader loader;
 
         private int currentlySelectedMachine = -1;
-        private int currentlySelectedMachineID = -9999;
+        private string currentlySelectedMachineID = "";
 
         private List<VirtualMachine> machines = [];
 
@@ -68,12 +68,12 @@ namespace QEMUInterface
                 return;
             }
 
-            currentlySelectedMachineID = vm.ID;
+            currentlySelectedMachineID = vm.UUID;
             bool isRunning = vm.IsRunning();
             SetMachineState(isRunning ? MACHINE_STATE.RUN : MACHINE_STATE.STOP);
 
             t_machineName.Text = " " + vm.Name;
-            t_machineOS.Text = " " + vm.OperatingSystem.FriendlyName;
+            t_machineOS.Text = " " + vm.OS.FriendlyName;
             t_machineType.Text = " " + QemuMachines.getFriendlyPCName(vm.PCType);
             l_machineSubversion.Visible = vm.OSSubversion != "";
             t_machineSubversion.Visible = vm.OSSubversion != "";
@@ -214,11 +214,10 @@ namespace QEMUInterface
             {
                 ListViewItem lvi = new(machines[i].Name)
                 {
-                    ImageIndex = machines[i].OperatingSystem.ImageIndex
+                    ImageIndex = machines[i].OS.ImageIndex
                 };
-                lvi.SubItems.Add(machines[i].OperatingSystem.FriendlyName);
-                lvi.SubItems.Add(machines[i].ID.ToString());
-
+                lvi.SubItems.Add(machines[i].OS.FriendlyName);
+                lvi.SubItems.Add(machines[i].UUID);
 
 
                 lv_vmList.Items.Add(lvi);
@@ -245,7 +244,7 @@ namespace QEMUInterface
             //else
             //{
             currentlySelectedMachine = -1;
-            currentlySelectedMachineID = -9999;
+            currentlySelectedMachineID = "";
             DisplayVM(null);
             //}
         }
@@ -301,7 +300,7 @@ namespace QEMUInterface
             if (lv_vmList.SelectedIndices.Count == 0)
             {
                 currentlySelectedMachine = -1;
-                currentlySelectedMachineID = -9999;
+                currentlySelectedMachineID = "";
                 DisplayVM(null);
                 return;
             }

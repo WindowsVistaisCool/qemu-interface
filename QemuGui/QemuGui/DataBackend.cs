@@ -2,7 +2,7 @@
 
 namespace QEMUInterface
 {
-    internal enum OS_FAMILY
+    public enum OS_FAMILY
     {
         WINDOWS,
         MACOS,
@@ -10,7 +10,7 @@ namespace QEMUInterface
         OTHER
     }
 
-    internal enum PC_TYPE
+    public enum PC_TYPE
     {
         IA_32,
         ITANIUM,
@@ -24,7 +24,7 @@ namespace QEMUInterface
         OTHER
     }
 
-    internal enum GRAPHICS_TYPE
+    public enum GRAPHICS_TYPE
     {
         STD,
         CIRRUS,
@@ -37,7 +37,7 @@ namespace QEMUInterface
         NONE
     }
 
-    internal readonly struct OperatingSystem
+    public readonly struct OperatingSystem
     {
         public readonly OS_FAMILY Family;
         public readonly string Name;
@@ -71,7 +71,7 @@ namespace QEMUInterface
 
     }
 
-    internal static class QemuMachines
+    public static class QemuMachines
     {
         public static string getQemuCmd(PC_TYPE type)
         {
@@ -177,7 +177,7 @@ namespace QEMUInterface
         }
     }
 
-    internal static class OperatingSystems
+    public static class OperatingSystems
     {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         private static List<OperatingSystem> allSystems;

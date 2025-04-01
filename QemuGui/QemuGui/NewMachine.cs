@@ -76,13 +76,13 @@ namespace QEMUInterface
 
             try
             {
-                selectedFamily = machine.OperatingSystem.Family;
-                selectedOS = machine.OperatingSystem;
+                selectedFamily = machine.OS.Family;
+                selectedOS = machine.OS;
                 rb_p1_os_win.Checked = selectedFamily == OS_FAMILY.WINDOWS;
                 rb_p1_os_mac.Checked = selectedFamily == OS_FAMILY.MACOS;
                 rb_p1_os_linux.Checked = selectedFamily == OS_FAMILY.LINUX;
                 LoadOSVersions(selectedOS);
-                cb_p1_version.Text = machine.OperatingSystem.FriendlyName;
+                cb_p1_version.Text = machine.OS.FriendlyName;
                 LoadOSMinorVersions(null, null);
             }
             catch (Exception) { }
@@ -441,7 +441,7 @@ namespace QEMUInterface
                 {
                     Name = t_p0_name.Text,
                     PCType = selectedMachineType,
-                    OperatingSystem = selectedOS,
+                    OS = selectedOS,
                     Machine = lv_p2_type.SelectedItems[0].Text,
                     OSSubversion = cb_p1_subversion.Text,
                     CPUCoreCount = (int)num_p3_cores.Value,

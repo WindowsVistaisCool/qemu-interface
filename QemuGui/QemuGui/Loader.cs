@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.JavaScript;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
@@ -62,25 +63,6 @@ namespace QEMUInterface
 
                     if (ParseJson(vm, parsed))
                     {
-                        //_ = Enum.TryParse(parsed["type"]!.ToString().ToUpper(), out PC_TYPE pcType);
-                        //_ = Enum.TryParse(parsed["graphics"]!.ToString().ToUpper(), out GRAPHICS_TYPE graphicsType);
-                        //VirtualMachine vm = new()
-                        //{
-                        //    Name = parsed["name"]!.ToString(),
-                        //    FilePath = file,
-                        //    OperatingSystem = OperatingSystems.get(parsed["os"]!.ToString()),
-                        //    PCType = pcType,
-                        //    Machine = parsed["machine"]!.ToString(),
-                        //    CPUCoreCount = int.Parse(parsed["cores"]!.ToString()),
-                        //    Memory = int.Parse(parsed["memory"]!.ToString()),
-                        //    Graphics = graphicsType,
-                        //};
-
-                        //if (parsed["processName"] != null && parsed["processArgs"] != null)
-                        //{
-                        //    vm.ProcessName = parsed["processName"]!.ToString();
-                        //    vm.ProcessArgs = parsed["processArgs"]!.ToString();
-                        //}
 
                         machines.Add(vm);
                     }
@@ -96,7 +78,7 @@ namespace QEMUInterface
 
                             try { vm.Name = parsed["Name"].ToString(); }
                             catch (Exception) { }
-                            try { vm.OperatingSystem = OperatingSystems.get(parsed["Specs"]["OS"].ToString()); }
+                            try { vm.OS = OperatingSystems.get(parsed["Specs"]["OS"].ToString()); }
                             catch (Exception) { }
                             try
                             {
@@ -149,21 +131,29 @@ namespace QEMUInterface
                     if (inp[k1.Key] != null)
                     {
                         vm.SetVarString(k1.Key, inp[k1.Key]!.ToString());
-                        MessageBox.Show(inp[k1.Key]!.ToString());
                     }
                     else
                     {
                         return false;
                     }
                 }
-                else if (k1.Value.GetType() =
-                    = typeof(Dictionary<string, object>))
+                else if (k1.Value.GetType() == typeof(Dictionary<string, object>))
                 {
-                    foreach (KeyValuePair<string, object> k2 in (Dictionary<string, object>)k1.Value)
+
+                    // Add a while loop for nested parsing
+                    Dictionary<string, object> value = (Dictionary<string, object>)k1.Value;
+                    foreach (KeyValuePair<string, object> k2 in value)
                     {
                         if (inp[k1.Key] != null && inp[k1.Key]![k2.Key] != null)
                         {
-                            vm.SetVarString(k2.Key, inp[k1.Key]![k2.Key]!.ToString());
+                            var toSet = inp[k1.Key]![k2.Key]!.ToString();
+                            if (int.TryParse(toSet, out int numResult)) // Integer
+                            {
+                                vm.SetVarString(k2.Key, numResult);
+                            } else // String
+                            {
+                                vm.SetVarString(k2.Key, toSet);
+                            }
                         }
                         else
                         {
@@ -173,6 +163,7 @@ namespace QEMUInterface
                 }
 
             }
+
             // Do additional parsing of optional data
 
             return true;
@@ -185,7 +176,12 @@ namespace QEMUInterface
                 return;
             }
 
-            StoreVM(vm, Path.Combine(path, vm.Name + FILE_EXT));
+            if (File.Exists(Path.Combine(path, vm.UUID + FILE_EXT))) {
+                MessageBox.Show("Error storing VM!\n\nA VM with the same UUID already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            StoreVM(vm, Path.Combine(path, vm.UUID + FILE_EXT));
         }
         public void StoreVM(VirtualMachine vm, string filePath)
         {
@@ -193,3 +189,4 @@ namespace QEMUInterface
         }
     }
 }
+

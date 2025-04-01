@@ -16,17 +16,15 @@ namespace QEMUInterface
         public readonly bool needsRecovery = false;
 
         public string Name = "";
-        public string FilePath = "";
-        public string UUID { get; private set; }
+        public string FilePath { get; set; } = "";
+        public string UUID { get; set; }
 
         public PC_TYPE PCType = PC_TYPE.IA_32;
         public OperatingSystem OS = OperatingSystems.get("Windows 7");
         public string OSSubversion = "";
         public string Machine = "";
-
         public int CPUCoreCount = 1;
         public int Memory = 1024;
-
         public GRAPHICS_TYPE Graphics = GRAPHICS_TYPE.STD;
         public string Audio = "None";
 
@@ -88,14 +86,14 @@ namespace QEMUInterface
             var specs = (Dictionary<string, object>)dataConstruct["Specs"];
             specs["OS"] = OS.Name;
             specs["OSSubversion"] = OSSubversion;
-            specs["PCType"] = PCType;
+            specs["PCType"] = PCType.ToString();
             specs["Machine"] = Machine;
             specs["CPU"] = new Dictionary<string, object>
             {
                 ["Cores"] = CPUCoreCount,
             };
             specs["Memory"] = Memory;
-            specs["Graphics"] = Graphics;
+            specs["Graphics"] = Graphics.ToString();
             specs["Audio"] = Audio;
             var processDetails = (Dictionary<string, object>)dataConstruct["ProcessDetails"];
             processDetails["ProcessName"] = ProcessName;
@@ -105,7 +103,7 @@ namespace QEMUInterface
 
         public override string ToString()
         {
-            return JsonSerializer.Serialize(ToJson()); // extremely real code
+            return JsonSerializer.Serialize(ToJson(), new JsonSerializerOptions { WriteIndented = true }); // extremely real code
         }
 
         public bool SetVarString(string varName, object value)

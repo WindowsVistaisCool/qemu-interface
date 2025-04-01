@@ -13,7 +13,7 @@ namespace QEMUInterface
     public class Loader
     {
         private static readonly string FILE_EXT = ".qint";
-        private static readonly string[] acceptableFlags = ["verbose"];
+        //private static readonly string[] acceptableFlags = ["verbose"];
 
         private string path;
 
@@ -60,6 +60,7 @@ namespace QEMUInterface
                     }
 
                     VirtualMachine vm = new VirtualMachine();
+                    vm.FilePath = file;
 
                     if (ParseJson(vm, parsed))
                     {
@@ -124,6 +125,16 @@ namespace QEMUInterface
 
         public static bool ParseJson(VirtualMachine vm, JsonNode inp)
         {
+            // Load uuid first
+            if (inp["UUID"] != null)
+            {
+                vm.UUID = inp["UUID"]!.ToString();
+            }
+            else
+            {
+                return false;
+            }
+
             foreach (KeyValuePair<string, object> k1 in VirtualMachine.MinimumDataRequired())
             {
                 if (k1.Value.GetType() == typeof(int))
@@ -140,7 +151,7 @@ namespace QEMUInterface
                 else if (k1.Value.GetType() == typeof(Dictionary<string, object>))
                 {
 
-                    // Add a while loop for nested parsing
+                    // TODO: Add a while loop for nested parsing
                     Dictionary<string, object> value = (Dictionary<string, object>)k1.Value;
                     foreach (KeyValuePair<string, object> k2 in value)
                     {
@@ -169,19 +180,23 @@ namespace QEMUInterface
             return true;
         }
 
-        public void StoreVM(VirtualMachine vm)
+        public void StoreVM(VirtualMachine vm, bool overwriteFile)
         {
             if (path == null)
             {
                 return;
             }
 
-            if (File.Exists(Path.Combine(path, vm.UUID + FILE_EXT))) {
+            if (File.Exists(Path.Combine(path, vm.UUID + FILE_EXT)) && !overwriteFile) {
                 MessageBox.Show("Error storing VM!\n\nA VM with the same UUID already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             StoreVM(vm, Path.Combine(path, vm.UUID + FILE_EXT));
+        }
+        public void StoreVM(VirtualMachine vm)
+        {
+            StoreVM(vm, false);
         }
         public void StoreVM(VirtualMachine vm, string filePath)
         {

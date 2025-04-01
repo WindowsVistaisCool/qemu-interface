@@ -293,6 +293,7 @@ namespace QEMUInterface
         private void b_machineSettings_Click(object sender, EventArgs e)
         {
             new WIN_MachineSettings(machines[currentlySelectedMachine]).ShowDialog();
+            loader.StoreVM(machines[currentlySelectedMachine], true);
         }
 
         private void lv_vmList_SelectedIndexChanged(object sender, EventArgs e)

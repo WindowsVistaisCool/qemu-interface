@@ -43,12 +43,12 @@ namespace QEMUInterface
 
             if (Settings.Default.vmFolder != null)
             {
-                t_vmFolder.Text = Properties.Settings.Default.vmFolder;
+                t_vmFolder.Text = Settings.Default.vmFolder;
             }
 
             if (Settings.Default.qemuFolder != null)
             {
-                t_qemuPath.Text = Properties.Settings.Default.qemuFolder;
+                t_qemuPath.Text = Settings.Default.qemuFolder;
             }
 
             finishedInit = true;

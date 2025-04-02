@@ -16,7 +16,7 @@ namespace QEMUInterface
         public readonly bool needsRecovery = false;
 
         public string Name = "";
-        public string FilePath { get; set; } = "";
+        public string VMDirectory { get; set; } = "";
         public string UUID { get; set; }
 
         public PC_TYPE PCType = PC_TYPE.IA_32;

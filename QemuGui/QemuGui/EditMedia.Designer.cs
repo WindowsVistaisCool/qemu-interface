@@ -49,14 +49,14 @@
             p_main.Location = new Point(0, 0);
             p_main.Name = "p_main";
             p_main.Padding = new Padding(3);
-            p_main.Size = new Size(594, 383);
+            p_main.Size = new Size(388, 383);
             p_main.TabIndex = 4;
             // 
             // tlp_main
             // 
-            tlp_main.ColumnCount = 2;
-            tlp_main.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 57.9932F));
-            tlp_main.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 42.0068F));
+            tlp_main.ColumnCount = 1;
+            tlp_main.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tlp_main.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
             tlp_main.Controls.Add(b_newDisk, 0, 2);
             tlp_main.Controls.Add(tv_main, 0, 1);
             tlp_main.Controls.Add(label1, 0, 0);
@@ -64,16 +64,16 @@
             tlp_main.Location = new Point(3, 3);
             tlp_main.Name = "tlp_main";
             tlp_main.RowCount = 3;
-            tlp_main.RowStyles.Add(new RowStyle(SizeType.Percent, 9.814323F));
-            tlp_main.RowStyles.Add(new RowStyle(SizeType.Percent, 66.57825F));
-            tlp_main.RowStyles.Add(new RowStyle(SizeType.Percent, 23.4042568F));
-            tlp_main.Size = new Size(588, 377);
+            tlp_main.RowStyles.Add(new RowStyle(SizeType.Percent, 9.834304F));
+            tlp_main.RowStyles.Add(new RowStyle(SizeType.Percent, 66.71379F));
+            tlp_main.RowStyles.Add(new RowStyle(SizeType.Percent, 23.4519043F));
+            tlp_main.Size = new Size(382, 377);
             tlp_main.TabIndex = 0;
             // 
             // b_newDisk
             // 
             b_newDisk.Anchor = AnchorStyles.Top;
-            b_newDisk.Location = new Point(87, 291);
+            b_newDisk.Location = new Point(108, 291);
             b_newDisk.Name = "b_newDisk";
             b_newDisk.Size = new Size(166, 41);
             b_newDisk.TabIndex = 2;
@@ -87,7 +87,7 @@
             tv_main.Location = new Point(20, 57);
             tv_main.Margin = new Padding(20);
             tv_main.Name = "tv_main";
-            tv_main.Size = new Size(301, 211);
+            tv_main.Size = new Size(342, 211);
             tv_main.TabIndex = 3;
             // 
             // label1
@@ -96,7 +96,7 @@
             label1.AutoSize = true;
             label1.Location = new Point(3, 11);
             label1.Name = "label1";
-            label1.Size = new Size(335, 15);
+            label1.Size = new Size(376, 15);
             label1.TabIndex = 4;
             label1.Text = "Devices";
             label1.TextAlign = ContentAlignment.MiddleCenter;
@@ -111,7 +111,7 @@
             flp_bottom.FlowDirection = FlowDirection.RightToLeft;
             flp_bottom.Location = new Point(0, 383);
             flp_bottom.Name = "flp_bottom";
-            flp_bottom.Size = new Size(594, 44);
+            flp_bottom.Size = new Size(388, 44);
             flp_bottom.TabIndex = 3;
             // 
             // b_cancel
@@ -120,7 +120,7 @@
             b_cancel.BackgroundImageLayout = ImageLayout.None;
             b_cancel.FlatAppearance.BorderColor = SystemColors.ActiveCaption;
             b_cancel.FlatStyle = FlatStyle.System;
-            b_cancel.Location = new Point(498, 9);
+            b_cancel.Location = new Point(292, 9);
             b_cancel.Margin = new Padding(5, 9, 10, 9);
             b_cancel.Name = "b_cancel";
             b_cancel.Size = new Size(86, 26);
@@ -135,7 +135,7 @@
             b_save.BackgroundImageLayout = ImageLayout.None;
             b_save.FlatAppearance.BorderColor = SystemColors.ActiveCaption;
             b_save.FlatStyle = FlatStyle.System;
-            b_save.Location = new Point(402, 9);
+            b_save.Location = new Point(196, 9);
             b_save.Margin = new Padding(5, 9, 5, 9);
             b_save.Name = "b_save";
             b_save.Size = new Size(86, 26);
@@ -150,7 +150,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = b_cancel;
-            ClientSize = new Size(594, 427);
+            ClientSize = new Size(388, 427);
             Controls.Add(p_main);
             Controls.Add(flp_bottom);
             Name = "WIN_MEDIA";

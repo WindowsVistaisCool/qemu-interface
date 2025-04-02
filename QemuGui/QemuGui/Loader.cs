@@ -12,7 +12,9 @@ namespace QEMUInterface
 {
     public class Loader
     {
-        private static readonly string FILE_EXT = ".qint";
+        public static readonly string FILE_EXT = ".qint";
+
+        public static readonly string CONFIG_FILE = "config" + FILE_EXT;
         //private static readonly string[] acceptableFlags = ["verbose"];
 
         private string path;
@@ -33,10 +35,17 @@ namespace QEMUInterface
 
             try
             {
-                var files = Directory.EnumerateFiles(path, "*.*", SearchOption.TopDirectoryOnly).Where(s => Path.GetExtension(s) == FILE_EXT);
+                var folders = Directory.EnumerateDirectories(path);
 
-                foreach (var file in files)
+                foreach (var folder in folders)
                 {
+                    if (!File.Exists(Path.Combine(folder, CONFIG_FILE)))
+                    {
+                        continue;
+                    }
+
+                    var file = Path.Combine(folder, CONFIG_FILE);
+
                     string content = File.ReadAllText(file);
                     if (content == null)
                     {
@@ -60,7 +69,7 @@ namespace QEMUInterface
                     }
 
                     VirtualMachine vm = new VirtualMachine();
-                    vm.FilePath = file;
+                    vm.VMDirectory = folder;
 
                     if (ParseJson(vm, parsed))
                     {
@@ -69,12 +78,13 @@ namespace QEMUInterface
                     }
                     else
                     {
+                        // OLD!!! TODO: DELETE AND UPDATE RECOVERY CODE 
                         DialogResult result = MessageBox.Show($"Error loading machine: \"{file}\".\nRequired data is missing.\n\nWould you like to repair it?", "Failed to load VM", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                         if (result == DialogResult.Yes)
                         {
                             vm = new(true)
                             {
-                                FilePath = file
+                                VMDirectory = file
                             };
 
                             try { vm.Name = parsed["Name"].ToString(); }
@@ -161,7 +171,8 @@ namespace QEMUInterface
                             if (int.TryParse(toSet, out int numResult)) // Integer
                             {
                                 vm.SetVarString(k2.Key, numResult);
-                            } else // String
+                            }
+                            else // String
                             {
                                 vm.SetVarString(k2.Key, toSet);
                             }
@@ -187,12 +198,23 @@ namespace QEMUInterface
                 return;
             }
 
-            if (File.Exists(Path.Combine(path, vm.UUID + FILE_EXT)) && !overwriteFile) {
+            bool directoryExists = Directory.Exists(Path.Combine(path, vm.UUID));
+
+
+            if (directoryExists && !overwriteFile)
+            {
                 MessageBox.Show("Error storing VM!\n\nA VM with the same UUID already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            else if (!directoryExists)
+            {
+                Directory.CreateDirectory(Path.Combine(path, vm.UUID));
+            }
 
-            StoreVM(vm, Path.Combine(path, vm.UUID + FILE_EXT));
+            //if (File.Exists(Path.Combine(path, vm.UUID + FILE_EXT)) && !overwriteFile) {
+            //}
+
+            StoreVM(vm, Path.Combine(path, Path.Combine(vm.UUID, CONFIG_FILE)));
         }
         public void StoreVM(VirtualMachine vm)
         {
@@ -201,6 +223,20 @@ namespace QEMUInterface
         public void StoreVM(VirtualMachine vm, string filePath)
         {
             File.WriteAllText(filePath, vm.ToString());
+        }
+
+        public void DeleteVM(VirtualMachine vm)
+        {
+            if (!Directory.Exists(vm.VMDirectory))
+            {
+                return;
+            }
+
+            try
+            {
+                Directory.Delete(vm.VMDirectory, true);
+            } catch (Exception)
+            { }
         }
     }
 }

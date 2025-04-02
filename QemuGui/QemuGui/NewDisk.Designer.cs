@@ -45,11 +45,12 @@
             rb_diskType_vmdk = new RadioButton();
             gb_diskLoc = new GroupBox();
             t_folder = new TextBox();
-            b_selvmFolder = new Button();
+            b_selFolder = new Button();
             t_name = new TextBox();
             flp_bottom = new FlowLayoutPanel();
             b_cancel = new Button();
             b_save = new Button();
+            fbd_folder = new FolderBrowserDialog();
             p_main = new Panel();
             tlp_size = new TableLayoutPanel();
             l_boundRight = new Label();
@@ -75,7 +76,7 @@
             p_main.Dock = DockStyle.Fill;
             p_main.Location = new Point(0, 0);
             p_main.Name = "p_main";
-            p_main.Size = new Size(547, 372);
+            p_main.Size = new Size(547, 332);
             p_main.TabIndex = 5;
             // 
             // tlp_main
@@ -88,22 +89,23 @@
             tlp_main.Dock = DockStyle.Fill;
             tlp_main.Location = new Point(0, 0);
             tlp_main.Name = "tlp_main";
+            tlp_main.Padding = new Padding(4, 2, 4, 0);
             tlp_main.RowCount = 3;
             tlp_main.RowStyles.Add(new RowStyle(SizeType.Percent, 32.9949226F));
             tlp_main.RowStyles.Add(new RowStyle(SizeType.Percent, 31.8944836F));
             tlp_main.RowStyles.Add(new RowStyle(SizeType.Percent, 35.2517967F));
-            tlp_main.Size = new Size(547, 372);
+            tlp_main.Size = new Size(547, 332);
             tlp_main.TabIndex = 0;
             // 
             // gb_size
             // 
             gb_size.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             gb_size.Controls.Add(tlp_size);
-            gb_size.Location = new Point(10, 245);
-            gb_size.Margin = new Padding(10, 5, 10, 23);
+            gb_size.Location = new Point(14, 219);
+            gb_size.Margin = new Padding(10, 4, 10, 20);
             gb_size.Name = "gb_size";
-            gb_size.Padding = new Padding(5, 6, 5, 11);
-            gb_size.Size = new Size(527, 104);
+            gb_size.Padding = new Padding(5, 5, 5, 10);
+            gb_size.Size = new Size(519, 93);
             gb_size.TabIndex = 2;
             gb_size.TabStop = false;
             gb_size.Text = "Disk Size";
@@ -120,24 +122,24 @@
             tlp_size.Controls.Add(l_boundRight, 0, 1);
             tlp_size.Controls.Add(num_size, 2, 0);
             tlp_size.Dock = DockStyle.Fill;
-            tlp_size.Location = new Point(5, 24);
-            tlp_size.Margin = new Padding(5, 10, 5, 10);
+            tlp_size.Location = new Point(5, 21);
+            tlp_size.Margin = new Padding(5, 9, 5, 9);
             tlp_size.Name = "tlp_size";
             tlp_size.RowCount = 2;
             tlp_size.RowStyles.Add(new RowStyle());
             tlp_size.RowStyles.Add(new RowStyle());
-            tlp_size.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tlp_size.Size = new Size(517, 69);
+            tlp_size.RowStyles.Add(new RowStyle(SizeType.Absolute, 18F));
+            tlp_size.Size = new Size(509, 62);
             tlp_size.TabIndex = 8;
             // 
             // l_boundLeft
             // 
             l_boundLeft.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             l_boundLeft.AutoSize = true;
-            l_boundLeft.Location = new Point(367, 55);
-            l_boundLeft.Margin = new Padding(5, 0, 0, 5);
+            l_boundLeft.Location = new Point(368, 49);
+            l_boundLeft.Margin = new Padding(5, 0, 0, 4);
             l_boundLeft.Name = "l_boundLeft";
-            l_boundLeft.Size = new Size(56, 17);
+            l_boundLeft.Size = new Size(49, 15);
             l_boundLeft.TabIndex = 8;
             l_boundLeft.Text = "4096 GB";
             l_boundLeft.TextAlign = ContentAlignment.MiddleRight;
@@ -147,12 +149,12 @@
             slider.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tlp_size.SetColumnSpan(slider, 2);
             slider.LargeChange = 16;
-            slider.Location = new Point(5, 5);
-            slider.Margin = new Padding(5, 5, 10, 0);
+            slider.Location = new Point(5, 4);
+            slider.Margin = new Padding(5, 4, 10, 0);
             slider.Maximum = 4096;
             slider.Minimum = 1;
             slider.Name = "slider";
-            slider.Size = new Size(408, 50);
+            slider.Size = new Size(402, 45);
             slider.SmallChange = 2;
             slider.TabIndex = 6;
             slider.TickFrequency = 512;
@@ -163,10 +165,10 @@
             // l_boundRight
             // 
             l_boundRight.AutoSize = true;
-            l_boundRight.Location = new Point(0, 55);
-            l_boundRight.Margin = new Padding(0, 0, 5, 5);
+            l_boundRight.Location = new Point(0, 49);
+            l_boundRight.Margin = new Padding(0, 0, 5, 4);
             l_boundRight.Name = "l_boundRight";
-            l_boundRight.Size = new Size(38, 17);
+            l_boundRight.Size = new Size(34, 15);
             l_boundRight.TabIndex = 7;
             l_boundRight.Text = "1 MB";
             l_boundRight.TextAlign = ContentAlignment.MiddleLeft;
@@ -174,13 +176,13 @@
             // num_size
             // 
             num_size.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            num_size.Location = new Point(428, 15);
-            num_size.Margin = new Padding(5);
+            num_size.Location = new Point(422, 13);
+            num_size.Margin = new Padding(5, 4, 5, 4);
             num_size.Maximum = new decimal(new int[] { 16, 0, 0, 0 });
             num_size.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             num_size.Name = "num_size";
             num_size.RightToLeft = RightToLeft.No;
-            num_size.Size = new Size(84, 25);
+            num_size.Size = new Size(82, 23);
             num_size.TabIndex = 9;
             num_size.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
@@ -188,11 +190,11 @@
             // 
             gb_diskType.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             gb_diskType.Controls.Add(flp_diskType);
-            gb_diskType.Location = new Point(10, 127);
-            gb_diskType.Margin = new Padding(10, 5, 10, 5);
+            gb_diskType.Location = new Point(14, 114);
+            gb_diskType.Margin = new Padding(10, 4, 10, 4);
             gb_diskType.Name = "gb_diskType";
-            gb_diskType.Padding = new Padding(5, 6, 5, 11);
-            gb_diskType.Size = new Size(527, 108);
+            gb_diskType.Padding = new Padding(5, 5, 5, 10);
+            gb_diskType.Size = new Size(519, 97);
             gb_diskType.TabIndex = 0;
             gb_diskType.TabStop = false;
             gb_diskType.Text = "Disk Type";
@@ -203,19 +205,19 @@
             flp_diskType.Controls.Add(rb_diskType_vmdk);
             flp_diskType.Dock = DockStyle.Fill;
             flp_diskType.FlowDirection = FlowDirection.TopDown;
-            flp_diskType.Location = new Point(5, 24);
+            flp_diskType.Location = new Point(5, 21);
             flp_diskType.Name = "flp_diskType";
-            flp_diskType.Padding = new Padding(5, 6, 5, 6);
-            flp_diskType.Size = new Size(517, 73);
+            flp_diskType.Padding = new Padding(5);
+            flp_diskType.Size = new Size(509, 66);
             flp_diskType.TabIndex = 0;
             // 
             // rb_diskType_qcow2
             // 
             rb_diskType_qcow2.AutoSize = true;
             rb_diskType_qcow2.Checked = true;
-            rb_diskType_qcow2.Location = new Point(8, 9);
+            rb_diskType_qcow2.Location = new Point(8, 8);
             rb_diskType_qcow2.Name = "rb_diskType_qcow2";
-            rb_diskType_qcow2.Size = new Size(208, 21);
+            rb_diskType_qcow2.Size = new Size(192, 19);
             rb_diskType_qcow2.TabIndex = 0;
             rb_diskType_qcow2.TabStop = true;
             rb_diskType_qcow2.Text = "QCow2 (Qemu CopyOnWrite 2)";
@@ -224,9 +226,9 @@
             // rb_diskType_vmdk
             // 
             rb_diskType_vmdk.AutoSize = true;
-            rb_diskType_vmdk.Location = new Point(8, 36);
+            rb_diskType_vmdk.Location = new Point(8, 33);
             rb_diskType_vmdk.Name = "rb_diskType_vmdk";
-            rb_diskType_vmdk.Size = new Size(193, 21);
+            rb_diskType_vmdk.Size = new Size(177, 19);
             rb_diskType_vmdk.TabIndex = 1;
             rb_diskType_vmdk.Text = "VMDK (Virtual Machine Disk)";
             rb_diskType_vmdk.UseVisualStyleBackColor = true;
@@ -235,10 +237,10 @@
             // 
             gb_diskLoc.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             gb_diskLoc.Controls.Add(tlp_fileFolder);
-            gb_diskLoc.Location = new Point(10, 15);
-            gb_diskLoc.Margin = new Padding(10, 15, 10, 5);
+            gb_diskLoc.Location = new Point(14, 15);
+            gb_diskLoc.Margin = new Padding(10, 13, 10, 4);
             gb_diskLoc.Name = "gb_diskLoc";
-            gb_diskLoc.Size = new Size(527, 102);
+            gb_diskLoc.Size = new Size(519, 91);
             gb_diskLoc.TabIndex = 1;
             gb_diskLoc.TabStop = false;
             gb_diskLoc.Text = "Disk Name and File Location";
@@ -247,33 +249,33 @@
             // 
             tlp_fileFolder.AutoSize = true;
             tlp_fileFolder.ColumnCount = 3;
-            tlp_fileFolder.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 18.4194069F));
-            tlp_fileFolder.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 57.4948654F));
-            tlp_fileFolder.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 24.2299786F));
+            tlp_fileFolder.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 23.697134F));
+            tlp_fileFolder.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 76.30287F));
+            tlp_fileFolder.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 102F));
             tlp_fileFolder.Controls.Add(ls_folder, 0, 0);
             tlp_fileFolder.Controls.Add(t_folder, 1, 0);
-            tlp_fileFolder.Controls.Add(b_selvmFolder, 2, 0);
+            tlp_fileFolder.Controls.Add(b_selFolder, 2, 0);
             tlp_fileFolder.Controls.Add(ls_name, 0, 1);
             tlp_fileFolder.Controls.Add(t_name, 1, 1);
             tlp_fileFolder.Dock = DockStyle.Fill;
-            tlp_fileFolder.Location = new Point(3, 21);
+            tlp_fileFolder.Location = new Point(3, 19);
             tlp_fileFolder.Margin = new Padding(0);
             tlp_fileFolder.Name = "tlp_fileFolder";
             tlp_fileFolder.RowCount = 3;
             tlp_fileFolder.RowStyles.Add(new RowStyle());
             tlp_fileFolder.RowStyles.Add(new RowStyle());
-            tlp_fileFolder.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tlp_fileFolder.Size = new Size(521, 78);
+            tlp_fileFolder.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tlp_fileFolder.Size = new Size(513, 69);
             tlp_fileFolder.TabIndex = 5;
             // 
             // ls_folder
             // 
             ls_folder.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             ls_folder.AutoSize = true;
-            ls_folder.Location = new Point(5, 5);
-            ls_folder.Margin = new Padding(5);
+            ls_folder.Location = new Point(5, 4);
+            ls_folder.Margin = new Padding(5, 4, 5, 4);
             ls_folder.Name = "ls_folder";
-            ls_folder.Size = new Size(85, 24);
+            ls_folder.Size = new Size(87, 23);
             ls_folder.TabIndex = 0;
             ls_folder.Text = "Folder:";
             ls_folder.TextAlign = ContentAlignment.MiddleRight;
@@ -281,32 +283,33 @@
             // t_folder
             // 
             t_folder.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            t_folder.Location = new Point(100, 3);
+            t_folder.Location = new Point(102, 3);
             t_folder.Margin = new Padding(5, 3, 5, 3);
             t_folder.Name = "t_folder";
             t_folder.PlaceholderText = "Select a path...";
-            t_folder.Size = new Size(289, 25);
+            t_folder.Size = new Size(303, 23);
             t_folder.TabIndex = 1;
             // 
-            // b_selvmFolder
+            // b_selFolder
             // 
-            b_selvmFolder.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            b_selvmFolder.Location = new Point(399, 3);
-            b_selvmFolder.Margin = new Padding(5, 3, 5, 3);
-            b_selvmFolder.Name = "b_selvmFolder";
-            b_selvmFolder.Size = new Size(117, 28);
-            b_selvmFolder.TabIndex = 2;
-            b_selvmFolder.Text = "Select";
-            b_selvmFolder.UseVisualStyleBackColor = true;
+            b_selFolder.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            b_selFolder.Location = new Point(415, 3);
+            b_selFolder.Margin = new Padding(5, 3, 5, 3);
+            b_selFolder.Name = "b_selFolder";
+            b_selFolder.Size = new Size(93, 25);
+            b_selFolder.TabIndex = 2;
+            b_selFolder.Text = "Select";
+            b_selFolder.UseVisualStyleBackColor = true;
+            b_selFolder.Click += b_selFolder_Click;
             // 
             // ls_name
             // 
             ls_name.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             ls_name.AutoSize = true;
-            ls_name.Location = new Point(5, 39);
-            ls_name.Margin = new Padding(5);
+            ls_name.Location = new Point(5, 35);
+            ls_name.Margin = new Padding(5, 4, 5, 4);
             ls_name.Name = "ls_name";
-            ls_name.Size = new Size(85, 21);
+            ls_name.Size = new Size(87, 21);
             ls_name.TabIndex = 3;
             ls_name.Text = "Disk Name:";
             ls_name.TextAlign = ContentAlignment.MiddleRight;
@@ -316,12 +319,11 @@
             t_name.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             t_name.BackColor = SystemColors.Window;
             tlp_fileFolder.SetColumnSpan(t_name, 2);
-            t_name.Location = new Point(100, 37);
+            t_name.Location = new Point(102, 34);
             t_name.Margin = new Padding(5, 3, 5, 3);
             t_name.Name = "t_name";
-            t_name.Size = new Size(416, 25);
+            t_name.Size = new Size(406, 23);
             t_name.TabIndex = 4;
-            t_name.TextChanged += t_qemuPath_TextChanged;
             // 
             // flp_bottom
             // 
@@ -331,9 +333,9 @@
             flp_bottom.Controls.Add(b_save);
             flp_bottom.Dock = DockStyle.Bottom;
             flp_bottom.FlowDirection = FlowDirection.RightToLeft;
-            flp_bottom.Location = new Point(0, 372);
+            flp_bottom.Location = new Point(0, 332);
             flp_bottom.Name = "flp_bottom";
-            flp_bottom.Size = new Size(547, 49);
+            flp_bottom.Size = new Size(547, 44);
             flp_bottom.TabIndex = 4;
             // 
             // b_cancel
@@ -342,10 +344,10 @@
             b_cancel.BackgroundImageLayout = ImageLayout.None;
             b_cancel.FlatAppearance.BorderColor = SystemColors.ActiveCaption;
             b_cancel.FlatStyle = FlatStyle.System;
-            b_cancel.Location = new Point(451, 10);
-            b_cancel.Margin = new Padding(5, 10, 10, 10);
+            b_cancel.Location = new Point(451, 9);
+            b_cancel.Margin = new Padding(5, 9, 10, 9);
             b_cancel.Name = "b_cancel";
-            b_cancel.Size = new Size(86, 29);
+            b_cancel.Size = new Size(86, 26);
             b_cancel.TabIndex = 1;
             b_cancel.Text = "Cancel";
             b_cancel.UseVisualStyleBackColor = false;
@@ -357,10 +359,10 @@
             b_save.BackgroundImageLayout = ImageLayout.None;
             b_save.FlatAppearance.BorderColor = SystemColors.ActiveCaption;
             b_save.FlatStyle = FlatStyle.System;
-            b_save.Location = new Point(355, 10);
-            b_save.Margin = new Padding(5, 10, 5, 10);
+            b_save.Location = new Point(355, 9);
+            b_save.Margin = new Padding(5, 9, 5, 9);
             b_save.Name = "b_save";
-            b_save.Size = new Size(86, 29);
+            b_save.Size = new Size(86, 26);
             b_save.TabIndex = 0;
             b_save.Text = "Create";
             b_save.UseVisualStyleBackColor = false;
@@ -369,10 +371,10 @@
             // WIN_NewDisk
             // 
             AcceptButton = b_save;
-            AutoScaleDimensions = new SizeF(7F, 17F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = b_cancel;
-            ClientSize = new Size(547, 421);
+            ClientSize = new Size(547, 376);
             Controls.Add(p_main);
             Controls.Add(flp_bottom);
             FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -413,10 +415,11 @@
         private GroupBox gb_diskLoc;
         private GroupBox gb_size;
         private TextBox t_folder;
-        private Button b_selvmFolder;
+        private Button b_selFolder;
         private TextBox t_name;
         private Label l_boundLeft;
         private TrackBar slider;
         private NumericUpDown num_size;
+        private FolderBrowserDialog fbd_folder;
     }
 }

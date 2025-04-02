@@ -207,23 +207,6 @@ namespace QEMUInterface
             SetMachineState(state, true).ApplyUnsafe();
         }
 
-        private void LoadVMList()
-        {
-            p_lvWrapper.BackColor = lv_vmList.BackColor;
-            for (int i = 0; i < machines.Count; i++)
-            {
-                ListViewItem lvi = new(machines[i].Name)
-                {
-                    ImageIndex = machines[i].OS.ImageIndex
-                };
-                lvi.SubItems.Add(machines[i].OS.FriendlyName);
-                lvi.SubItems.Add(machines[i].UUID);
-
-
-                lv_vmList.Items.Add(lvi);
-            }
-        }
-
         private void UpdateVMList()
         {
             lv_vmList.Items.Clear();
@@ -234,19 +217,22 @@ namespace QEMUInterface
                 machines[i].EditControlOnAbort(() => SetMachineState(MACHINE_STATE.FAIL, true).Apply());
             }
 
-            LoadVMList();
-            //if (machines.Count > 0)
-            //{
-            //    currentlySelectedMachine = 0;
-            //    currentlySelectedMachineID = machines[0].ID;
-            //    DisplayVM(machines[currentlySelectedMachine]);
-            //}
-            //else
-            //{
+            p_lvWrapper.BackColor = lv_vmList.BackColor;
+            for (int i = 0; i < machines.Count; i++)
+            {
+                ListViewItem lvi = new(machines[i].Name)
+                {
+                    ImageIndex = machines[i].OS.ImageIndex
+                };
+                lvi.SubItems.Add(machines[i].OS.FriendlyName);
+                lvi.SubItems.Add(machines[i].UUID);
+
+                lv_vmList.Items.Add(lvi);
+            }
+
             currentlySelectedMachine = -1;
             currentlySelectedMachineID = "";
             DisplayVM(null);
-            //}
         }
 
         private void ts_help_about_Click(object sender, EventArgs e)
@@ -339,7 +325,27 @@ namespace QEMUInterface
 
         private void cmsi_vmList_config_Click(object sender, EventArgs e)
         {
-            Process.Start("notepad.exe", machines[currentlySelectedMachine].FilePath);
+            Process.Start("notepad.exe", Path.Combine(machines[currentlySelectedMachine].VMDirectory, Loader.CONFIG_FILE));
+        }
+
+        private void cmsi_vmList_delete_Click(object sender, EventArgs e)
+        {
+            DialogResult res = MessageBox.Show("Are you sure you want to delete this machine? This action cannot be undone.", "Delete VM?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (res == DialogResult.Yes)
+            {
+                loader.DeleteVM(machines[currentlySelectedMachine]);
+                machines = loader.Populate();
+                UpdateVMList();
+            }
+        }
+
+        private void cmsi_vmList_showExp_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start("explorer.exe", machines[currentlySelectedMachine].VMDirectory);
+            } catch (Exception) 
+            { }
         }
     }
 }

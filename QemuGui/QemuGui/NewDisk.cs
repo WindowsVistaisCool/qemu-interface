@@ -9,6 +9,8 @@ namespace QEMUInterface
         private string fileExt = ".qcow2";
         private bool isEditing = false;
 
+        private bool allowCreate = false;
+
         public WIN_NewDisk(VirtualMachine machine)
         {
             InitializeComponent();
@@ -29,7 +31,7 @@ namespace QEMUInterface
             num_size.Minimum = slider.Minimum;
             num_size.Value = slider.Value;
 
-            t_folder.Text = Path.GetDirectoryName(machine.FilePath);
+            t_folder.Text = Path.GetDirectoryName(machine.VMDirectory);
             t_name.Text = "Disk 1";
         }
 
@@ -68,7 +70,7 @@ namespace QEMUInterface
                 return;
             }
 
-            if (File.Exists(Path.Combine(t_folder.Text, t_name.Text) + fileExt)) 
+            if (File.Exists(Path.Combine(t_folder.Text, t_name.Text) + fileExt))
             {
                 MessageBox.Show("The file already exists!", "Invalid Name", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 isEditing = true;
@@ -83,26 +85,13 @@ namespace QEMUInterface
             num_size.Value = slider.Value;
         }
 
-        private void t_qemuPath_TextChanged(object sender, EventArgs e)
+        private void b_selFolder_Click(object sender, EventArgs e)
         {
-            validateButton();
-        }
-
-        private void validateButton()
-        {
-            bool shouldEnable = true;
-
-            if (t_name.Text.Length <= 0 && shouldEnable)
+            DialogResult result = fbd_folder.ShowDialog();
+            if (result == DialogResult.OK)
             {
-                shouldEnable = false;
+                t_folder.Text = fbd_folder.SelectedPath;
             }
-
-            if (t_folder.Text.Length <= 0 && shouldEnable)
-            {
-                shouldEnable = false;
-            }
-
-            b_save.Enabled = shouldEnable;
         }
     }
 }

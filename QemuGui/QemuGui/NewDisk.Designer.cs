@@ -76,7 +76,7 @@
             p_main.Dock = DockStyle.Fill;
             p_main.Location = new Point(0, 0);
             p_main.Name = "p_main";
-            p_main.Size = new Size(547, 332);
+            p_main.Size = new Size(547, 411);
             p_main.TabIndex = 5;
             // 
             // tlp_main
@@ -94,18 +94,18 @@
             tlp_main.RowStyles.Add(new RowStyle(SizeType.Percent, 32.9949226F));
             tlp_main.RowStyles.Add(new RowStyle(SizeType.Percent, 31.8944836F));
             tlp_main.RowStyles.Add(new RowStyle(SizeType.Percent, 35.2517967F));
-            tlp_main.Size = new Size(547, 332);
+            tlp_main.Size = new Size(547, 411);
             tlp_main.TabIndex = 0;
             // 
             // gb_size
             // 
             gb_size.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             gb_size.Controls.Add(tlp_size);
-            gb_size.Location = new Point(14, 219);
+            gb_size.Location = new Point(14, 270);
             gb_size.Margin = new Padding(10, 4, 10, 20);
             gb_size.Name = "gb_size";
             gb_size.Padding = new Padding(5, 5, 5, 10);
-            gb_size.Size = new Size(519, 93);
+            gb_size.Size = new Size(519, 121);
             gb_size.TabIndex = 2;
             gb_size.TabStop = false;
             gb_size.Text = "Disk Size";
@@ -129,7 +129,7 @@
             tlp_size.RowStyles.Add(new RowStyle());
             tlp_size.RowStyles.Add(new RowStyle());
             tlp_size.RowStyles.Add(new RowStyle(SizeType.Absolute, 18F));
-            tlp_size.Size = new Size(509, 62);
+            tlp_size.Size = new Size(509, 90);
             tlp_size.TabIndex = 8;
             // 
             // l_boundLeft
@@ -190,11 +190,11 @@
             // 
             gb_diskType.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             gb_diskType.Controls.Add(flp_diskType);
-            gb_diskType.Location = new Point(14, 114);
+            gb_diskType.Location = new Point(14, 140);
             gb_diskType.Margin = new Padding(10, 4, 10, 4);
             gb_diskType.Name = "gb_diskType";
             gb_diskType.Padding = new Padding(5, 5, 5, 10);
-            gb_diskType.Size = new Size(519, 97);
+            gb_diskType.Size = new Size(519, 122);
             gb_diskType.TabIndex = 0;
             gb_diskType.TabStop = false;
             gb_diskType.Text = "Disk Type";
@@ -208,7 +208,7 @@
             flp_diskType.Location = new Point(5, 21);
             flp_diskType.Name = "flp_diskType";
             flp_diskType.Padding = new Padding(5);
-            flp_diskType.Size = new Size(509, 66);
+            flp_diskType.Size = new Size(509, 91);
             flp_diskType.TabIndex = 0;
             // 
             // rb_diskType_qcow2
@@ -240,7 +240,7 @@
             gb_diskLoc.Location = new Point(14, 15);
             gb_diskLoc.Margin = new Padding(10, 13, 10, 4);
             gb_diskLoc.Name = "gb_diskLoc";
-            gb_diskLoc.Size = new Size(519, 91);
+            gb_diskLoc.Size = new Size(519, 117);
             gb_diskLoc.TabIndex = 1;
             gb_diskLoc.TabStop = false;
             gb_diskLoc.Text = "Disk Name and File Location";
@@ -249,8 +249,8 @@
             // 
             tlp_fileFolder.AutoSize = true;
             tlp_fileFolder.ColumnCount = 3;
-            tlp_fileFolder.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 23.697134F));
-            tlp_fileFolder.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 76.30287F));
+            tlp_fileFolder.ColumnStyles.Add(new ColumnStyle());
+            tlp_fileFolder.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tlp_fileFolder.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 102F));
             tlp_fileFolder.Controls.Add(ls_folder, 0, 0);
             tlp_fileFolder.Controls.Add(t_folder, 1, 0);
@@ -262,10 +262,10 @@
             tlp_fileFolder.Margin = new Padding(0);
             tlp_fileFolder.Name = "tlp_fileFolder";
             tlp_fileFolder.RowCount = 3;
+            tlp_fileFolder.RowStyles.Add(new RowStyle(SizeType.Percent, 56.0606079F));
             tlp_fileFolder.RowStyles.Add(new RowStyle());
-            tlp_fileFolder.RowStyles.Add(new RowStyle());
-            tlp_fileFolder.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tlp_fileFolder.Size = new Size(513, 69);
+            tlp_fileFolder.RowStyles.Add(new RowStyle(SizeType.Percent, 43.9393921F));
+            tlp_fileFolder.Size = new Size(513, 95);
             tlp_fileFolder.TabIndex = 5;
             // 
             // ls_folder
@@ -275,28 +275,28 @@
             ls_folder.Location = new Point(5, 4);
             ls_folder.Margin = new Padding(5, 4, 5, 4);
             ls_folder.Name = "ls_folder";
-            ls_folder.Size = new Size(87, 23);
+            ls_folder.Size = new Size(67, 29);
             ls_folder.TabIndex = 0;
             ls_folder.Text = "Folder:";
             ls_folder.TextAlign = ContentAlignment.MiddleRight;
             // 
             // t_folder
             // 
-            t_folder.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            t_folder.Location = new Point(102, 3);
+            t_folder.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            t_folder.Location = new Point(82, 7);
             t_folder.Margin = new Padding(5, 3, 5, 3);
             t_folder.Name = "t_folder";
             t_folder.PlaceholderText = "Select a path...";
-            t_folder.Size = new Size(303, 23);
+            t_folder.Size = new Size(324, 23);
             t_folder.TabIndex = 1;
             // 
             // b_selFolder
             // 
             b_selFolder.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            b_selFolder.Location = new Point(415, 3);
+            b_selFolder.Location = new Point(416, 3);
             b_selFolder.Margin = new Padding(5, 3, 5, 3);
             b_selFolder.Name = "b_selFolder";
-            b_selFolder.Size = new Size(93, 25);
+            b_selFolder.Size = new Size(92, 31);
             b_selFolder.TabIndex = 2;
             b_selFolder.Text = "Select";
             b_selFolder.UseVisualStyleBackColor = true;
@@ -306,10 +306,10 @@
             // 
             ls_name.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             ls_name.AutoSize = true;
-            ls_name.Location = new Point(5, 35);
+            ls_name.Location = new Point(5, 41);
             ls_name.Margin = new Padding(5, 4, 5, 4);
             ls_name.Name = "ls_name";
-            ls_name.Size = new Size(87, 21);
+            ls_name.Size = new Size(67, 21);
             ls_name.TabIndex = 3;
             ls_name.Text = "Disk Name:";
             ls_name.TextAlign = ContentAlignment.MiddleRight;
@@ -319,10 +319,10 @@
             t_name.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             t_name.BackColor = SystemColors.Window;
             tlp_fileFolder.SetColumnSpan(t_name, 2);
-            t_name.Location = new Point(102, 34);
+            t_name.Location = new Point(82, 40);
             t_name.Margin = new Padding(5, 3, 5, 3);
             t_name.Name = "t_name";
-            t_name.Size = new Size(406, 23);
+            t_name.Size = new Size(426, 23);
             t_name.TabIndex = 4;
             // 
             // flp_bottom
@@ -333,7 +333,7 @@
             flp_bottom.Controls.Add(b_save);
             flp_bottom.Dock = DockStyle.Bottom;
             flp_bottom.FlowDirection = FlowDirection.RightToLeft;
-            flp_bottom.Location = new Point(0, 332);
+            flp_bottom.Location = new Point(0, 411);
             flp_bottom.Name = "flp_bottom";
             flp_bottom.Size = new Size(547, 44);
             flp_bottom.TabIndex = 4;
@@ -374,7 +374,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = b_cancel;
-            ClientSize = new Size(547, 376);
+            ClientSize = new Size(547, 455);
             Controls.Add(p_main);
             Controls.Add(flp_bottom);
             FormBorderStyle = FormBorderStyle.FixedSingle;

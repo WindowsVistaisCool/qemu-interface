@@ -328,7 +328,7 @@ namespace QEMUInterface
             Process.Start("notepad.exe", Path.Combine(machines[currentlySelectedMachine].VMDirectory, Loader.CONFIG_FILE));
         }
 
-        private void cmsi_vmList_delete_Click(object sender, EventArgs e)
+        private void cmsi_vmList_delete_Click(object sender, EventArgs e) 
         {
             DialogResult res = MessageBox.Show("Are you sure you want to delete this machine? This action cannot be undone.", "Delete VM?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (res == DialogResult.Yes)

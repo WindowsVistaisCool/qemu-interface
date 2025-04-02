@@ -31,7 +31,7 @@ namespace QEMUInterface
             num_size.Minimum = slider.Minimum;
             num_size.Value = slider.Value;
 
-            t_folder.Text = Path.GetDirectoryName(machine.VMDirectory);
+            t_folder.Text = machine.VMDirectory;
             t_name.Text = "Disk 1";
         }
 

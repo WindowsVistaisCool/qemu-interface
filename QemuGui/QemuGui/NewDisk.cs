@@ -9,7 +9,7 @@ namespace QEMUInterface
         private string fileExt = ".qcow2";
         private bool isEditing = false;
 
-        private bool allowCreate = false;
+        private bool applyCreate = false;
 
         public WIN_NewDisk(VirtualMachine machine)
         {
@@ -41,6 +41,20 @@ namespace QEMUInterface
             {
                 e.Cancel = true;
             }
+
+            if (applyCreate)
+            {
+
+                Dictionary<string, object> data = new Dictionary<string, object>
+                {
+                    ["Name"] = t_name.Text + fileExt,
+                    ["Size"] = num_size.Value,
+                    ["Path"] = t_folder.Text,
+                    ["Type"] = MEDIA_TYPE.HDD,
+                };
+
+                machine.AddMedia(data);
+            }
         }
 
         private void b_cancel_Click(object sender, EventArgs e)
@@ -51,6 +65,7 @@ namespace QEMUInterface
                 if (result == DialogResult.Yes)
                 {
                     isEditing = false;
+                    applyCreate = false;
                     Close();
                 }
             }
@@ -77,6 +92,7 @@ namespace QEMUInterface
                 return;
             }
 
+            applyCreate = true;
             Close();
         }
 

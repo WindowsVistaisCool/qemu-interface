@@ -1,13 +1,6 @@
-﻿using System.CodeDom;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Reflection;
-using System.Reflection.Metadata;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
 
 namespace QEMUInterface
 {
@@ -28,13 +21,14 @@ namespace QEMUInterface
         public GRAPHICS_TYPE Graphics = GRAPHICS_TYPE.STD;
         public string Audio = "None";
 
-        public bool VerboseRunning = false;
-
-        public Func<string, bool> ControlModifyCondition = (id) => true;
+        public List<Dictionary<string, object>> Media = [];
 
         public string ProcessName = "cmd.exe";
         public string ProcessArgs = "";
 
+        public bool VerboseRunning = false;
+
+        public Func<string, bool> ControlModifyCondition = (id) => true;
         private Process? process;
 
         private EventHandler? exitEvent;
@@ -70,6 +64,9 @@ namespace QEMUInterface
                     ["Graphics"] = 0,
                     ["Audio"] = 0,
                 },
+                ["Media"] = new List<Dictionary<string, object>>
+                {
+                },
                 ["ProcessDetails"] = new Dictionary<string, object>
                 {
                     ["ProcessName"] = 0,
@@ -95,6 +92,7 @@ namespace QEMUInterface
             specs["Memory"] = Memory;
             specs["Graphics"] = Graphics.ToString();
             specs["Audio"] = Audio;
+            dataConstruct["Media"] = Media;
             var processDetails = (Dictionary<string, object>)dataConstruct["ProcessDetails"];
             processDetails["ProcessName"] = ProcessName;
             processDetails["ProcessArgs"] = ProcessArgs;
@@ -174,6 +172,11 @@ namespace QEMUInterface
                 }
             }
             return false;
+        }
+
+        public void AddMedia(Dictionary<string, object> data)
+        {
+            Media.Add(data);
         }
 
         public void GenerateProcessArgs()

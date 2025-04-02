@@ -24,6 +24,13 @@ namespace QEMUInterface
         OTHER
     }
 
+    public enum MEDIA_TYPE
+    {
+        HDD,
+        CDROM,
+        FLOPPY
+    }
+
     public enum GRAPHICS_TYPE
     {
         STD,

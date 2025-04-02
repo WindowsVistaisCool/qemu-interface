@@ -31,6 +31,8 @@ namespace QEMUInterface
             }
 
             Text += machine.Name;
+
+            Populate(null, null);
         }
 
         private void WIN_MEDIA_FormClosing(object sender, FormClosingEventArgs e)
@@ -63,9 +65,59 @@ namespace QEMUInterface
             Close();
         }
 
+        private void Populate(object? sender, EventArgs? e)
+        {
+            tv_main.Nodes.Clear();
+            TreeNode hdd = new()
+            {
+                Name = "tvn_hdd",
+                Text = "Hard Disks",
+                ImageIndex = 0,
+            };
+
+            TreeNode cdrom = new()
+            {
+                Name = "tvn_cdrom",
+                Text = "CD ROMs",
+                ImageIndex = 1,
+            };
+
+            TreeNode floppy = new()
+            {
+                Name = "tvn_floppy",
+                Text = "Floppy Drives",
+                ImageIndex = 2,
+            };
+
+            var vmData = machine.Media;
+
+            foreach (var media in vmData) {
+                try
+                {
+                    if (((MEDIA_TYPE)media["Type"]) == MEDIA_TYPE.HDD)
+                    {
+                        hdd.Nodes.Add(new TreeNode
+                        {
+                            Name = "tvn_hdd_" + media["Name"],
+                            Text = media["Name"].ToString(),
+                        });
+                    }
+                } catch (Exception)
+                {
+
+                }
+            }
+
+            tv_main.Nodes.Add(hdd);
+            tv_main.Nodes.Add(cdrom);
+            tv_main.Nodes.Add(floppy);
+            tv_main.ExpandAll();
+        }
+
         private void b_newDisk_Click(object sender, EventArgs e)
         {
             new WIN_NewDisk(machine).ShowDialog();
+            Populate(null, null);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DarkModeForms;
+using QEMUInterface.Properties;
 
 namespace QEMUInterface
 {
@@ -449,6 +450,8 @@ namespace QEMUInterface
                     Graphics = (GRAPHICS_TYPE)Enum.Parse(typeof(GRAPHICS_TYPE), cb_p3_graphics.Text),
                     Audio = cb_p3_audio.Text,
                 };
+
+                vm.VMDirectory = Path.Combine(Settings.Default.vmFolder, vm.UUID);
 
                 vm.GenerateProcessArgs();
 

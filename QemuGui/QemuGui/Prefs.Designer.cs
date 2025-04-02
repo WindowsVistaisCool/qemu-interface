@@ -33,6 +33,7 @@
             TableLayoutPanel tlp_fileFolder;
             Label ls_vmFolder;
             Label ls_qemuFiles;
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WIN_Prefs));
             gb_configFiles = new GroupBox();
             t_vmFolder = new TextBox();
             b_selvmFolder = new Button();
@@ -302,6 +303,7 @@
             Controls.Add(p_main);
             Controls.Add(flp_bottom);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "WIN_Prefs";

@@ -11,6 +11,7 @@ namespace QEMUInterface
         public string Name = "";
         public string VMDirectory { get; set; } = "";
         public string UUID { get; set; }
+        public string Hidden = "0";
 
         public PC_TYPE PCType = PC_TYPE.IA_32;
         public OperatingSystem OS = OperatingSystems.get("Windows 7");
@@ -50,6 +51,7 @@ namespace QEMUInterface
             {
                 ["Name"] = 0,
                 ["UUID"] = 0,
+                ["Hidden"] = 0,
                 ["Specs"] = new Dictionary<string, object>
                 {
                     ["OS"] = 0,
@@ -80,6 +82,7 @@ namespace QEMUInterface
             var dataConstruct = MinimumDataRequired();
             dataConstruct["Name"] = Name;
             dataConstruct["UUID"] = UUID;
+            dataConstruct["Hidden"] = Hidden;
             var specs = (Dictionary<string, object>)dataConstruct["Specs"];
             specs["OS"] = OS.Name;
             specs["OSSubversion"] = OSSubversion;

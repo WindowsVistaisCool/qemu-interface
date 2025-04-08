@@ -79,9 +79,10 @@
             ts_file_exit = new ToolStripMenuItem();
             ms_ts_machine = new ToolStripMenuItem();
             ts_machine_new = new ToolStripMenuItem();
+            ts_machine_add = new ToolStripMenuItem();
             ts_machine_start = new ToolStripMenuItem();
             ts_machine_settings = new ToolStripMenuItem();
-            ms_ts_about = new ToolStripMenuItem();
+            ms_ts_help = new ToolStripMenuItem();
             ts_help_about = new ToolStripMenuItem();
             ms = new MenuStrip();
             gb_machineState = new GroupBox();
@@ -92,6 +93,8 @@
             p_main = new Panel();
             tlp_main = new TableLayoutPanel();
             tlp_vmControl = new TableLayoutPanel();
+            b_addMachine = new Button();
+            ofd_add = new OpenFileDialog();
             ls_machineName = new Label();
             ls_machinesText = new Label();
             ls_machineOS = new Label();
@@ -145,7 +148,7 @@
             ls_machinesText.Font = new Font("Microsoft Sans Serif", 21.7499962F, FontStyle.Regular, GraphicsUnit.Point, 0);
             ls_machinesText.Location = new Point(3, 19);
             ls_machinesText.Name = "ls_machinesText";
-            ls_machinesText.Size = new Size(283, 46);
+            ls_machinesText.Size = new Size(291, 46);
             ls_machinesText.TabIndex = 0;
             ls_machinesText.Text = "Machines";
             ls_machinesText.TextAlign = ContentAlignment.MiddleCenter;
@@ -185,7 +188,7 @@
             tlp_machineInfo.RowStyles.Add(new RowStyle());
             tlp_machineInfo.RowStyles.Add(new RowStyle());
             tlp_machineInfo.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tlp_machineInfo.Size = new Size(485, 158);
+            tlp_machineInfo.Size = new Size(498, 158);
             tlp_machineInfo.TabIndex = 6;
             // 
             // ls_pcType
@@ -214,7 +217,7 @@
             t_machineType.Name = "t_machineType";
             t_machineType.ReadOnly = true;
             t_machineType.ShortcutsEnabled = false;
-            t_machineType.Size = new Size(356, 23);
+            t_machineType.Size = new Size(369, 23);
             t_machineType.TabIndex = 7;
             // 
             // t_machineOS
@@ -229,7 +232,7 @@
             t_machineOS.Name = "t_machineOS";
             t_machineOS.ReadOnly = true;
             t_machineOS.ShortcutsEnabled = false;
-            t_machineOS.Size = new Size(356, 23);
+            t_machineOS.Size = new Size(369, 23);
             t_machineOS.TabIndex = 5;
             // 
             // t_machineName
@@ -246,7 +249,7 @@
             t_machineName.Name = "t_machineName";
             t_machineName.ReadOnly = true;
             t_machineName.ShortcutsEnabled = false;
-            t_machineName.Size = new Size(356, 23);
+            t_machineName.Size = new Size(369, 23);
             t_machineName.TabIndex = 4;
             t_machineName.Tag = "";
             // 
@@ -274,7 +277,7 @@
             t_machineSubversion.Name = "t_machineSubversion";
             t_machineSubversion.ReadOnly = true;
             t_machineSubversion.ShortcutsEnabled = false;
-            t_machineSubversion.Size = new Size(356, 23);
+            t_machineSubversion.Size = new Size(369, 23);
             t_machineSubversion.TabIndex = 9;
             // 
             // tlp_cpuTab
@@ -295,7 +298,7 @@
             tlp_cpuTab.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tlp_cpuTab.RowStyles.Add(new RowStyle(SizeType.Absolute, 18F));
             tlp_cpuTab.RowStyles.Add(new RowStyle(SizeType.Absolute, 18F));
-            tlp_cpuTab.Size = new Size(491, 249);
+            tlp_cpuTab.Size = new Size(504, 249);
             tlp_cpuTab.TabIndex = 7;
             // 
             // ls_cpuCores
@@ -336,7 +339,7 @@
             t_ram.Name = "t_ram";
             t_ram.ReadOnly = true;
             t_ram.ShortcutsEnabled = false;
-            t_ram.Size = new Size(400, 23);
+            t_ram.Size = new Size(413, 23);
             t_ram.TabIndex = 7;
             // 
             // t_cpuCores
@@ -353,7 +356,7 @@
             t_cpuCores.Name = "t_cpuCores";
             t_cpuCores.ReadOnly = true;
             t_cpuCores.ShortcutsEnabled = false;
-            t_cpuCores.Size = new Size(400, 23);
+            t_cpuCores.Size = new Size(413, 23);
             t_cpuCores.TabIndex = 4;
             // 
             // tlp_graphicsAndSound
@@ -374,7 +377,7 @@
             tlp_graphicsAndSound.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tlp_graphicsAndSound.RowStyles.Add(new RowStyle(SizeType.Absolute, 18F));
             tlp_graphicsAndSound.RowStyles.Add(new RowStyle(SizeType.Absolute, 18F));
-            tlp_graphicsAndSound.Size = new Size(491, 249);
+            tlp_graphicsAndSound.Size = new Size(504, 249);
             tlp_graphicsAndSound.TabIndex = 8;
             // 
             // ls_graphicsController
@@ -415,7 +418,7 @@
             t_audio.Name = "t_audio";
             t_audio.ReadOnly = true;
             t_audio.ShortcutsEnabled = false;
-            t_audio.Size = new Size(354, 23);
+            t_audio.Size = new Size(367, 23);
             t_audio.TabIndex = 7;
             // 
             // t_graphicsController
@@ -432,7 +435,7 @@
             t_graphicsController.Name = "t_graphicsController";
             t_graphicsController.ReadOnly = true;
             t_graphicsController.ShortcutsEnabled = false;
-            t_graphicsController.Size = new Size(354, 23);
+            t_graphicsController.Size = new Size(367, 23);
             t_graphicsController.TabIndex = 4;
             // 
             // sep_file_1
@@ -457,7 +460,7 @@
             tlp_mediaTab.RowCount = 2;
             tlp_mediaTab.RowStyles.Add(new RowStyle(SizeType.Percent, 35.1535835F));
             tlp_mediaTab.RowStyles.Add(new RowStyle(SizeType.Percent, 64.84641F));
-            tlp_mediaTab.Size = new Size(491, 249);
+            tlp_mediaTab.Size = new Size(504, 249);
             tlp_mediaTab.TabIndex = 2;
             // 
             // b_editMedia
@@ -466,7 +469,7 @@
             b_editMedia.Location = new Point(5, 4);
             b_editMedia.Margin = new Padding(5, 4, 5, 4);
             b_editMedia.Name = "b_editMedia";
-            b_editMedia.Size = new Size(235, 79);
+            b_editMedia.Size = new Size(242, 79);
             b_editMedia.TabIndex = 0;
             b_editMedia.Text = "Edit Media";
             b_editMedia.UseVisualStyleBackColor = true;
@@ -496,7 +499,7 @@
             p_lvWrapper.Name = "p_lvWrapper";
             p_lvWrapper.Padding = new Padding(12, 4, 12, 0);
             tlp_main.SetRowSpan(p_lvWrapper, 2);
-            p_lvWrapper.Size = new Size(283, 485);
+            p_lvWrapper.Size = new Size(291, 485);
             p_lvWrapper.TabIndex = 10;
             // 
             // lv_vmList
@@ -516,7 +519,7 @@
             lv_vmList.Location = new Point(12, 4);
             lv_vmList.MultiSelect = false;
             lv_vmList.Name = "lv_vmList";
-            lv_vmList.Size = new Size(257, 479);
+            lv_vmList.Size = new Size(265, 479);
             lv_vmList.TabIndex = 0;
             lv_vmList.TileSize = new Size(221, 50);
             lv_vmList.UseCompatibleStateImageBehavior = false;
@@ -554,7 +557,7 @@
             cmsi_vmList_start.Image = (Image)resources.GetObject("cmsi_vmList_start.Image");
             cmsi_vmList_start.Name = "cmsi_vmList_start";
             cmsi_vmList_start.Size = new Size(231, 24);
-            cmsi_vmList_start.Text = "Start";
+            cmsi_vmList_start.Text = "&Start";
             cmsi_vmList_start.Click += b_startMachine_Click;
             // 
             // cmsi_vmList_settings
@@ -563,7 +566,7 @@
             cmsi_vmList_settings.Image = (Image)resources.GetObject("cmsi_vmList_settings.Image");
             cmsi_vmList_settings.Name = "cmsi_vmList_settings";
             cmsi_vmList_settings.Size = new Size(231, 24);
-            cmsi_vmList_settings.Text = "Settings";
+            cmsi_vmList_settings.Text = "Se&ttings";
             cmsi_vmList_settings.Click += b_machineSettings_Click;
             // 
             // cmsi_vmList_delete
@@ -571,7 +574,7 @@
             cmsi_vmList_delete.Image = (Image)resources.GetObject("cmsi_vmList_delete.Image");
             cmsi_vmList_delete.Name = "cmsi_vmList_delete";
             cmsi_vmList_delete.Size = new Size(231, 24);
-            cmsi_vmList_delete.Text = "Delete";
+            cmsi_vmList_delete.Text = "&Delete";
             cmsi_vmList_delete.Click += cmsi_vmList_delete_Click;
             // 
             // cmsi_vmList_showExp
@@ -579,7 +582,7 @@
             cmsi_vmList_showExp.Image = (Image)resources.GetObject("cmsi_vmList_showExp.Image");
             cmsi_vmList_showExp.Name = "cmsi_vmList_showExp";
             cmsi_vmList_showExp.Size = new Size(231, 24);
-            cmsi_vmList_showExp.Text = "Show in Explorer";
+            cmsi_vmList_showExp.Text = "Show in &Explorer";
             cmsi_vmList_showExp.Click += cmsi_vmList_showExp_Click;
             // 
             // cmsi_vmList_config
@@ -587,7 +590,7 @@
             cmsi_vmList_config.Image = (Image)resources.GetObject("cmsi_vmList_config.Image");
             cmsi_vmList_config.Name = "cmsi_vmList_config";
             cmsi_vmList_config.Size = new Size(231, 24);
-            cmsi_vmList_config.Text = "Open Machine Configuration";
+            cmsi_vmList_config.Text = "Open Machine &Configuration";
             cmsi_vmList_config.Click += cmsi_vmList_config_Click;
             // 
             // cmsi_vmList_shortcut
@@ -596,7 +599,7 @@
             cmsi_vmList_shortcut.Image = (Image)resources.GetObject("cmsi_vmList_shortcut.Image");
             cmsi_vmList_shortcut.Name = "cmsi_vmList_shortcut";
             cmsi_vmList_shortcut.Size = new Size(231, 24);
-            cmsi_vmList_shortcut.Text = "Create Shortcut on Desktop";
+            cmsi_vmList_shortcut.Text = "Create Shortcut on &Desktop";
             cmsi_vmList_shortcut.Click += createShortcutOnDesktopToolStripMenuItem_Click;
             // 
             // cmsi_vmList_refresh
@@ -604,7 +607,7 @@
             cmsi_vmList_refresh.Image = (Image)resources.GetObject("cmsi_vmList_refresh.Image");
             cmsi_vmList_refresh.Name = "cmsi_vmList_refresh";
             cmsi_vmList_refresh.Size = new Size(231, 24);
-            cmsi_vmList_refresh.Text = "Refresh Machine List";
+            cmsi_vmList_refresh.Text = "&Refresh VM List";
             cmsi_vmList_refresh.Click += ts_file_refresh_Click;
             // 
             // gb_machineDetails
@@ -613,11 +616,11 @@
             gb_machineDetails.AutoSize = true;
             gb_machineDetails.BackgroundImageLayout = ImageLayout.Stretch;
             gb_machineDetails.Controls.Add(tlp_machineInfo);
-            gb_machineDetails.Location = new Point(299, 88);
+            gb_machineDetails.Location = new Point(307, 88);
             gb_machineDetails.Margin = new Padding(10, 4, 10, 4);
             gb_machineDetails.Name = "gb_machineDetails";
             gb_machineDetails.Padding = new Padding(10, 9, 10, 9);
-            gb_machineDetails.Size = new Size(505, 192);
+            gb_machineDetails.Size = new Size(518, 192);
             gb_machineDetails.TabIndex = 0;
             gb_machineDetails.TabStop = false;
             gb_machineDetails.Text = "Machine Information";
@@ -628,12 +631,12 @@
             tc_vmInfo.Controls.Add(tc_vmInfo_media);
             tc_vmInfo.Controls.Add(tc_vmInfo_cpu);
             tc_vmInfo.Controls.Add(tc_vmInfo_gpu);
-            tc_vmInfo.Location = new Point(299, 288);
+            tc_vmInfo.Location = new Point(307, 288);
             tc_vmInfo.Margin = new Padding(10, 4, 10, 4);
             tc_vmInfo.Multiline = true;
             tc_vmInfo.Name = "tc_vmInfo";
             tc_vmInfo.SelectedIndex = 0;
-            tc_vmInfo.Size = new Size(505, 283);
+            tc_vmInfo.Size = new Size(518, 283);
             tc_vmInfo.TabIndex = 1;
             // 
             // tc_vmInfo_media
@@ -642,7 +645,7 @@
             tc_vmInfo_media.Location = new Point(4, 24);
             tc_vmInfo_media.Name = "tc_vmInfo_media";
             tc_vmInfo_media.Padding = new Padding(3);
-            tc_vmInfo_media.Size = new Size(497, 255);
+            tc_vmInfo_media.Size = new Size(510, 255);
             tc_vmInfo_media.TabIndex = 2;
             tc_vmInfo_media.Text = "Media";
             tc_vmInfo_media.UseVisualStyleBackColor = true;
@@ -653,7 +656,7 @@
             tc_vmInfo_cpu.Location = new Point(4, 24);
             tc_vmInfo_cpu.Name = "tc_vmInfo_cpu";
             tc_vmInfo_cpu.Padding = new Padding(3);
-            tc_vmInfo_cpu.Size = new Size(497, 255);
+            tc_vmInfo_cpu.Size = new Size(510, 255);
             tc_vmInfo_cpu.TabIndex = 0;
             tc_vmInfo_cpu.Text = "CPU/RAM";
             tc_vmInfo_cpu.UseVisualStyleBackColor = true;
@@ -664,7 +667,7 @@
             tc_vmInfo_gpu.Location = new Point(4, 24);
             tc_vmInfo_gpu.Name = "tc_vmInfo_gpu";
             tc_vmInfo_gpu.Padding = new Padding(3);
-            tc_vmInfo_gpu.Size = new Size(497, 255);
+            tc_vmInfo_gpu.Size = new Size(510, 255);
             tc_vmInfo_gpu.TabIndex = 1;
             tc_vmInfo_gpu.Text = "Graphics and Sound";
             tc_vmInfo_gpu.UseVisualStyleBackColor = true;
@@ -675,7 +678,7 @@
             ms_ts_file.Image = (Image)resources.GetObject("ms_ts_file.Image");
             ms_ts_file.Name = "ms_ts_file";
             ms_ts_file.Size = new Size(58, 22);
-            ms_ts_file.Text = " File";
+            ms_ts_file.Text = " &File";
             // 
             // ts_file_refresh
             // 
@@ -683,7 +686,7 @@
             ts_file_refresh.Name = "ts_file_refresh";
             ts_file_refresh.ShortcutKeys = Keys.Control | Keys.R;
             ts_file_refresh.Size = new Size(236, 22);
-            ts_file_refresh.Text = "Refresh Machine List";
+            ts_file_refresh.Text = "&Refresh VM List";
             ts_file_refresh.Click += ts_file_refresh_Click;
             // 
             // ts_file_prefs
@@ -692,7 +695,7 @@
             ts_file_prefs.Name = "ts_file_prefs";
             ts_file_prefs.ShortcutKeys = Keys.Control | Keys.Oemcomma;
             ts_file_prefs.Size = new Size(236, 22);
-            ts_file_prefs.Text = "Preferences";
+            ts_file_prefs.Text = "&Preferences";
             ts_file_prefs.Click += ts_file_prefs_Click;
             // 
             // ts_file_exit
@@ -701,16 +704,16 @@
             ts_file_exit.Name = "ts_file_exit";
             ts_file_exit.ShortcutKeys = Keys.Control | Keys.Q;
             ts_file_exit.Size = new Size(236, 22);
-            ts_file_exit.Text = "Exit";
+            ts_file_exit.Text = "&Exit";
             ts_file_exit.Click += ts_file_exit_Click;
             // 
             // ms_ts_machine
             // 
-            ms_ts_machine.DropDownItems.AddRange(new ToolStripItem[] { ts_machine_new, sep_machine_1, ts_machine_start, ts_machine_settings });
+            ms_ts_machine.DropDownItems.AddRange(new ToolStripItem[] { ts_machine_new, ts_machine_add, sep_machine_1, ts_machine_start, ts_machine_settings });
             ms_ts_machine.Image = (Image)resources.GetObject("ms_ts_machine.Image");
             ms_ts_machine.Name = "ms_ts_machine";
             ms_ts_machine.Size = new Size(86, 22);
-            ms_ts_machine.Text = " Machine";
+            ms_ts_machine.Text = " &Machine";
             // 
             // ts_machine_new
             // 
@@ -718,8 +721,16 @@
             ts_machine_new.Name = "ts_machine_new";
             ts_machine_new.ShortcutKeys = Keys.Control | Keys.N;
             ts_machine_new.Size = new Size(141, 22);
-            ts_machine_new.Text = "New";
+            ts_machine_new.Text = "&New";
             ts_machine_new.Click += b_newMachine_Click;
+            // 
+            // ts_machine_add
+            // 
+            ts_machine_add.Image = (Image)resources.GetObject("ts_machine_add.Image");
+            ts_machine_add.Name = "ts_machine_add";
+            ts_machine_add.Size = new Size(141, 22);
+            ts_machine_add.Text = "&Add";
+            ts_machine_add.Click += b_addMachine_Click;
             // 
             // ts_machine_start
             // 
@@ -727,7 +738,7 @@
             ts_machine_start.Image = (Image)resources.GetObject("ts_machine_start.Image");
             ts_machine_start.Name = "ts_machine_start";
             ts_machine_start.Size = new Size(141, 22);
-            ts_machine_start.Text = "Start";
+            ts_machine_start.Text = "&Start";
             // 
             // ts_machine_settings
             // 
@@ -735,15 +746,15 @@
             ts_machine_settings.Image = (Image)resources.GetObject("ts_machine_settings.Image");
             ts_machine_settings.Name = "ts_machine_settings";
             ts_machine_settings.Size = new Size(141, 22);
-            ts_machine_settings.Text = "Settings";
+            ts_machine_settings.Text = "Se&ttings";
             // 
-            // ms_ts_about
+            // ms_ts_help
             // 
-            ms_ts_about.DropDownItems.AddRange(new ToolStripItem[] { ts_help_about });
-            ms_ts_about.Image = (Image)resources.GetObject("ms_ts_about.Image");
-            ms_ts_about.Name = "ms_ts_about";
-            ms_ts_about.Size = new Size(65, 22);
-            ms_ts_about.Text = " Help";
+            ms_ts_help.DropDownItems.AddRange(new ToolStripItem[] { ts_help_about });
+            ms_ts_help.Image = (Image)resources.GetObject("ms_ts_help.Image");
+            ms_ts_help.Name = "ms_ts_help";
+            ms_ts_help.Size = new Size(65, 22);
+            ms_ts_help.Text = " &Help";
             // 
             // ts_help_about
             // 
@@ -756,10 +767,10 @@
             // ms
             // 
             ms.ImageScalingSize = new Size(18, 18);
-            ms.Items.AddRange(new ToolStripItem[] { ms_ts_file, ms_ts_machine, ms_ts_about });
+            ms.Items.AddRange(new ToolStripItem[] { ms_ts_file, ms_ts_machine, ms_ts_help });
             ms.Location = new Point(0, 0);
             ms.Name = "ms";
-            ms.Size = new Size(824, 26);
+            ms.Size = new Size(845, 26);
             ms.TabIndex = 0;
             ms.Text = "menuStrip1";
             // 
@@ -767,7 +778,7 @@
             // 
             gb_machineState.Anchor = AnchorStyles.Right;
             gb_machineState.Controls.Add(l_machineState);
-            gb_machineState.Location = new Point(211, 3);
+            gb_machineState.Location = new Point(224, 3);
             gb_machineState.Margin = new Padding(3, 3, 6, 9);
             gb_machineState.Name = "gb_machineState";
             gb_machineState.Padding = new Padding(5, 4, 5, 4);
@@ -794,12 +805,12 @@
             b_newMachine.Image = (Image)resources.GetObject("b_newMachine.Image");
             b_newMachine.ImageAlign = ContentAlignment.TopCenter;
             b_newMachine.Location = new Point(10, 9);
-            b_newMachine.Margin = new Padding(10, 0, 10, 0);
+            b_newMachine.Margin = new Padding(10, 0, 5, 0);
             b_newMachine.Name = "b_newMachine";
             b_newMachine.Padding = new Padding(0, 9, 0, 9);
-            b_newMachine.Size = new Size(104, 60);
+            b_newMachine.Size = new Size(80, 60);
             b_newMachine.TabIndex = 0;
-            b_newMachine.Text = "New Machine";
+            b_newMachine.Text = "New VM";
             b_newMachine.TextAlign = ContentAlignment.BottomCenter;
             b_newMachine.UseVisualStyleBackColor = true;
             b_newMachine.Click += b_newMachine_Click;
@@ -809,7 +820,7 @@
             b_machineSettings.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             b_machineSettings.Image = (Image)resources.GetObject("b_machineSettings.Image");
             b_machineSettings.ImageAlign = ContentAlignment.TopCenter;
-            b_machineSettings.Location = new Point(427, 10);
+            b_machineSettings.Location = new Point(440, 10);
             b_machineSettings.Margin = new Padding(5, 9, 10, 9);
             b_machineSettings.Name = "b_machineSettings";
             b_machineSettings.Padding = new Padding(0, 9, 0, 9);
@@ -827,7 +838,7 @@
             b_startMachine.Font = new Font("Segoe UI", 8.830189F, FontStyle.Bold, GraphicsUnit.Point, 0);
             b_startMachine.Image = (Image)resources.GetObject("b_startMachine.Image");
             b_startMachine.ImageAlign = ContentAlignment.TopCenter;
-            b_startMachine.Location = new Point(335, 10);
+            b_startMachine.Location = new Point(348, 10);
             b_startMachine.Margin = new Padding(10, 9, 5, 9);
             b_startMachine.Name = "b_startMachine";
             b_startMachine.Padding = new Padding(0, 9, 0, 9);
@@ -846,7 +857,7 @@
             p_main.Location = new Point(0, 26);
             p_main.Name = "p_main";
             p_main.Padding = new Padding(5, 9, 5, 9);
-            p_main.Size = new Size(824, 593);
+            p_main.Size = new Size(845, 593);
             p_main.TabIndex = 2;
             // 
             // tlp_main
@@ -866,34 +877,56 @@
             tlp_main.RowStyles.Add(new RowStyle(SizeType.Absolute, 84F));
             tlp_main.RowStyles.Add(new RowStyle(SizeType.Percent, 40.8997955F));
             tlp_main.RowStyles.Add(new RowStyle(SizeType.Percent, 59.1002045F));
-            tlp_main.Size = new Size(814, 575);
+            tlp_main.Size = new Size(835, 575);
             tlp_main.TabIndex = 1;
             // 
             // tlp_vmControl
             // 
             tlp_vmControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            tlp_vmControl.ColumnCount = 4;
-            tlp_vmControl.ColumnStyles.Add(new ColumnStyle());
-            tlp_vmControl.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tlp_vmControl.ColumnCount = 5;
             tlp_vmControl.ColumnStyles.Add(new ColumnStyle());
             tlp_vmControl.ColumnStyles.Add(new ColumnStyle());
-            tlp_vmControl.Controls.Add(b_machineSettings, 3, 0);
+            tlp_vmControl.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 61.03448F));
+            tlp_vmControl.ColumnStyles.Add(new ColumnStyle());
+            tlp_vmControl.ColumnStyles.Add(new ColumnStyle());
+            tlp_vmControl.Controls.Add(b_addMachine, 1, 0);
+            tlp_vmControl.Controls.Add(b_machineSettings, 4, 0);
             tlp_vmControl.Controls.Add(b_newMachine, 0, 0);
-            tlp_vmControl.Controls.Add(b_startMachine, 2, 0);
-            tlp_vmControl.Controls.Add(gb_machineState, 1, 0);
-            tlp_vmControl.Location = new Point(292, 3);
+            tlp_vmControl.Controls.Add(b_startMachine, 3, 0);
+            tlp_vmControl.Controls.Add(gb_machineState, 2, 0);
+            tlp_vmControl.Location = new Point(300, 3);
             tlp_vmControl.Name = "tlp_vmControl";
             tlp_vmControl.RowCount = 1;
             tlp_vmControl.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tlp_vmControl.Size = new Size(519, 78);
+            tlp_vmControl.Size = new Size(532, 78);
             tlp_vmControl.TabIndex = 1;
+            // 
+            // b_addMachine
+            // 
+            b_addMachine.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            b_addMachine.Image = (Image)resources.GetObject("b_addMachine.Image");
+            b_addMachine.ImageAlign = ContentAlignment.TopCenter;
+            b_addMachine.Location = new Point(100, 9);
+            b_addMachine.Margin = new Padding(5, 0, 10, 0);
+            b_addMachine.Name = "b_addMachine";
+            b_addMachine.Padding = new Padding(0, 9, 0, 9);
+            b_addMachine.Size = new Size(80, 60);
+            b_addMachine.TabIndex = 3;
+            b_addMachine.Text = "Add VM";
+            b_addMachine.TextAlign = ContentAlignment.BottomCenter;
+            b_addMachine.UseVisualStyleBackColor = true;
+            b_addMachine.Click += b_addMachine_Click;
+            // 
+            // ofd_add
+            // 
+            ofd_add.DefaultExt = "qint";
             // 
             // WIN_MAIN
             // 
             AcceptButton = b_startMachine;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(824, 619);
+            ClientSize = new Size(845, 619);
             Controls.Add(p_main);
             Controls.Add(ms);
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -901,6 +934,7 @@
             MinimumSize = new Size(840, 658);
             Name = "WIN_MAIN";
             Text = "QEMU Interface";
+            KeyDown += WIN_MAIN_KeyDown;
             tlp_machineInfo.ResumeLayout(false);
             tlp_machineInfo.PerformLayout();
             tlp_cpuTab.ResumeLayout(false);
@@ -932,7 +966,7 @@
         private ToolStripMenuItem ms_ts_file;
         private ToolStripMenuItem ts_file_exit;
         private ToolStripMenuItem ms_ts_machine;
-        private ToolStripMenuItem ms_ts_about;
+        private ToolStripMenuItem ms_ts_help;
         private ToolStripMenuItem ts_help_about;
         private MenuStrip ms;
         private Button b_startMachine;
@@ -982,5 +1016,8 @@
         private ToolStripMenuItem cmsi_vmList_shortcut;
         private ToolStripMenuItem cmsi_vmList_refresh;
         private ToolStripMenuItem cmsi_vmList_config;
+        private Button b_addMachine;
+        private ToolStripMenuItem ts_machine_add;
+        private OpenFileDialog ofd_add;
     }
 }

@@ -91,7 +91,7 @@ namespace QEMUInterface
                 this.Close();
                 return;
             }
-            DialogResult result = MessageBox.Show("You have unsaved changes. Are you sure you want to exit?", "Unsaved Changes", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            DialogResult result = MessageBox.Show("You have unsaved changes. Are you sure you want to exit?", "Unsaved Changes", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
             if (result != DialogResult.Yes)
             {
                 cancelFormClosing = true;

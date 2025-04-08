@@ -1,4 +1,5 @@
 using DarkModeForms;
+using QEMUInterface.Dialogs;
 using QEMUInterface.Properties;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
@@ -42,7 +43,21 @@ namespace QEMUInterface
             UpdateVMList();
         }
 
-
+        private void WIN_MAIN_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Alt && e.KeyCode == Keys.F)
+            {
+                ms_ts_file.Select();
+            }
+            else if (e.Alt && e.KeyCode == Keys.M)
+            {
+                ms_ts_machine.Select();
+            }
+            else if (e.Alt && e.KeyCode == Keys.H)
+            {
+                ms_ts_help.Select();
+            }
+        }
         private void CheckDarkMode()
         {
             if (Settings.Default.darkMode)
@@ -115,6 +130,7 @@ namespace QEMUInterface
                             c.Text = "RUNNING";
                             c.ForeColor = Color.FromArgb(0, 192, 0);
                         }),
+                        TSMPresets.SetVisible(gb_machineState, true),
                     ];
                     break;
                 case MACHINE_STATE.STOP:
@@ -139,6 +155,7 @@ namespace QEMUInterface
                             c.Text = "STOPPED";
                             c.ForeColor = Color.FromArgb(isDarkMode ? 255 : 192, 0, 0);
                         }),
+                        TSMPresets.SetVisible(gb_machineState, true),
                     ];
                     break;
                 case MACHINE_STATE.FAIL:
@@ -163,6 +180,7 @@ namespace QEMUInterface
                             c.Text = "FAILED";
                             c.ForeColor = Color.FromArgb(isDarkMode ? 255 : 192, 0, 0);
                         }),
+                        TSMPresets.SetVisible(gb_machineState, true),
                     ];
                     break;
                 case MACHINE_STATE.NONE:
@@ -187,6 +205,7 @@ namespace QEMUInterface
                             c.Text = "NONE";
                             c.ForeColor = Color.FromArgb(192, 192, 192);
                         }),
+                        TSMPresets.SetVisible(gb_machineState, false),
                     ];
                     break;
                 default:
@@ -267,6 +286,10 @@ namespace QEMUInterface
                 new WIN_MEDIA(newVm!).ShowDialog();
             }
         }
+        private void b_addMachine_Click(object sender, EventArgs e)
+        {
+            ofd_add.ShowDialog();
+        }
 
         private void b_startMachine_Click(object sender, EventArgs e)
         {
@@ -301,10 +324,7 @@ namespace QEMUInterface
             UpdateVMList();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            new WIN_MEDIA(machines[currentlySelectedMachine]).ShowDialog();
-        }
+        private void button1_Click(object sender, EventArgs e) => new WIN_MEDIA(machines[currentlySelectedMachine]).ShowDialog();
 
         private void createShortcutOnDesktopToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -323,20 +343,29 @@ namespace QEMUInterface
             }
         }
 
-        private void cmsi_vmList_config_Click(object sender, EventArgs e)
-        {
-            Process.Start("notepad.exe", Path.Combine(machines[currentlySelectedMachine].VMDirectory, Loader.CONFIG_FILE));
-        }
+        private void cmsi_vmList_config_Click(object sender, EventArgs e) => Process.Start("notepad.exe", Path.Combine(machines[currentlySelectedMachine].VMDirectory, Loader.CONFIG_FILE));
 
-        private void cmsi_vmList_delete_Click(object sender, EventArgs e) 
+        private void cmsi_vmList_delete_Click(object sender, EventArgs e)
         {
-            DialogResult res = MessageBox.Show("Are you sure you want to delete this machine? This action cannot be undone.", "Delete VM?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (res == DialogResult.Yes)
+            YesNoCancel.Show("Do you want to delete the Virtual Machine or just remove it from the list?", "Delete VM?", (dr) =>
             {
-                loader.DeleteVM(machines[currentlySelectedMachine]);
+                if (dr == DialogResult.Cancel)
+                {
+                    return;
+                }
+
+                if (dr == DialogResult.No) // "Delete"
+                {
+                    loader.DeleteVM(machines[currentlySelectedMachine]);
+                }
+                else if (dr == DialogResult.Yes) // "Remove"
+                {
+                    machines[currentlySelectedMachine].Hidden = "1";
+                    loader.StoreVM(machines[currentlySelectedMachine], true);
+                }
                 machines = loader.Populate();
                 UpdateVMList();
-            }
+            }, "&Remove", "&Delete");
         }
 
         private void cmsi_vmList_showExp_Click(object sender, EventArgs e)
@@ -344,7 +373,8 @@ namespace QEMUInterface
             try
             {
                 Process.Start("explorer.exe", machines[currentlySelectedMachine].VMDirectory);
-            } catch (Exception) 
+            }
+            catch (Exception)
             { }
         }
     }

@@ -48,6 +48,10 @@ namespace QEMUInterface
 
             FirstLoadEvents();
 
+            gb_pfin_diskWrapper.Visible = false;
+            gb_pfin_diskWrapper.Enabled = false;
+            shouldLaunchMedia = false;
+
             if (machine.Name.Length > 0)
             {
                 t_p0_name.Text = machine.Name;
@@ -464,7 +468,7 @@ namespace QEMUInterface
         {
             if (currentTabPage > 0)
             {
-                DialogResult result = MessageBox.Show("Are you sure you want to cancel?", "Cancel", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                DialogResult result = MessageBox.Show("Are you sure you want to cancel?", "Cancel", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
                 if (result == DialogResult.No)
                 {
                     closeInvokedByFinishButton = true;

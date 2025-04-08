@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Nodes;
+﻿using System.Reflection.Metadata.Ecma335;
+using System.Text.Json.Nodes;
 
 namespace QEMUInterface
 {
@@ -60,12 +61,21 @@ namespace QEMUInterface
                         continue;
                     }
 
-                    VirtualMachine vm = new VirtualMachine();
-                    vm.VMDirectory = folder;
+                    VirtualMachine vm = new()
+                    {
+                        VMDirectory = folder
+                    };
+
+                    if (parsed["Hidden"] != null)
+                    {
+                        if (parsed["Hidden"]!.ToString() == "1")
+                        {
+                            continue; // Do not load hidden machines
+                        }
+                    }
 
                     if (ParseJson(vm, parsed))
                     {
-
                         machines.Add(vm);
                     }
                     else
